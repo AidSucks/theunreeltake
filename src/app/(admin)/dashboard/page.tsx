@@ -1,6 +1,10 @@
+import prisma from "@/app/lib/prisma";
 
-export default function Page() {
+export default async function Page() {
+
+  const user = await prisma.user.findFirst();
+
   return (
-    <h1>Dashboard Page</h1>
+    <h1>{`${user?.name} ${user?.role} ${user?.id} ${user?.email}`}</h1>
   );
 }

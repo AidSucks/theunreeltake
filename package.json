@@ -8,7 +8,11 @@
     "start": "next start",
     "lint": "next lint"
   },
+  "prisma": {
+    "seed": "tsx prisma/seed.ts"
+  },
   "dependencies": {
+    "@prisma/client": "6.4.1",
     "bootstrap": "5.3.3",
     "next": "15.1.7",
     "react": "^19.0.0",
