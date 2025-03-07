@@ -1,8 +1,9 @@
+import SignIn from "@/app/ui/admin/login-form";
 
 export default function Page() {
   return (
     <div>
-      <h1>Login Page</h1>
+      <SignIn/>
     </div>
   );
 }
