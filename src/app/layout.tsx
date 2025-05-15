@@ -1,8 +1,6 @@
 import type { Metadata } from "next";
 import React from "react";
 
-import "./globals.scss";
-
 export const metadata: Metadata = {
   title: "The Unreel Take",
   description: "WIP Description",
