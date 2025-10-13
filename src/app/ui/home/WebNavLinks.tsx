@@ -4,8 +4,7 @@ import {usePathname} from "next/navigation";
 
 const navLinkInfo = [
   {label: "Home", link: "/", disabled: false},
-  {label: "Movies", link: "/movies", disabled: false},
-  {label: "Books", link: "/books", disabled: false},
+  {label: "Catalog", link: "/catalog", disabled: false},
   {label: "Requests", link: "/requests", disabled: false}
 ];
 

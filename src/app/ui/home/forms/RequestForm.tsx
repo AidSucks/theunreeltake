@@ -14,8 +14,8 @@ const mediaTypes: Readonly<[string, ...string[]]> = ["Movie", "Book"];
 
 const requestSchema = z.object({
   name: z.string().max(maxNameLength).optional(),
-  email: z.string().email({ message: "Invalid Email"}).nonempty({ message: "Please enter an email" }),
-  title: z.string().max(maxTitleLength).nonempty({ message: "Please enter a title "}),
+  email: z.string().email({ message: "Invalid Email"}).nonempty({ message: "This field is required" }),
+  title: z.string().max(maxTitleLength).nonempty({ message: "This field is required"}),
   mediaType: z.enum(mediaTypes),
   message: z.string().max(maxMessageLength).optional()
 });
