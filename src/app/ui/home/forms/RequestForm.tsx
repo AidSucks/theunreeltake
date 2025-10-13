@@ -2,7 +2,8 @@
 
 import {Button, Fieldset, Flex, Group, NativeSelect, rem, Textarea, TextInput, Title} from "@mantine/core";
 import z from "zod";
-import {useForm, zodResolver} from "@mantine/form";
+import {useForm} from "@mantine/form";
+import {zodResolver} from "mantine-form-zod-resolver";
 import {testRequestForm} from "@/app/lib/actions";
 import {useState} from "react";
 
