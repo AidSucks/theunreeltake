@@ -3,9 +3,9 @@ import Link from "next/link";
 import {usePathname} from "next/navigation";
 
 const navLinkInfo = [
-  {label: "Home", link: "/", disabled: false},
-  {label: "Catalog", link: "/catalog", disabled: false},
-  {label: "Requests", link: "/requests", disabled: false}
+  {label: "Home", link: "/", disabled: false, prefetch: true},
+  {label: "Catalog", link: "/catalog", disabled: false, prefetch: false},
+  {label: "Requests", link: "/requests", disabled: false, prefetch: true}
 ];
 
 export function WebNavLinks() {
@@ -18,6 +18,7 @@ export function WebNavLinks() {
 
     return (
       <Anchor
+        prefetch={item.prefetch}
         key={item.label}
         component={Link}
         style={{ textDecoration: path === item.link ? "underline" : undefined }}
