@@ -2,7 +2,6 @@
 
 import {Grid} from "@mantine/core";
 import {PostData} from "@/app/lib/actions";
-import {ReactElement, useEffect, useState} from "react";
 import {MoviePostCard} from "@/app/ui/home/MoviePostCard";
 
 export default function PostGrid(
@@ -13,8 +12,6 @@ export default function PostGrid(
   }
 ) {
 
-  const [renderedPosts, setRenderedPosts] = useState(new Array<ReactElement>(0));
-  
   function mapToPostcard(data: PostData, index: number) {
     return (
       <Grid.Col key={index} span={{base: 12, sm: 6, md: 4, lg: 3, xl: 2}}>
@@ -23,7 +20,7 @@ export default function PostGrid(
     );
   }
 
-  useEffect(() => setRenderedPosts(posts.map(mapToPostcard)), [posts]);
+  const renderedPosts = posts.map(mapToPostcard);
 
   return (
     <Grid
