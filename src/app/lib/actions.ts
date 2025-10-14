@@ -12,6 +12,11 @@ export interface PostData {
   Poster: string
 }
 
+export interface CatalogParams {
+  search?: string,
+  sort?: string
+}
+
 export async function logIn(provider: string) {
   await signIn(provider, {redirectTo: "/dashboard"});
 }
@@ -28,20 +33,17 @@ async function artificialLag(delayMs: number) {
   await new Promise(resolve => setTimeout(resolve, delayMs));
 }
 
-export async function getPostData(p: string) {
+export async function getPostData(params: CatalogParams) {
 
   const typeCastPosts = films as unknown as PostData[];
 
-  const params = new URLSearchParams(p);
-
-  const query = params.get('search');
-  const sortBy = params.get('sort');
+  const { search, sort } = params;
 
   let postsToReturn: PostData[];
 
-  if(query) {
+  if(search) {
     postsToReturn = typeCastPosts.filter(
-      (postData) => postData.Title.toLowerCase().startsWith(query.toLowerCase())
+      (postData) => postData.Title.toLowerCase().startsWith(search.toLowerCase())
     );
   } else {
     postsToReturn = typeCastPosts;
@@ -49,9 +51,9 @@ export async function getPostData(p: string) {
 
   postsToReturn.sort((a, b) => {
 
-    if(!sortBy) return a.Title.localeCompare(b.Title);
+    if(!sort) return a.Title.localeCompare(b.Title);
 
-    if(sortBy === "rating") return b.imdbRating - a.imdbRating;
+    if(sort === "rating") return b.imdbRating - a.imdbRating;
 
     return 0;
   });

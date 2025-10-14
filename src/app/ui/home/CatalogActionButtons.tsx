@@ -3,13 +3,14 @@
 import {ActionIcon, Menu, Text, Tooltip} from "@mantine/core";
 import {Funnel} from "react-bootstrap-icons";
 import {usePathname, useRouter, useSearchParams} from "next/navigation";
+import {Suspense} from "react";
 
 export default function CatalogActionButtons() {
 
   return(
-    <>
+    <Suspense>
       <SortByButton/>
-    </>
+    </Suspense>
   );
 
 }
