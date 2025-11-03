@@ -14,7 +14,7 @@ export default function PostGrid(
 
   function mapToPostcard(data: PostData, index: number) {
     return (
-      <Grid.Col key={index} span={{base: 12, sm: 6, md: 4, lg: 3, xl: 2}}>
+      <Grid.Col key={index} span={{base: 6, sm: 4, md: 3, lg: 3, xl: 2}}>
         <MoviePostCard postData={data}/>
       </Grid.Col>
     );

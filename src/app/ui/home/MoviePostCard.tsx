@@ -2,17 +2,18 @@
 
 import {
   AspectRatio,
-  Avatar,
+  BackgroundImage, Badge,
   Card,
-  Flex,
-  Image,
-  Rating,
-  Text,
-  Title,
+  Rating, rem,
+  Stack,
 } from '@mantine/core';
+
+import classes from "./MoviePostCard.module.css";
 
 import Link from "next/link";
 import {PostData} from "@/app/lib/actions";
+import {StarFill} from "react-bootstrap-icons";
+import {useElementSize} from "@mantine/hooks";
 
 export function MoviePostCard(
   {
@@ -22,46 +23,35 @@ export function MoviePostCard(
   }
 ) {
 
+  const titleSrc = `https://placehold.co/400x600?text=${postData.Title.replaceAll(" ", "+")}`
+
+  const {ref, width} = useElementSize();
+
   return (
-    <AspectRatio ratio={400 / 750} maw={400}>
+    <AspectRatio ratio={2 / 3} maw={400} className={classes.card} ref={ref}>
       <Card
+        w={"100%"}
+        h={"100%"}
+        component={Link}
+        href={"#"}
         withBorder
         shadow={"md"}
-        p={"md"}
-        radius={"md"}>
+        p={0}
+        radius={"md"}
+        >
 
-        <Card.Section
-          component={Link}
-          href={"#"}>
-          <AspectRatio ratio={400 / 500} maw={400}>
-            <Image
-              src={"https://placehold.co/400x600?text=Media+Image"}
-              alt={"Media Image"}/>
-          </AspectRatio>
-        </Card.Section>
+        <BackgroundImage
+          w={"100%"}
+          h={"100%"}
+          src={titleSrc}>
 
-        <Flex direction={"column"} gap={{base: 5, md: 10}} h={"100%"} mt={5} justify={"center"}>
-          <Title order={5} lineClamp={2}>
-            {postData.Title}
-          </Title>
+            <Stack align={"stretch"} justify={"flex-end"} h={"100%"} p={"sm"} gap={6}>
 
-          <Rating size={17} value={postData.imdbRating} fractions={4} count={10} readOnly/>
+              <Rating size={width / 12} value={postData.imdbRating} fractions={2} count={10} readOnly/>
+              <Badge style={{fontSize: rem(width / 24), height: rem(width / 12), width: rem(width / 4), padding: 0}}>Movie</Badge>
+            </Stack>
 
-          <Flex gap={"xs"}>
-            <Avatar
-              src={"https://placehold.co/000000/FFF/16?text=Avatar"}
-              alt={"Avatar"}/>
-
-            <Flex gap={0} direction={"column"}>
-              <Text size={"xs"} lineClamp={1} span>
-                {postData.Director}
-              </Text>
-              <Text size={"xs"} c={"dimmed"}>
-                Date Information
-              </Text>
-            </Flex>
-          </Flex>
-        </Flex>
+        </BackgroundImage>
 
       </Card>
     </AspectRatio>
