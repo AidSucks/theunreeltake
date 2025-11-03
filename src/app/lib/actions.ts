@@ -51,11 +51,14 @@ export async function getPostData(params: CatalogParams) {
 
   postsToReturn.sort((a, b) => {
 
-    if(!sort) return a.Title.localeCompare(b.Title);
+    if(
+      sort === "rating" &&
+      b.imdbRating - a.imdbRating !== 0
+    ) {
+      return b.imdbRating - a.imdbRating;
+    }
 
-    if(sort === "rating") return b.imdbRating - a.imdbRating;
-
-    return 0;
+    return a.Title.localeCompare(b.Title);
   });
 
   return postsToReturn;
