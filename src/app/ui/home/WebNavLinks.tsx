@@ -18,13 +18,12 @@ export function WebNavLinks() {
 
     return (
       <Anchor
+        component={Link}
         prefetch={item.prefetch}
         key={item.label}
-        component={Link}
         style={{ textDecoration: path === item.link ? "underline" : undefined }}
         underline={"hover"}
         size={"lg"}
-        c={"white"}
         href={item.link}>
 
         {item.label}
@@ -33,7 +32,7 @@ export function WebNavLinks() {
   });
 
   return(
-    <Flex h={"100%"} w={"100%"} align={"center"} justify={"flex-end"} px={"md"}>
+    <Flex h={"100%"} w={"100%"} align={"center"} justify={"center"} px={"md"}>
       <Group gap={"xl"} wrap={"nowrap"}>
         {webNavLinks}
       </Group>

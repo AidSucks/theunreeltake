@@ -1,27 +1,14 @@
 'use client';
 
 import {Button, Fieldset, Flex, Group, NativeSelect, rem, Textarea, TextInput, Title} from "@mantine/core";
-import z from "zod";
 import {useForm} from "@mantine/form";
-import {zodResolver} from "mantine-form-zod-resolver";
+import {zod4Resolver} from "mantine-form-zod-resolver";
 import {testRequestForm} from "@/app/lib/actions";
 import {useState} from "react";
 
-const maxMessageLength = 250;
-const maxNameLength = 75;
-const maxTitleLength = 100;
+import {RequestFormSchema} from "@/app/lib/schemas";
+import {AllowedMediaType, maxTextAreaLength, maxTextInputLength} from "@/app/lib/constants";
 
-const mediaTypes: Readonly<[string, ...string[]]> = ["Movie", "Book"];
-
-const requestSchema = z.object({
-  name: z.string().max(maxNameLength).optional(),
-  email: z.string().email({ message: "Invalid Email"}).nonempty({ message: "This field is required" }),
-  title: z.string().max(maxTitleLength).nonempty({ message: "This field is required"}),
-  mediaType: z.enum(mediaTypes),
-  message: z.string().max(maxMessageLength).optional()
-});
-
-export type RequestSchema = z.infer<typeof requestSchema>;
 
 export function RequestForm() {
 
@@ -31,10 +18,10 @@ export function RequestForm() {
       name: "",
       email: "",
       title: "",
-      mediaType: mediaTypes[0],
+      mediaType: AllowedMediaType.Book,
       message: ""
     },
-    validate: zodResolver(requestSchema)
+    validate: zod4Resolver(RequestFormSchema)
   });
 
   const [completed, setCompleted] = useState(false);
@@ -64,13 +51,6 @@ export function RequestForm() {
         mih={"250px"}>
 
         <Fieldset legend={"Your Information"} w={{ base: "100%", sm: "50%"}}>
-          <TextInput
-            label={"Name"}
-            placeholder={"Your Name"}
-            maxLength={maxNameLength}
-            key={form.key("name")}
-            {...form.getInputProps("name")}
-          />
 
           <TextInput
             label={"Email"}
@@ -81,13 +61,21 @@ export function RequestForm() {
             {...form.getInputProps("email")}
           />
 
+          <TextInput
+            label={"Name"}
+            placeholder={"Your Name"}
+            maxLength={maxTextInputLength}
+            key={form.key("name")}
+            {...form.getInputProps("name")}
+          />
+
         </Fieldset>
 
         <Fieldset legend={"Request Information"} w={{ base: "100%", sm: "50%" }}>
           <TextInput
             label={"Title"}
             placeholder={"Title"}
-            maxLength={maxTitleLength}
+            maxLength={maxTextInputLength}
             description={"The title of the movie/book you're making this request for"}
             withAsterisk
             key={form.key("title")}
@@ -97,7 +85,7 @@ export function RequestForm() {
           <NativeSelect
             maw={rem(150)}
             label={"Type"}
-            data={mediaTypes}
+            data={Object.values(AllowedMediaType)}
             key={form.key("mediaType")}
             {...form.getInputProps("mediaType")}
           />
@@ -107,7 +95,7 @@ export function RequestForm() {
             description={"Why you're requesting a review and/or any extra information you want us to know"}
             placeholder={"Message"}
             autosize
-            maxLength={maxMessageLength}
+            maxLength={maxTextAreaLength}
             minRows={3}
             key={form.key("message")}
             {...form.getInputProps("message")}

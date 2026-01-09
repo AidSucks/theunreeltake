@@ -1,6 +1,6 @@
 'use client';
 
-import {AspectRatio, Flex, Grid, Image, List, Space, Text, Title} from "@mantine/core";
+import {AspectRatio, Button, Center, Flex, Grid, Image, List, Space, Stack, Text, Title} from "@mantine/core";
 
 export default function HomePage() {
 
@@ -145,6 +145,18 @@ export default function HomePage() {
             experience even more immersive.
           </Text>
         </Flex>
+      </Grid.Col>
+
+      <Grid.Col span={12}>
+        <Center>
+          <Stack maw={"300"} justify={"center"}>
+            <Center>
+              <Text>Now apart of Angry Fitz Media!</Text>
+            </Center>
+            <Image src={"/img/AFM.webp"} alt={"Angry Fitz Media"}/>
+            <Button fullWidth component={"a"} href={"https://www.angryfitzmedia.com/"}>Go there!</Button>
+          </Stack>
+        </Center>
       </Grid.Col>
     </Grid>
   );

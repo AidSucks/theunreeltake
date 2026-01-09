@@ -1,20 +1,20 @@
 'use client';
 
 import {Grid} from "@mantine/core";
-import {PostData} from "@/app/lib/actions";
+import {CatalogItem} from "@/app/lib/schemas";
 import {MoviePostCard} from "@/app/ui/home/MoviePostCard";
 
 export default function PostGrid(
   { 
     posts
   }: {
-    posts: PostData[],
+    posts: CatalogItem[],
   }
 ) {
 
-  function mapToPostcard(data: PostData, index: number) {
+  function mapToPostcard(data: CatalogItem, index: number) {
     return (
-      <Grid.Col key={index} span={{base: 12, sm: 6, md: 4, lg: 3, xl: 2}}>
+      <Grid.Col key={index} span={{base: 6, sm: 4, md: 3, lg: 3, xl: 2}}>
         <MoviePostCard postData={data}/>
       </Grid.Col>
     );
@@ -26,7 +26,7 @@ export default function PostGrid(
     <Grid
       columns={12}
       gutter={"lg"}
-      p={16}
+      p={{ base: "sm", md: "lg"}}
       type={"container"}
       breakpoints={{ xs: '320px', sm: '425px', md: '650px', lg: '900px', xl: '1300px' }}>
         {renderedPosts}

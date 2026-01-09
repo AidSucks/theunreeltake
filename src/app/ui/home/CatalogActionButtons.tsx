@@ -1,39 +1,22 @@
 'use client';
 
 import {ActionIcon, Menu, Text, Tooltip} from "@mantine/core";
-import {Funnel} from "react-bootstrap-icons";
-import {usePathname, useRouter, useSearchParams} from "next/navigation";
-import {Suspense} from "react";
+import {CardText, Funnel} from "react-bootstrap-icons";
+import {allowedPostsPerPage} from "@/app/lib/constants";
 
-export default function CatalogActionButtons() {
-
-  return(
-    <Suspense>
-      <SortByButton/>
-    </Suspense>
-  );
-
-}
-
-function SortByButton() {
-
-  const searchParams = useSearchParams();
-  const pathname = usePathname();
-  const router = useRouter();
-
-  const applySortBy = (value: string) => {
-
-    const params = new URLSearchParams(searchParams);
-
-    if(!value)
-      params.delete("sort");
-    else
-      params.set("sort", value);
-
-    router.push(`${pathname}?${params}`);
+export default function CatalogActionButtons(
+  {
+    onSortByAction,
+    onPostsCountAction
+  }: {
+    onSortByAction: (value: string) => void
+    onPostsCountAction: (value: number) => void
   }
+) {
 
   return (
+
+    <>
 
     <Menu
       transitionProps={{transition: "pop-top-left"}}
@@ -44,23 +27,58 @@ function SortByButton() {
           <ActionIcon
             size={"lg"}
             variant={"outline"}>
-              <Funnel size={22}/>
+            <Funnel size={22}/>
           </ActionIcon>
         </Tooltip>
       </Menu.Target>
 
       <Menu.Dropdown>
 
-        <Menu.Item onClick={() => applySortBy("rating")}>
+        <Menu.Label>Sort By</Menu.Label>
+
+        <Menu.Item onClick={() => onSortByAction("rating")}>
           <Text>Rating</Text>
         </Menu.Item>
 
-        <Menu.Item onClick={() => applySortBy("")}>
+        <Menu.Item onClick={() => onSortByAction("")}>
           <Text>Clear</Text>
         </Menu.Item>
 
       </Menu.Dropdown>
 
     </Menu>
+
+    <Menu
+      transitionProps={{transition: "pop-top-left"}}
+      position={"bottom-start"}>
+
+      <Menu.Target>
+        <Tooltip label={"Posts Per Page"}>
+          <ActionIcon
+            size={"lg"}
+            variant={"outline"}>
+            <CardText size={22}/>
+          </ActionIcon>
+        </Tooltip>
+      </Menu.Target>
+
+      <Menu.Dropdown>
+
+        <Menu.Label>Count</Menu.Label>
+
+        {allowedPostsPerPage.map((value, index) => {
+          return (
+            <Menu.Item key={index} onClick={() => onPostsCountAction(value)}>
+              <Text>{value.toString()}</Text>
+            </Menu.Item>
+          )
+        })}
+
+      </Menu.Dropdown>
+
+    </Menu>
+
+    </>
   );
+
 }

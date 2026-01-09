@@ -3,6 +3,7 @@
 import {Burger, Flex, Collapse} from "@mantine/core";
 import {useDisclosure} from "@mantine/hooks";
 import {MobileNavLinks} from "@/app/ui/home/MobileNavLinks";
+import ThemeToggleButton from "@/app/ui/home/ThemeToggleButton";
 
 export function HomeBurgerMenu() {
 
@@ -10,8 +11,9 @@ export function HomeBurgerMenu() {
 
   return (
     <>
-      <Flex h={"100%"} w={"100%"} align={"center"} justify={"center"} hiddenFrom={"sm"} direction={"column"}>
-        <Burger opened={opened} onClick={toggle} aria-label={"Toggle Navigation Menu"}/>
+      <Flex h={"100%"} align={"center"} gap={"sm"} px={{ base: "none", md: "md"}}>
+        <Burger opened={opened} onClick={toggle} aria-label={"Toggle Navigation Menu"} hiddenFrom={"sm"}/>
+        <ThemeToggleButton/>
       </Flex>
 
       <Collapse in={opened} hiddenFrom={"sm"}>
