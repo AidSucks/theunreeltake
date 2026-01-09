@@ -1,70 +1,75 @@
 'use client';
 
-import {Flex, Group, Loader} from "@mantine/core";
+import {Flex, Group, Loader, Pagination} from "@mantine/core";
 import {HomeSearchBar} from "@/app/ui/home/HomeSearchBar";
 import PostGrid from "@/app/ui/home/PostGrid";
 import CatalogActionButtons from "@/app/ui/home/CatalogActionButtons";
-import {Suspense, use, useCallback, useEffect, useState, useTransition} from "react";
-import {CatalogParams, getPostData, PostData} from "@/app/lib/actions";
+import {useCallback, useEffect, useState, useTransition} from "react";
+import {CatalogItem} from "@/app/lib/schemas";
 import RefreshDataButton from "@/app/ui/home/RefreshDataButton";
+import {PostPageData} from "@/app/api/catalog/route";
+import {allowedPostsPerPage} from "@/app/lib/constants";
 
-export default function MoviesPage(
-  {
-    searchParams
-  }: {
-    searchParams: Promise<{ [_: string]: string | string[] | undefined }>
-  }
-){
 
-  const [posts, setPosts] = useState(new Array<PostData>(0));
-  const params = use(searchParams);
+export default function MoviesPage(){
+
+  const [posts, setPosts] = useState(new Array<CatalogItem>(0));
+
+  const [postsPerPage, setPostsPage] = useState(allowedPostsPerPage[0]);
+  const [totalCount, setTotalCount] = useState(0);
+  const [search, setSearch] = useState("");
+  const [sortBy, setSortBy] = useState("");
+  const [page, setPage] = useState(1);
+
   const [isLoading, startTransition] = useTransition();
+
+  const handleSearch = (value: string) => setSearch(value);
+  const handleSortBy = (value: string) => setSortBy(value);
+  const handlePostsCount = (value: number) => setPostsPage(value);
 
   const refresh = useCallback(() => {
     startTransition(async () => {
 
-      const {search, sort} = params;
+      const urlSearchParams = new URLSearchParams();
 
-      const paramData: CatalogParams = {};
+      urlSearchParams.set("search", search);
+      urlSearchParams.set("sort", sortBy);
+      urlSearchParams.set("ppp", postsPerPage.toString());
+      urlSearchParams.set("page", page.toString());
 
-      if(Array.isArray(search))
-        paramData.search = search[0];
-      else
-        paramData.search = search;
+      const postPageData = await fetch(`/api/catalog?${urlSearchParams}`, { method: "GET" , cache: "default" })
+          .then(async (res) => await res.json() as PostPageData);
 
-      if(Array.isArray(sort))
-        paramData.sort = sort[0];
-      else
-        paramData.sort = sort;
-
-      const postData = await getPostData(paramData);
-
-      setPosts(postData);
+      setPosts(postPageData.pageItems);
+      setTotalCount(postPageData.totalCount);
     });
-  }, [params]);
+  }, [search, sortBy, page, postsPerPage]);
 
   useEffect(() => refresh(), [refresh]);
 
   return (
-    <>
+    <Flex direction={"column"} p={{ base: "none", md: "lg"}}>
       <Group gap={"xs"}>
         <Flex w={{base: "100%", sm: "80%", md: "40%"}}>
-          <Suspense>
-            <HomeSearchBar/>
-          </Suspense>
+          <HomeSearchBar onSearchAction={(value) => { handleSearch(value); setPage(1)}}/>
         </Flex>
-        <CatalogActionButtons/>
+        <CatalogActionButtons onSortByAction={handleSortBy} onPostsCountAction={handlePostsCount}/>
         <RefreshDataButton updateData={refresh}/>
       </Group>
 
-      {isLoading ? <CatalogLoader/> : <PostGrid posts={posts}/>}
-    </>
+      {isLoading ? <CatalogLoader/> :
+        <>
+          <PostGrid posts={posts}/>
+          <Pagination total={Math.ceil(totalCount / postsPerPage)} value={page} onChange={setPage}></Pagination>
+        </>
+      }
+    </Flex>
   );
 }
 
 function CatalogLoader() {
   return (
-    <Flex h={"100%"} align={"center"} justify={"center"}>
+    <Flex h={"50vh"} align={"center"} justify={"center"}>
       <div>
         <Loader type={"oval"}/>
       </div>

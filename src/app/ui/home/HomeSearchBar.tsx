@@ -4,14 +4,12 @@ import {Search, X} from "react-bootstrap-icons";
 import {ActionIcon, TextInput} from "@mantine/core";
 import React, {useState} from "react";
 import {useDebouncedCallback} from "@mantine/hooks";
-import {usePathname, useRouter, useSearchParams} from "next/navigation";
 
-export function HomeSearchBar() {
+export function HomeSearchBar(
+  { onSearchAction }: { onSearchAction: (value: string) => void }
+) {
 
-  const pathname = usePathname();
-  const searchParams = useSearchParams();
-  const router = useRouter();
-  const [search, setSearch] = useState(searchParams.get("search") ?? "");
+  const [search, setSearch] = useState("");
 
   const handleKeyUp =
     (event: React.KeyboardEvent<HTMLInputElement>) => {
@@ -19,18 +17,7 @@ export function HomeSearchBar() {
     }
 
   const handleSearch =
-    useDebouncedCallback(() => {
-
-      const newParams = new URLSearchParams(searchParams);
-
-      if(!search)
-        newParams.delete("search");
-      else
-        newParams.set("search", search);
-
-      router.push(`${pathname}?${newParams}`)
-
-    }, 25);
+    useDebouncedCallback(() => onSearchAction(search), 25);
 
   const handleChange =
     (event: React.ChangeEvent<HTMLInputElement>) => {

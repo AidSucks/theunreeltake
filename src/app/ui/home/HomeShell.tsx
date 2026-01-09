@@ -20,7 +20,11 @@ export function HomeShell(
         <HomeHeader/>
       </AppShell.Header>
 
-      <AppShell.Main h={"100vh"} pt={`calc(${rem(120)} + var(--mantine-spacing-sm))`}>
+      <AppShell.Main
+        h={"100%"}
+        style={{ display: "flex", flexDirection: "column" }}
+        pt={`calc(${rem(120)} + var(--mantine-spacing-sm))`}
+      >
         {children}
       </AppShell.Main>
 
