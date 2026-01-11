@@ -5,6 +5,8 @@ import rawFilmsJson from '@/../public/film.json';
 import {CatalogItemSchema, CatalogItem} from "@/app/lib/schemas";
 import {allowedPostsPerPage} from "@/app/lib/constants";
 
+const dummyAuthors = ["Aidan Anderson", "Brandon Eiland", "Jeremy Bixby", "Bailey Sweatman"];
+
 interface CatalogParams {
   search: string,
   sort: string,
@@ -20,13 +22,21 @@ export interface PostPageData {
 export async function GET(request: NextRequest) {
 
   const parsedFilms: CatalogItem[] = rawFilmsJson.map(
-    value => {
+    ((value, index) => {
 
-      const {slug, Title, imdbRating, Poster} = value;
+      const {slug, Title, imdbRating, Poster, Year, Type} = value;
 
-      return CatalogItemSchema.parse({slug: slug, title: Title, rating: imdbRating, posterUrl: Poster});
+      return CatalogItemSchema.parse({
+        slug: slug,
+        author: dummyAuthors[index % dummyAuthors.length],
+        title: Title,
+        rating: imdbRating,
+        posterUrl: Poster,
+        releaseYear: Year,
+        mediaType: Type
+      });
     }
-  );
+  ));
 
   const catalogParams = parseSearchParams(request.nextUrl.searchParams);
 

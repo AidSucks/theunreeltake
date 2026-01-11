@@ -53,14 +53,16 @@ export default function MoviesPage(){
         <Flex w={{base: "100%", sm: "80%", md: "40%"}}>
           <HomeSearchBar onSearchAction={(value) => { handleSearch(value); setPage(1)}}/>
         </Flex>
-        <CatalogActionButtons onSortByAction={handleSortBy} onPostsCountAction={handlePostsCount}/>
-        <RefreshDataButton updateData={refresh}/>
+        <Group gap={"xs"} ml={{ base: "lg", md: 0}}>
+          <CatalogActionButtons onSortByAction={handleSortBy} onPostsCountAction={handlePostsCount}/>
+          <RefreshDataButton updateData={refresh}/>
+        </Group>
       </Group>
 
       {isLoading ? <CatalogLoader/> :
         <>
           <PostGrid posts={posts}/>
-          <Pagination total={Math.ceil(totalCount / postsPerPage)} value={page} onChange={setPage}></Pagination>
+          <Pagination total={Math.ceil(totalCount / postsPerPage)} value={page} onChange={setPage} mb={"md"}></Pagination>
         </>
       }
     </Flex>
