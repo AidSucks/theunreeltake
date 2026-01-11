@@ -1,19 +1,14 @@
 import {NavLink, Paper} from "@mantine/core";
 import {usePathname} from "next/navigation";
-import {Film, House, Send} from "react-bootstrap-icons";
 
-const navLinkInfo = [
-  {label: "Home", icon: House, link: "/", disabled: false},
-  {label: "Catalog", icon: Film, link: "/catalog", disabled: false},
-  {label: "Requests", icon: Send, link: "/requests", disabled: false}
-];
+import {publicRouteMetadata} from "@/app/lib/constants";
 
 export function MobileNavLinks() {
 
   const path = usePathname();
 
   const mobileNavLinks =
-    navLinkInfo.map((item) => {
+    publicRouteMetadata.map((item) => {
 
       if(item.disabled) return;
 
@@ -22,8 +17,8 @@ export function MobileNavLinks() {
       return(
         <NavLink
           key={item.label}
-          href={item.link}
-          active={path === item.link}
+          href={item.href}
+          active={path === item.href}
           label={item.label}
           leftSection={<Icon size={16}/>}
         />
