@@ -16,10 +16,14 @@ const httpUrl = z.url({
 });
 
 export const CatalogItemSchema = z.object({
+  author: z.string().default("Unknown Author"),
+  datePosted: z.date().default(new Date()),
   slug: z.string().default(""),
   title: z.string().default(""),
   rating: z.number().positive().default(0),
-  posterUrl: httpUrl.default("")
+  releaseYear: z.string().default(""),
+  posterUrl: httpUrl.default(""),
+  mediaType: z.string().default(AllowedMediaType.Book)
 });
 
 export const RequestFormSchema = z.object({
