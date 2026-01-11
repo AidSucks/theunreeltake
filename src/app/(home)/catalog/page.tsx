@@ -5,10 +5,10 @@ import {HomeSearchBar} from "@/app/ui/home/HomeSearchBar";
 import PostGrid from "@/app/ui/home/PostGrid";
 import CatalogActionButtons from "@/app/ui/home/CatalogActionButtons";
 import {useCallback, useEffect, useState, useTransition} from "react";
-import {CatalogItem} from "@/app/lib/schemas";
+import {CatalogItem} from "@/lib/schemas";
 import RefreshDataButton from "@/app/ui/home/RefreshDataButton";
 import {PostPageData} from "@/app/api/catalog/route";
-import {allowedPostsPerPage} from "@/app/lib/constants";
+import {allowedPostsPerPage} from "@/lib/constants";
 
 
 export default function MoviesPage(){

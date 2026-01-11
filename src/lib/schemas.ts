@@ -5,7 +5,7 @@ import {
   AllowedMediaType,
   maxTextInputLength,
   maxTextAreaLength
-} from "@/app/lib/constants";
+} from "@/lib/constants";
 
 export type CatalogItem = z.infer<typeof CatalogItemSchema>;
 export type RequestForm = z.infer<typeof RequestFormSchema>;

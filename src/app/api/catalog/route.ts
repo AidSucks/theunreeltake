@@ -2,8 +2,8 @@ import {NextRequest, NextResponse} from "next/server";
 
 import rawFilmsJson from '@/../public/film.json';
 
-import {CatalogItemSchema, CatalogItem} from "@/app/lib/schemas";
-import {allowedPostsPerPage} from "@/app/lib/constants";
+import {CatalogItemSchema, CatalogItem} from "@/lib/schemas";
+import {allowedPostsPerPage} from "@/lib/constants";
 
 const dummyAuthors = ["Aidan Anderson", "Brandon Eiland", "Jeremy Bixby", "Bailey Sweatman"];
 

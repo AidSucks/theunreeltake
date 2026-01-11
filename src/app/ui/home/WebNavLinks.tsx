@@ -2,7 +2,7 @@ import {Anchor, Flex, Group} from "@mantine/core";
 import Link from "next/link";
 import {usePathname} from "next/navigation";
 
-import {publicRouteMetadata} from "@/app/lib/constants";
+import {publicRouteMetadata} from "@/lib/constants";
 
 export function WebNavLinks() {
 

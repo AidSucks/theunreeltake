@@ -3,11 +3,11 @@
 import {Button, Fieldset, Flex, Group, NativeSelect, rem, Textarea, TextInput, Title} from "@mantine/core";
 import {useForm} from "@mantine/form";
 import {zod4Resolver} from "mantine-form-zod-resolver";
-import {testRequestForm} from "@/app/lib/actions";
+import {testRequestForm} from "@/lib/actions";
 import {useState} from "react";
 
-import {RequestFormSchema} from "@/app/lib/schemas";
-import {AllowedMediaType, maxTextAreaLength, maxTextInputLength} from "@/app/lib/constants";
+import {RequestFormSchema} from "@/lib/schemas";
+import {AllowedMediaType, maxTextAreaLength, maxTextInputLength} from "@/lib/constants";
 
 
 export function RequestForm() {

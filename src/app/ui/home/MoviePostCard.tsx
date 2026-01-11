@@ -15,7 +15,7 @@ import {
 
 import classes from "./MoviePostCard.module.css";
 
-import {CatalogItem} from "@/app/lib/schemas";
+import {CatalogItem} from "@/lib/schemas";
 import {useElementSize} from "@mantine/hooks";
 import {Flip} from "@gfazioli/mantine-flip";
 import {useState} from "react";

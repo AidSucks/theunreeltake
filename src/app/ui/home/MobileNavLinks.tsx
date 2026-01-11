@@ -1,7 +1,7 @@
 import {NavLink, Paper} from "@mantine/core";
 import {usePathname} from "next/navigation";
 
-import {publicRouteMetadata} from "@/app/lib/constants";
+import {publicRouteMetadata} from "@/lib/constants";
 
 export function MobileNavLinks() {
 

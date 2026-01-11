@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import React from "react";
 import { ColorSchemeScript, MantineProvider, mantineHtmlProps } from "@mantine/core";
 
-import "@mantine/core/styles.css"
+import "@mantine/core/styles.css";
 import '@gfazioli/mantine-flip/styles.css';
 
 import Head from "next/head";

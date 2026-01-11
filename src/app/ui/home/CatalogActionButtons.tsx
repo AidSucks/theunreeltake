@@ -2,7 +2,7 @@
 
 import {ActionIcon, Menu, Text, Tooltip} from "@mantine/core";
 import {CardText, Funnel} from "react-bootstrap-icons";
-import {allowedPostsPerPage} from "@/app/lib/constants";
+import {allowedPostsPerPage} from "@/lib/constants";
 
 export default function CatalogActionButtons(
   {
