@@ -33,3 +33,9 @@ export const RequestFormSchema = z.object({
   mediaType: z.enum(AllowedMediaType),
   message: z.string().max(maxTextAreaLength).optional()
 });
+
+export const LoginFormSchema = z.object({
+  email: z.email({ error: "Invalid email"}).nonempty({ error: "Required" }),
+  password: z.string().nonempty({ error: "Required" }),
+  rememberMe: z.boolean().default(false)
+});

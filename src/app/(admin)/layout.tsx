@@ -6,14 +6,13 @@ import "@mantine/core/styles.css";
 import '@gfazioli/mantine-flip/styles.css';
 
 import Head from "next/head";
-import {HomeShell} from "@/app/ui/home/HomeShell";
 
 export const metadata: Metadata = {
   title: "The Unreel Take",
   description: "WIP Description",
 };
 
-export default function HomeLayout({children,}: Readonly<{
+export default function AdminLayout({children,}: Readonly<{
   children: React.ReactNode;
 }>) {
   return (
@@ -23,9 +22,7 @@ export default function HomeLayout({children,}: Readonly<{
       </Head>
       <body>
         <MantineProvider defaultColorScheme={"light"}>
-          <HomeShell>
-            {children}
-          </HomeShell>
+          {children}
         </MantineProvider>
       </body>
     </html>
