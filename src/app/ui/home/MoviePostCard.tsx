@@ -91,6 +91,7 @@ export function MoviePostCard(
           <Button
             component={Link}
             href={`/blog/${postData.slug}`}
+            prefetch={false}
           >
             View Post
           </Button>
