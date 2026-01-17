@@ -14,7 +14,7 @@ export default function PostGrid(
 
   function mapToPostcard(data: CatalogItem, index: number) {
     return (
-      <Grid.Col key={index} span={{base: 12, xs: 12, sm: 6, md: 4, lg: 3, xl: 2}}>
+      <Grid.Col key={index} span={{base: 6, sm: 4, md: 3, lg: 3, xl: 2}}>
         <MoviePostCard postData={data}/>
       </Grid.Col>
     );
@@ -25,10 +25,10 @@ export default function PostGrid(
   return (
     <Grid
       columns={12}
-      gutter={"xl"}
-      p={{ base: "lg", md: "xl"}}
+      gutter={"lg"}
+      p={{ base: "sm", md: "xl"}}
       type={"container"}
-      breakpoints={{ xs: '320px', sm: '450px', md: '650px', lg: '900px', xl: '1300px' }}>
+      breakpoints={{ xs: '320px', sm: '425px', md: '650px', lg: '900px', xl: '1300px' }}>
         {renderedPosts}
     </Grid>
   );

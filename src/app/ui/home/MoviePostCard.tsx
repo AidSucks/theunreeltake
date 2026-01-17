@@ -92,6 +92,7 @@ export function MoviePostCard(
             component={Link}
             href={`/blog/${postData.slug}`}
             prefetch={false}
+            size={"compact-sm"}
           >
             View Post
           </Button>
