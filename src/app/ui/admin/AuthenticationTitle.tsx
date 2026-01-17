@@ -14,7 +14,7 @@ import {
 } from '@mantine/core';
 import {useForm} from "@mantine/form";
 import {zod4Resolver} from "mantine-form-zod-resolver";
-import {LoginFormSchema} from "@/lib/schemas";
+import {LoginForm, LoginFormSchema} from "@/lib/schemas";
 import {authClient} from "@/lib/auth-client";
 import {useState} from "react";
 import Link from "next/link";
@@ -33,10 +33,17 @@ export function AuthenticationTitle() {
     validate: zod4Resolver(LoginFormSchema)
   });
 
-  const handleSubmit = async (formData: typeof loginForm.values) => {
-    const { error } = await authClient.signIn.email({...formData, callbackURL: "/"});
+  const handleSubmit = async (formData: LoginForm) => {
 
-    if(error) setErrorMessage(error.message ?? "An unknown error occurred");
+    setErrorMessage("");
+
+    const { error } = await authClient.signIn.email({...formData, callbackURL: "/dashboard"});
+
+    if(error) {
+      setErrorMessage(error.message ?? "An unknown error occurred");
+      return;
+    }
+
   }
 
   return (

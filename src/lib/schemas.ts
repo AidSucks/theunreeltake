@@ -9,6 +9,34 @@ import {
 
 export type CatalogItem = z.infer<typeof CatalogItemSchema>;
 export type RequestForm = z.infer<typeof RequestFormSchema>;
+export type LoginForm = z.infer<typeof LoginFormSchema>;
+
+export interface AuthContextData {
+  user: {
+    id: string,
+    createdAt: Date,
+    updatedAt: Date,
+    email: string,
+    emailVerified: boolean,
+    name: string,
+    image?: string | null | undefined,
+    banned: boolean | null | undefined,
+    role?: string | null | undefined,
+    banReason?: string | null | undefined,
+    banExpires?: Date | null | undefined
+  },
+  session: {
+    id: string,
+    createdAt: Date,
+    updatedAt: Date,
+    userId: string,
+    expiresAt: Date,
+    token: string,
+    ipAddress?: string | null | undefined,
+    userAgent?: string | null | undefined,
+    impersonatedBy?: string | null | undefined
+  }
+}
 
 const httpUrl = z.url({
   protocol: /^https?$/,
