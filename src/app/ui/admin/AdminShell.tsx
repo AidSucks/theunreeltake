@@ -1,7 +1,7 @@
 "use client";
 
-import React, {useState} from "react";
-import {Anchor, AppShell, Box, Code, NavLink, Stack, Text} from '@mantine/core';
+import React, {useContext, useState} from "react";
+import {Anchor, AppShell, Badge, Box, Code, NavLink, rem, ScrollArea, Stack, Text} from '@mantine/core';
 import {SignOutButton} from "@/app/ui/admin/SignOutButton";
 import {UserButton} from "@/app/ui/admin/UserButton";
 import {BarChartLine, ChatLeftDots, FileRichtext, Gear, House, Journal, People, Send} from "react-bootstrap-icons";
@@ -9,6 +9,7 @@ import {BarChartLine, ChatLeftDots, FileRichtext, Gear, House, Journal, People, 
 import classes from './NavbarSimple.module.css';
 import pack from "@/../package.json";
 import {useDisclosure} from "@mantine/hooks";
+import {AuthContext} from "@/app/ui/admin/AuthContext";
 
 const data = [
   { link: '', label: 'Dashboard', icon: House, disabled: false},
@@ -24,6 +25,8 @@ const data = [
 export function AdminShell(
   {children}: Readonly<{ children: React.ReactNode; }>
 ) {
+
+  const contextData = useContext(AuthContext);
 
   const [opened, { toggle }] = useDisclosure();
 
@@ -48,30 +51,38 @@ export function AdminShell(
   return (
 
     <AppShell
-      navbar={{ width: 300, breakpoint: 'md', collapsed: { mobile: !opened }}}
+      navbar={{ width: 250, breakpoint: 'sm', collapsed: { mobile: !opened }}}
       padding="md">
 
       <AppShell.Navbar>
-        <nav className={classes.navbar}>
-          <div className={classes.navbarMain}>
-            <Stack gap={"xs"} className={classes.header} >
-              <Box>
-                <Code fw={700} color={"gray.2"}>v{pack.version}</Code>
-              </Box>
-              <UserButton/>
+        <AppShell.Section component={ScrollArea} scrollbars={"y"} scrollbarSize={6}>
+          <nav className={classes.navbar}>
+            <div className={classes.navbarMain}>
+              <Stack gap={7} className={classes.header} >
 
-            </Stack>
-            {links}
-          </div>
+                <Box mx={7}>
+                  <Code fw={700} color={"gray.2"}>v{pack.version}</Code>
+                </Box>
+                <UserButton/>
 
-          <div className={classes.footer}>
+                <Badge h={14} maw={75} px={5} ml={7} radius={"sm"} color={contextData.user.role === "admin" ? "red" : "blue"}>
+                  <Text size={rem(9)} fw={700} truncate={"end"}>{contextData.user.role}</Text>
+                </Badge>
 
-            <Anchor href={"/"}>View Homepage</Anchor>
+              </Stack>
+              {links}
 
-            <SignOutButton/>
+            </div>
 
-          </div>
-        </nav>
+            <div className={classes.footer}>
+
+              <Anchor href={"/"}>View Homepage</Anchor>
+
+              <SignOutButton/>
+
+            </div>
+          </nav>
+        </AppShell.Section>
       </AppShell.Navbar>
 
       <AppShell.Main>

@@ -1,7 +1,7 @@
 .user {
     display: block;
     width: 100%;
-    padding: var(--mantine-spacing-xs);
+    padding: 7px;
     color: light-dark(var(--mantine-color-black), var(--mantine-color-dark-0));
 
     @mixin hover {
