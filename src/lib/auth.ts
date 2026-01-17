@@ -7,9 +7,6 @@ export const auth = betterAuth({
   database: prismaAdapter(prisma, {
     provider: "postgresql"
   }),
-  advanced: {
-    disableOriginCheck: true
-  },
   trustedOrigins: [
     'http://localhost:3000',
     'https://theunreeltake-preview.vercel.app',
