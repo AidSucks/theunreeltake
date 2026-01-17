@@ -5,10 +5,38 @@ import {
   AllowedMediaType,
   maxTextInputLength,
   maxTextAreaLength
-} from "@/app/lib/constants";
+} from "@/lib/constants";
 
 export type CatalogItem = z.infer<typeof CatalogItemSchema>;
 export type RequestForm = z.infer<typeof RequestFormSchema>;
+export type LoginForm = z.infer<typeof LoginFormSchema>;
+
+export interface AuthContextData {
+  user: {
+    id: string,
+    createdAt: Date,
+    updatedAt: Date,
+    email: string,
+    emailVerified: boolean,
+    name: string,
+    image?: string | null | undefined,
+    banned: boolean | null | undefined,
+    role?: string | null | undefined,
+    banReason?: string | null | undefined,
+    banExpires?: Date | null | undefined
+  },
+  session: {
+    id: string,
+    createdAt: Date,
+    updatedAt: Date,
+    userId: string,
+    expiresAt: Date,
+    token: string,
+    ipAddress?: string | null | undefined,
+    userAgent?: string | null | undefined,
+    impersonatedBy?: string | null | undefined
+  }
+}
 
 const httpUrl = z.url({
   protocol: /^https?$/,
@@ -32,4 +60,10 @@ export const RequestFormSchema = z.object({
   title: z.string().max(maxTextInputLength).nonempty({ error: "Required" }),
   mediaType: z.enum(AllowedMediaType),
   message: z.string().max(maxTextAreaLength).optional()
+});
+
+export const LoginFormSchema = z.object({
+  email: z.email({ error: "Invalid email"}).nonempty({ error: "Required" }),
+  password: z.string().nonempty({ error: "Required" }),
+  rememberMe: z.boolean().default(false)
 });

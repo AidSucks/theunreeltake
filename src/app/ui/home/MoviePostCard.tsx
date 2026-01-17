@@ -15,7 +15,7 @@ import {
 
 import classes from "./MoviePostCard.module.css";
 
-import {CatalogItem} from "@/app/lib/schemas";
+import {CatalogItem} from "@/lib/schemas";
 import {useElementSize} from "@mantine/hooks";
 import {Flip} from "@gfazioli/mantine-flip";
 import {useState} from "react";
@@ -38,7 +38,7 @@ export function MoviePostCard(
   const {ref, width} = useElementSize();
 
   return (
-    <AspectRatio ratio={2 / 3} maw={400} ref={ref}>
+    <AspectRatio ratio={2 / 3} maw={{ base: 250, lg: 300, xl: 400 }} ref={ref}>
       <Flip
         flipped={isFlipped}
         duration={0.6}
@@ -91,9 +91,10 @@ export function MoviePostCard(
           <Button
             component={Link}
             href={`/blog/${postData.slug}`}
+            prefetch={false}
             size={"compact-sm"}
           >
-            Read More
+            View Post
           </Button>
         </Card>
       </Flip>

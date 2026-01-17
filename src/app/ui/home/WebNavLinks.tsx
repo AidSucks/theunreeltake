@@ -2,17 +2,13 @@ import {Anchor, Flex, Group} from "@mantine/core";
 import Link from "next/link";
 import {usePathname} from "next/navigation";
 
-const navLinkInfo = [
-  {label: "Home", link: "/", disabled: false, prefetch: true},
-  {label: "Catalog", link: "/catalog", disabled: false, prefetch: false},
-  {label: "Requests", link: "/requests", disabled: false, prefetch: true}
-];
+import {publicRouteMetadata} from "@/lib/constants";
 
 export function WebNavLinks() {
 
   const path = usePathname();
 
-  const webNavLinks = navLinkInfo.map((item) => {
+  const webNavLinks = publicRouteMetadata.map((item) => {
 
     if(item.disabled) return;
 
@@ -21,10 +17,10 @@ export function WebNavLinks() {
         component={Link}
         prefetch={item.prefetch}
         key={item.label}
-        style={{ textDecoration: path === item.link ? "underline" : undefined }}
+        style={{ textDecoration: path === item.href ? "underline" : undefined }}
         underline={"hover"}
         size={"lg"}
-        href={item.link}>
+        href={item.href}>
 
         {item.label}
       </Anchor>

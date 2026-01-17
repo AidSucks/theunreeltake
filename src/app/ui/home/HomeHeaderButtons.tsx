@@ -1,4 +1,5 @@
 import {Button, Flex, Group} from "@mantine/core";
+import Link from "next/link";
 
 export function HomeHeaderButtons() {
 
@@ -6,11 +7,7 @@ export function HomeHeaderButtons() {
     <Flex h={"100%"} w={"100%"} px={{ base: "none", md: "md"}}>
       <Group w={"100%"} gap={"xs"} justify={"flex-end"}>
 
-        <Button size={"sm"}>
-          Sign Up
-        </Button>
-
-        <Button size={"sm"}>
+        <Button component={Link} href={"/login"} size={"sm"}>
           Login
         </Button>
 
