@@ -10,16 +10,17 @@ import classes from './NavbarSimple.module.css';
 import pack from "@/../package.json";
 import {useDisclosure} from "@mantine/hooks";
 import {AuthContext} from "@/app/ui/admin/AuthContext";
+import {usePathname} from "next/navigation";
 
 const data = [
-  { link: '', label: 'Dashboard', icon: House, disabled: false},
-  { link: '', label: 'Posts', icon: FileRichtext, disabled: false},
-  { link: '', label: 'Drafts', icon: Journal, disabled: false},
-  { link: '', label: 'Comments', icon: ChatLeftDots, disabled: false},
-  { link: '', label: 'Requests', icon: Send, disabled: false},
-  { link: '', label: 'Analytics', icon: BarChartLine, disabled: false},
-  { link: '', label: 'Users', icon: People, disabled: false},
-  { link: '', label: 'Settings', icon: Gear, disabled: false},
+  { link: '/dashboard', label: 'Dashboard', icon: House, disabled: false},
+  { link: '/dashboard/posts', label: 'Posts', icon: FileRichtext, disabled: true},
+  { link: '/dashboard/drafts', label: 'Drafts', icon: Journal, disabled: true},
+  { link: '/dashboard/comments', label: 'Comments', icon: ChatLeftDots, disabled: true},
+  { link: '/dashboard/requests', label: 'Requests', icon: Send, disabled: true},
+  { link: '/dashboard/analytics', label: 'Analytics', icon: BarChartLine, disabled: true},
+  { link: '/dashboard/users', label: 'Users', icon: People, disabled: false},
+  { link: '/dashboard/settings', label: 'Settings', icon: Gear, disabled: true},
 ];
 
 export function AdminShell(
@@ -30,7 +31,7 @@ export function AdminShell(
 
   const [opened, { toggle }] = useDisclosure();
 
-  const [active, setActive] = useState('Dashboard');
+  const pathname = usePathname();
 
   const links = data.map((item) => (
     <NavLink
@@ -38,13 +39,9 @@ export function AdminShell(
       disabled={item.disabled}
       leftSection={<item.icon size={22}/>}
       label={<Text fw={500}>{item.label}</Text>}
-      active={item.label === active}
+      active={item.link === pathname}
       href={item.link}
       key={item.label}
-      onClick={event => {
-        event.preventDefault();
-        setActive(item.label);
-      }}
     />
   ));
 
