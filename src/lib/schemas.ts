@@ -10,6 +10,8 @@ import {
 export type CatalogItem = z.infer<typeof CatalogItemSchema>;
 export type RequestForm = z.infer<typeof RequestFormSchema>;
 export type LoginForm = z.infer<typeof LoginFormSchema>;
+export type ForgotPasswordForm = z.infer<typeof ForgotPasswordSchema>;
+export type ResetPasswordForm = z.infer<typeof ResetPasswordSchema>;
 
 const httpUrl = z.url({
   protocol: /^https?$/,
@@ -39,4 +41,12 @@ export const LoginFormSchema = z.object({
   email: z.email({ error: "Invalid email"}).nonempty({ error: "Required" }),
   password: z.string().nonempty({ error: "Required" }),
   rememberMe: z.boolean().default(false)
+});
+
+export const ForgotPasswordSchema = LoginFormSchema.pick({
+  email: true
+});
+
+export const ResetPasswordSchema = LoginFormSchema.pick({
+  password: true,
 });

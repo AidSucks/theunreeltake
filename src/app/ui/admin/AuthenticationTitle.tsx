@@ -33,16 +33,14 @@ export function AuthenticationTitle() {
     validate: zod4Resolver(LoginFormSchema)
   });
 
-  const handleSubmit = async (formData: LoginForm) => {
+  const handleSignIn = async (formData: LoginForm) => {
 
     setErrorMessage("");
 
     const { error } = await authClient.signIn.email({...formData, callbackURL: "/dashboard"});
 
-    if(error) {
+    if(error)
       setErrorMessage(error.message ?? "An unknown error occurred");
-      return;
-    }
 
   }
 
@@ -58,7 +56,7 @@ export function AuthenticationTitle() {
 
         {errorMessage ? <Text c={"red"}>{errorMessage}</Text> : null }
 
-        <form onSubmit={loginForm.onSubmit(handleSubmit)}>
+        <form onSubmit={loginForm.onSubmit(handleSignIn)}>
 
           <TextInput
             label={"Email"}
@@ -85,7 +83,10 @@ export function AuthenticationTitle() {
               {...loginForm.getInputProps("rememberMe")}
             />
 
-            <Anchor component="button" size="sm">
+            <Anchor
+              size={"sm"}
+              href={"/reset-password"}
+            >
               Forgot password?
             </Anchor>
 
