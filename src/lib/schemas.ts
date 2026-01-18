@@ -10,6 +10,7 @@ import {
 export type CatalogItem = z.infer<typeof CatalogItemSchema>;
 export type RequestForm = z.infer<typeof RequestFormSchema>;
 export type LoginForm = z.infer<typeof LoginFormSchema>;
+export type ChangePasswordForm = z.infer<typeof ChangePasswordSchema>;
 export type ForgotPasswordForm = z.infer<typeof ForgotPasswordSchema>;
 export type ResetPasswordForm = z.infer<typeof ResetPasswordSchema>;
 
@@ -41,6 +42,11 @@ export const LoginFormSchema = z.object({
   email: z.email({ error: "Invalid email"}).nonempty({ error: "Required" }),
   password: z.string().nonempty({ error: "Required" }),
   rememberMe: z.boolean().default(false)
+});
+
+export const ChangePasswordSchema = z.object({
+  currentPassword: z.string().nonempty({ error: "Required" }),
+  newPassword: z.string().nonempty({ error: "Required" }),
 });
 
 export const ForgotPasswordSchema = LoginFormSchema.pick({

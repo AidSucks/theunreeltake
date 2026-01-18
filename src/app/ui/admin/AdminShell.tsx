@@ -1,16 +1,26 @@
 "use client";
 
-import React, {useContext, useState} from "react";
-import {Anchor, AppShell, Badge, Box, Code, NavLink, rem, ScrollArea, Stack, Text} from '@mantine/core';
+import React, {useContext} from "react";
+import {Anchor, AppShell, Badge, Box, Button, Code, NavLink, rem, ScrollArea, Stack, Text} from '@mantine/core';
 import {SignOutButton} from "@/app/ui/admin/SignOutButton";
 import {UserButton} from "@/app/ui/admin/UserButton";
-import {BarChartLine, ChatLeftDots, FileRichtext, Gear, House, Journal, People, Send} from "react-bootstrap-icons";
+import {
+  BarChartLine,
+  ChatLeftDots,
+  FileRichtext,
+  Gear,
+  House,
+  Journal, Lock,
+  People,
+  Send
+} from "react-bootstrap-icons";
 
 import classes from './NavbarSimple.module.css';
 import pack from "@/../package.json";
 import {useDisclosure} from "@mantine/hooks";
 import {AuthContext} from "@/app/ui/admin/AuthContext";
 import {usePathname} from "next/navigation";
+import Link from "next/link";
 
 const data = [
   { link: '/dashboard', label: 'Dashboard', icon: House, disabled: false},
@@ -74,6 +84,17 @@ export function AdminShell(
             <div className={classes.footer}>
 
               <Anchor href={"/"}>View Homepage</Anchor>
+
+              <Button
+                component={Link}
+                href={"/dashboard/change-password"}
+                leftSection={<Lock size={18}/>}
+                justify={"start"}
+                color={"dark"}
+                variant={"subtle"}
+                fullWidth>
+                <span>Change password</span>
+              </Button>
 
               <SignOutButton/>
 
