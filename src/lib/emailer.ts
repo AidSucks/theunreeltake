@@ -30,3 +30,15 @@ export async function sendPasswordWasResetEmail(
     text: `Hello, ${user.name}. Your password has been reset. If this wasn't you, please contact your administrator.`
   });
 }
+
+export async function sendMagicLinkEmail(
+  {emailTo, url}: {emailTo: string, url: string}
+) {
+
+  await resend.emails.send({
+    from: resendFrom,
+    to: emailTo,
+    subject: "Sign into your account",
+    text: `Click the link to sign into your account on The UnReel Take: ${url}`
+  });
+}

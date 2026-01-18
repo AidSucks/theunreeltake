@@ -1,8 +1,8 @@
 import { betterAuth } from "better-auth";
 import {prismaAdapter} from "better-auth/adapters/prisma";
 import prisma from "@/lib/prisma";
-import {admin} from "better-auth/plugins";
-import {sendPasswordWasResetEmail, sendResetPasswordEmail} from "@/lib/emailer";
+import {admin, magicLink} from "better-auth/plugins";
+import {sendMagicLinkEmail, sendPasswordWasResetEmail, sendResetPasswordEmail} from "@/lib/emailer";
 
 export const auth = betterAuth({
   database: prismaAdapter(prisma, {
@@ -23,7 +23,12 @@ export const auth = betterAuth({
     }
   },
   plugins: [
-    admin()
+    admin(),
+    magicLink({
+      sendMagicLink: async ({ email, url }) => {
+        void sendMagicLinkEmail({emailTo: email, url: url});
+      }
+    })
   ]
 });
 

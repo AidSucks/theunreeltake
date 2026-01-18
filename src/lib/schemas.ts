@@ -10,6 +10,7 @@ import {
 export type CatalogItem = z.infer<typeof CatalogItemSchema>;
 export type RequestForm = z.infer<typeof RequestFormSchema>;
 export type LoginForm = z.infer<typeof LoginFormSchema>;
+export type CreateUserForm = z.infer<typeof CreateUserSchema>;
 export type ChangePasswordForm = z.infer<typeof ChangePasswordSchema>;
 export type ForgotPasswordForm = z.infer<typeof ForgotPasswordSchema>;
 export type ResetPasswordForm = z.infer<typeof ResetPasswordSchema>;
@@ -28,6 +29,12 @@ export const CatalogItemSchema = z.object({
   releaseYear: z.string().default(""),
   posterUrl: httpUrl.default(""),
   mediaType: z.string().default(AllowedMediaType.Book)
+});
+
+export const CreateUserSchema = z.object({
+  name: z.string().max(maxTextInputLength).nonempty("Required"),
+  email: z.email().nonempty("Required"),
+  password: z.string().nonempty("Required")
 });
 
 export const RequestFormSchema = z.object({
