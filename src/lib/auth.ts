@@ -2,15 +2,12 @@ import { betterAuth } from "better-auth";
 import {prismaAdapter} from "better-auth/adapters/prisma";
 import prisma from "@/lib/prisma";
 import {admin} from "better-auth/plugins";
-import {sendResetPasswordEmail} from "@/lib/emailer";
+import {sendPasswordWasResetEmail, sendResetPasswordEmail} from "@/lib/emailer";
 
 export const auth = betterAuth({
   database: prismaAdapter(prisma, {
     provider: "postgresql"
   }),
-  advanced: {
-    disableOriginCheck: true
-  },
   trustedOrigins: [
     'http://localhost:3000',
     'https://theunreeltake-preview.vercel.app',
@@ -20,6 +17,9 @@ export const auth = betterAuth({
     enabled: true,
     sendResetPassword: async ({ user, url }) => {
       void sendResetPasswordEmail({emailTo: user.email, url: url});
+    },
+    onPasswordReset: async ({ user }) => {
+      void sendPasswordWasResetEmail(user);
     }
   },
   plugins: [
@@ -27,4 +27,6 @@ export const auth = betterAuth({
   ]
 });
 
-export type Session = typeof auth.$Infer.Session;
+export type SessionData = typeof auth.$Infer.Session;
+export type User = typeof auth.$Infer.Session.user;
+export type Session = typeof auth.$Infer.Session.session;

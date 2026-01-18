@@ -5,6 +5,12 @@ import "@mantine/core/styles.css";
 import '@gfazioli/mantine-flip/styles.css';
 
 import Head from "next/head";
+import type {Metadata} from "next";
+
+export const metadata: Metadata = {
+  title: "The Unreel Take",
+  description: "WIP Description",
+};
 
 export default function RootAdminLayout({children,}: Readonly<{
   children: React.ReactNode;
