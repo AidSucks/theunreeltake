@@ -92,7 +92,9 @@ export function AdminShell(
                 justify={"start"}
                 color={"dark"}
                 variant={"subtle"}
-                fullWidth>
+                fullWidth
+                prefetch={false}
+              >
                 <span>Change password</span>
               </Button>
 

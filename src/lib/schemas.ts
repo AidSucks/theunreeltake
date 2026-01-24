@@ -47,8 +47,7 @@ export const RequestFormSchema = z.object({
 
 export const LoginFormSchema = z.object({
   email: z.email({ error: "Invalid email"}).nonempty({ error: "Required" }),
-  password: z.string().nonempty({ error: "Required" }),
-  rememberMe: z.boolean().default(false)
+  password: z.string().nonempty({ error: "Required" })
 });
 
 export const ChangePasswordSchema = z.object({

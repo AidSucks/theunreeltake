@@ -3,7 +3,6 @@
 import {
   Anchor,
   Button,
-  Checkbox,
   Container,
   Group, LoadingOverlay,
   Paper,
@@ -27,8 +26,7 @@ export function AuthenticationTitle() {
     mode: "uncontrolled",
     initialValues: {
       email: "",
-      password: "",
-      rememberMe: false
+      password: ""
     },
     validate: zod4Resolver(LoginFormSchema)
   });
@@ -37,7 +35,7 @@ export function AuthenticationTitle() {
 
     setErrorMessage("");
 
-    const { error } = await authClient.signIn.email({...formData, callbackURL: "/dashboard"});
+    const { error } = await authClient.signIn.email({...formData, rememberMe: true, callbackURL: "/dashboard"});
 
     if(error)
       setErrorMessage(error.message ?? "An unknown error occurred");
@@ -76,12 +74,6 @@ export function AuthenticationTitle() {
           />
 
           <Group justify="space-between" mt="lg">
-
-            <Checkbox
-              label="Remember me"
-              key={"rememberMe"}
-              {...loginForm.getInputProps("rememberMe")}
-            />
 
             <Anchor
               size={"sm"}
