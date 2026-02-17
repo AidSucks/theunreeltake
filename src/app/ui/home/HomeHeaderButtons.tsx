@@ -7,7 +7,7 @@ export function HomeHeaderButtons() {
     <Flex h={"100%"} w={"100%"} px={{ base: "none", md: "md"}}>
       <Group w={"100%"} gap={"xs"} justify={"flex-end"}>
 
-        <Button component={Link} href={"/login"} size={"sm"}>
+        <Button component={Link} href={"/login"} prefetch={false} size={"sm"}>
           Login
         </Button>
 

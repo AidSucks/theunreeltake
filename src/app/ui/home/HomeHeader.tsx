@@ -4,7 +4,6 @@ import {SocialMediaLinks} from "@/app/ui/home/SocialMediaLinks";
 import {WebNavLinks} from "@/app/ui/home/WebNavLinks";
 import {HomeHeaderButtons} from "@/app/ui/home/HomeHeaderButtons";
 import {Bootstrap} from "react-bootstrap-icons";
-import ThemeToggleButton from "@/app/ui/home/ThemeToggleButton";
 
 export function HomeHeader() {
 
