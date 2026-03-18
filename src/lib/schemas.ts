@@ -62,3 +62,9 @@ export const ForgotPasswordSchema = LoginFormSchema.pick({
 export const ResetPasswordSchema = LoginFormSchema.pick({
   password: true,
 });
+
+export const InviteUserSchema = z.object({
+  email: z.string().email({ message: "Invalid email address" }).min(1, { message: "Required" })
+});
+
+export type InviteUserForm = z.infer<typeof InviteUserSchema>;
