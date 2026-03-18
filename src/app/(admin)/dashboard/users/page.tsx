@@ -4,6 +4,7 @@ import { Box, Button, Title, Stack } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { InviteUserModal } from "@/app/ui/admin/InviteUserModal";
 
+
 export default function DashboardUsersPage() {
   const [opened, { open, close }] = useDisclosure(false);
 

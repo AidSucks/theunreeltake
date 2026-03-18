@@ -63,6 +63,7 @@ export const ResetPasswordSchema = LoginFormSchema.pick({
   password: true,
 });
 
+// Validates the email input in the InviteUserModal
 export const InviteUserSchema = z.object({
   email: z.string().email({ message: "Invalid email address" }).min(1, { message: "Required" })
 });
