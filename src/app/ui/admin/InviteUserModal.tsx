@@ -1,13 +1,13 @@
 "use client";
 
-import { use, useState } from "react";
+import { useState } from "react";
 import { Modal, Button, TextInput, Text, Group, Stack } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { zod4Resolver } from "mantine-form-zod-resolver";
 import { InviteUserSchema } from "@/lib/schemas";
 import { checkUserExists } from "@/lib/actions";
 import { authClient } from "@/lib/auth-client";
-import { check } from "zod";
+
 /**
  * Displays a modal dialog that allows the admin to input an email to invite a new user
  * Uses Mantine's useForm hook and Zod for clients side email invitation
@@ -15,7 +15,7 @@ import { check } from "zod";
  * displays a success confirmation or a server error message
  */
 
-export function InviteUserModal({ opened, onClose }: { opened: boolean, onClose: () => void }) {
+export function InviteUserModal({ opened, onCloseAction }: { opened: boolean, onCloseAction: () => void }) {
   const [isSuccess, setIsSuccess] = useState(false);
   const [serverError, setServerError] = useState("");
 
@@ -52,7 +52,7 @@ export function InviteUserModal({ opened, onClose }: { opened: boolean, onClose:
     form.reset();
     setIsSuccess(false);
     setServerError("");
-    onClose();
+    onCloseAction();
   };
 
   return (
