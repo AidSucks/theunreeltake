@@ -21,6 +21,7 @@ export async function checkUserExists(email: string) {
       }
     });
 
+    // Returns true if the user exists and false if they dont
     return !!existingUser;
   } catch (error) {
     console.error("Database Error: ", error);
