@@ -12,7 +12,7 @@ export default function DashboardUsersPage() {
     <Box>
       <Title order={2} mb="md">Users</Title>
 
-      <InviteUserModal opened={opened} onClose={close} />
+      <InviteUserModal opened={opened} onCloseAction={close} />
 
       <Stack align="flex-start" gap="md">
         <p>User list coming soon...</p>

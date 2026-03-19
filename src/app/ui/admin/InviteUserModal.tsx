@@ -1,13 +1,12 @@
 "use client";
 
-import { use, useState } from "react";
+import { useState } from "react";
 import { Modal, Button, TextInput, Text, Group, Stack } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { zod4Resolver } from "mantine-form-zod-resolver";
 import { InviteUserSchema } from "@/lib/schemas";
-import { checkUserExists } from "@/lib/actions";
-import { authClient } from "@/lib/auth-client";
-import { check } from "zod";
+import {checkUserExists, createInvitationVerification} from "@/lib/actions";
+
 /**
  * Displays a modal dialog that allows the admin to input an email to invite a new user
  * Uses Mantine's useForm hook and Zod for clients side email invitation
@@ -15,7 +14,7 @@ import { check } from "zod";
  * displays a success confirmation or a server error message
  */
 
-export function InviteUserModal({ opened, onClose }: { opened: boolean, onClose: () => void }) {
+export function InviteUserModal({ opened, onCloseAction }: { opened: boolean, onCloseAction: () => void }) {
   const [isSuccess, setIsSuccess] = useState(false);
   const [serverError, setServerError] = useState("");
 
@@ -35,24 +34,16 @@ export function InviteUserModal({ opened, onClose }: { opened: boolean, onClose:
         return;
     }
 
-    const { error } = await authClient.signIn.magicLink({
-        email: values.email,
-        callbackURL: "/dashboard",
-        newUserCallbackURL: "/dashboard/change-password",
-    });
+    await createInvitationVerification(values.email);
 
-    if (error) {
-        setServerError(error.message || "Failed to send invitation");
-    } else {
-        setIsSuccess(true);
-    }
+    setIsSuccess(true);
   };
 
   const handleClose = () => {
     form.reset();
     setIsSuccess(false);
     setServerError("");
-    onClose();
+    onCloseAction();
   };
 
   return (
