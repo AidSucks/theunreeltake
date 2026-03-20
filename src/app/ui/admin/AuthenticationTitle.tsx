@@ -58,7 +58,7 @@ export function AuthenticationTitle() {
 
           <TextInput
             label={"Email"}
-            placeholder={"johndoe@example.com"}
+            placeholder={"someuser@domain.com"}
             radius={"md"}
             key={"email"}
             {...loginForm.getInputProps("email")}
@@ -78,13 +78,14 @@ export function AuthenticationTitle() {
             <Anchor
               size={"sm"}
               href={"/reset-password"}
+              c="dark"
             >
               Forgot password?
             </Anchor>
 
           </Group>
 
-          <Button fullWidth mt={"xl"} radius={"md"} type={"submit"}>
+          <Button fullWidth mt={"xl"} radius={"md"} type={"submit"} color="dark">
             Sign in
           </Button>
 
@@ -92,7 +93,7 @@ export function AuthenticationTitle() {
       </Paper>
 
       <Center m={"lg"}>
-        <Anchor component={Link} href={"/"}>Back to Home</Anchor>
+        <Anchor component={Link} href={"/"} c="dark">Back to Home</Anchor>
       </Center>
     </Container>
   );
