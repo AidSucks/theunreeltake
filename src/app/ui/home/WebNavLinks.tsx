@@ -17,7 +17,11 @@ export function WebNavLinks() {
         component={Link}
         prefetch={item.prefetch}
         key={item.label}
-        style={{ textDecoration: path === item.href ? "underline" : undefined }}
+        style={{ textDecorationColor: path === item.href ? "color" : "blue", 
+        textDecorationLine: path === item.href ? "underline" : undefined,
+        'borderStyle': 'hidden hidden solid hidden', 'borderWidth': '3px', padding: '5px', color: 'black',
+        borderColor: 'gray'}}
+       
         underline={"hover"}
         size={"lg"}
         href={item.href}>
