@@ -5,7 +5,7 @@ import {User} from "@/lib/auth";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 const resendFrom: string = process.env.RESEND_FROM ?? "noreply.theunreeltake@resend.dev";
-const appUrl = process.env.BETTER_AUTH_URL || "http://lovalhost:3000";
+const appUrl = process.env.BETTER_AUTH_URL || "http://localhost:3000";
 
 export async function sendResetPasswordEmail(
   {emailTo, url}: {emailTo: string, url: string}
@@ -44,7 +44,7 @@ export async function sendMagicLinkEmail(
   });
 }
 
-export async function sendInvitaionEmail(emailTo: string, token: string) {
+export async function sendInvitationEmail(emailTo: string, token: string) {
     const inviteLink = `${appUrl}/register?token=${token}`;  
 
     await resend.emails.send({
