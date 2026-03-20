@@ -25,9 +25,7 @@ export function HomeHeader() {
           </Flex>
         </Box>
 
-        <Box w={"25%"} h={"100%"}>
-          <SocialMediaLinks/>
-        </Box>
+        
 
       </Flex>
 

@@ -29,7 +29,7 @@ export function HomeFooter() {
         <Box w={"25%"} h={"100%"}>
           <Flex h={"100%"} w={"100%"} align={"right"} justify={"center"} px={"xs"}>
             {/**Right Media**/}
-            Placeholder
+            <SocialMediaLinks></SocialMediaLinks>
           </Flex>
         </Box>
 
