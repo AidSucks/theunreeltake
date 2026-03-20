@@ -15,6 +15,7 @@ import {useDisclosure} from "@mantine/hooks";
 import Link from "next/link";
 import AdminNavLinks from "@/app/ui/admin/AdminNavLinks";
 import RoleBadge from "@/app/ui/admin/RoleBadge";
+import { SettingsButton } from "./SettingsButton";
 
 
 export function AdminShell(
@@ -51,18 +52,7 @@ export function AdminShell(
 
               <Anchor href={"/"}>View Homepage</Anchor>
 
-              <Button
-                component={Link}
-                href={"/dashboard/change-password"}
-                leftSection={<Lock size={18}/>}
-                justify={"start"}
-                color={"dark"}
-                variant={"subtle"}
-                fullWidth
-                prefetch={false}
-              >
-                <span>Change password</span>
-              </Button>
+              <SettingsButton/>
 
               <SignOutButton/>
 

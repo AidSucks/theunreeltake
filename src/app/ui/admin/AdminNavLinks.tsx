@@ -14,7 +14,6 @@ const data = [
   { link: '/dashboard/requests', label: 'Requests', icon: Send, disabled: true},
   { link: '/dashboard/analytics', label: 'Analytics', icon: BarChartLine, disabled: true},
   { link: '/dashboard/users', label: 'Users', icon: People, disabled: false},
-  { link: '/dashboard/settings', label: 'Settings', icon: Gear, disabled: true},
 ];
 
 export default function AdminNavLinks() {
