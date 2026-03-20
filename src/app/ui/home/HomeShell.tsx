@@ -3,6 +3,7 @@
 import {AppShell, rem} from "@mantine/core";
 import React from "react";
 import {HomeHeader} from "@/app/ui/home/HomeHeader";
+import {HomeFooter} from "@/app/ui/home/HomeFooter";
 import {useHeadroom} from "@mantine/hooks";
 
 export function HomeShell(
@@ -26,8 +27,9 @@ export function HomeShell(
         pt={`calc(${rem(120)} + var(--mantine-spacing-sm))`}
       >
         {children}
-      </AppShell.Main>
 
+        <HomeFooter/>
+      </AppShell.Main>
     </AppShell>
   );
 }
