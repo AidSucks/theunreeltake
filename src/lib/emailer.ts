@@ -47,10 +47,6 @@ export async function sendMagicLinkEmail(
 export async function sendInvitaionEmail(emailTo: string, token: string) {
     const inviteLink = `${appUrl}/register?token=${token}`;  
 
-  console.log("==========================================");
-  console.log("TESTING INVITE LINK:", inviteLink);
-  console.log("==========================================");
-
     await resend.emails.send({
     from: resendFrom,
     to: emailTo,
