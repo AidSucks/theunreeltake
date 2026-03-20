@@ -5,6 +5,7 @@ import prisma from "@/lib/prisma";
 import * as crypto from "node:crypto";
 import dayjs from "dayjs";
 import {Verification} from "@/generated/prisma/client";
+import { sendInvitaionEmail } from "@/lib/emailer";
 
 export async function testRequestForm(data: RequestForm) {
   console.log(data);
@@ -32,10 +33,10 @@ function generateInvitationToken(): string {
 export async function createInvitationVerification(email: string) {
 
   const now = new Date();
-
+  const token = generateInvitationToken();
   const data = {
     id: crypto.randomUUID(),
-    identifier: generateInvitationToken(),
+    identifier: token,
     value: email,
     createdAt: now,
     updatedAt: now,
@@ -45,6 +46,8 @@ export async function createInvitationVerification(email: string) {
   await prisma.verification.create({
     data: data
   });
+
+  await sendInvitaionEmail(email, token);
 }
 
 export async function verifyInvitationToken(token: string): Promise<{data: Verification | null, error: string | null}> {
