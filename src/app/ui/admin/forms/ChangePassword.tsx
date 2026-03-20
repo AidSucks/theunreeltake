@@ -3,6 +3,7 @@
 import {useForm} from "@mantine/form";
 import {zod4Resolver} from "mantine-form-zod-resolver";
 import {ChangePasswordForm, ChangePasswordSchema} from "@/lib/schemas";
+import { notifyPasswordChanged } from "@/lib/actions";
 import {authClient} from "@/lib/auth-client";
 import {useState} from "react";
 import {Box, Button, Group, PasswordInput, Stack, Text, Title} from "@mantine/core";
@@ -23,11 +24,15 @@ export function ChangePassword() {
 
   const handleChangePassword = async (formData: ChangePasswordForm) => {
 
-    const { error } = await authClient.changePassword({...formData, revokeOtherSessions: true });
+    const { error } = await authClient.changePassword({
+      ...formData, 
+      revokeOtherSessions: false 
+    });
 
     if(error)
-      setErrorMessage(error.message ?? "An Unknown Error Occurred");
+      setErrorMessage(error.message ?? "Incorrect current password");
     else
+      await notifyPasswordChanged();
       setSuccess(true);
   }
 
