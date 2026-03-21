@@ -14,6 +14,8 @@ export type CreateUserForm = z.infer<typeof CreateUserSchema>;
 export type ChangePasswordForm = z.infer<typeof ChangePasswordSchema>;
 export type ForgotPasswordForm = z.infer<typeof ForgotPasswordSchema>;
 export type ResetPasswordForm = z.infer<typeof ResetPasswordSchema>;
+export type InviteUserForm = z.infer<typeof InviteUserSchema>;
+export type RegisterUserForm = z.infer<typeof RegisterUserSchema>;
 
 const httpUrl = z.url({
   protocol: /^https?$/,
@@ -32,9 +34,19 @@ export const CatalogItemSchema = z.object({
 });
 
 export const CreateUserSchema = z.object({
-  name: z.string().max(maxTextInputLength).nonempty("Required"),
+  name: z
+    .string()
+    .max(maxTextInputLength, `Max of ${maxTextInputLength} characters allowed`)
+    .min(3, "Must be at least 3 characters")
+    .nonempty("Required"),
   email: z.email().nonempty("Required"),
-  password: z.string().nonempty("Required")
+  password: z
+    .string()
+    .refine((val) => /[^a-zA-Z0-9]/.test(val), "Must contain one special character")
+    .refine((val) => /[0-9]/.test(val), "Must contain one number")
+    .refine((val) => /[A-Z]/.test(val), "Must contain one uppercase letter")
+    .min(8, "Must be at least 8 characters")
+    .nonempty("Required")
 });
 
 export const RequestFormSchema = z.object({
@@ -61,4 +73,26 @@ export const ForgotPasswordSchema = LoginFormSchema.pick({
 
 export const ResetPasswordSchema = LoginFormSchema.pick({
   password: true,
+});
+
+export const RegisterUserSchema = CreateUserSchema.extend({
+  confirmPassword: z.string().nonempty("Required")
+}).superRefine(({ confirmPassword, password }, ctx) => {
+  if(confirmPassword !== password) {
+    ctx.addIssue({
+      code: "custom",
+      message: "Passwords must match",
+      path: ["confirmPassword"]
+    });
+  }
+});
+
+// Validates the email input in the InviteUserModal
+export const InviteUserSchema = z.object({
+  email: z.string()
+    .trim()
+    .toLowerCase()
+    .email({ message: "Invalid email address"})
+    .min(1, { message: "Required" })
+    .max(255, { message: "Email is too long" })
 });
