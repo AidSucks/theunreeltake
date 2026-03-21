@@ -2,7 +2,7 @@ import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { ChangePassword } from "@/app/ui/admin/forms/ChangePassword";
-import { Box, Title, Divider,Text,TextInput } from "@mantine/core";
+import { Box, Title, Divider,Text,TextInput,UnstyledButton } from "@mantine/core";
 import { PasswordSettings } from "./PasswordSettings";
 
 export default async function DashboardSettingsPage() {
@@ -20,7 +20,10 @@ export default async function DashboardSettingsPage() {
       <Text mb="lg">testuser@domain.com</Text>
       <PasswordSettings/>
       <Title order={6} mb="xs">Personal Information</Title>
-      <TextInput pl="lg" w={200} size="sm" radius="lg" label="Username" placeholder="New Username"/>
+      <TextInput pl="lg" w={200} size="sm" radius="lg" label="Username" placeholder="New Username" mb="md"/>
+      <Title order={6} mb="xs">Delete Account</Title>
+      <Text size ="sm"mb="sm">Deleting your account will permanently remove all data</Text>
+      <UnstyledButton fw={1000} c="red">I want to delete my account</UnstyledButton>
     </Box>
   );
 }
