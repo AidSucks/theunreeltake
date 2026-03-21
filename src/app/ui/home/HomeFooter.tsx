@@ -1,14 +1,13 @@
 import {Box, Flex, Title} from '@mantine/core';
-import {HomeBurgerMenu} from "@/app/ui/home/HomeBurgerMenu";
 import {SocialMediaLinks} from "@/app/ui/home/SocialMediaLinks";
 import {WebNavLinks} from "@/app/ui/home/WebNavLinks";
-import {HomeHeaderButtons} from "@/app/ui/home/HomeHeaderButtons";
-import {Bootstrap} from "react-bootstrap-icons";
+import {Bootstrap, BorderTop} from "react-bootstrap-icons";
 
-export function HomeHeader() {
+export function HomeFooter() {
 
   return (
-    <Flex h={"100%"} w={"100%"} p={"xs"} align={"flex-end"} direction={"column"}>
+    <Flex h={"100%"} w={"100%"} p={"xs"} align={"flex-end"} direction={"column"} 
+    style={{'borderStyle': 'solid hidden hidden hidden', 'borderWidth': '1px'}}>
 
       <Flex h={"50%"} w={"inherit"} visibleFrom={"sm"}>
 
@@ -22,25 +21,16 @@ export function HomeHeader() {
         <Box w={"50%"} h={"100%"}>
           <Flex h={"100%"} w={"100%"} align={"center"} justify={"center"} px={"xs"}>
             {/**Center Media**/}
+            <WebNavLinks/>
           </Flex>
         </Box>
 
-        
-
-      </Flex>
-
-      <Flex h={{ base: "100%", sm: "50%"}} w={"inherit"}>
-
-        <Box w={{ base: "40%", sm: "25%" }} h={"100%"}>
-          <HomeBurgerMenu/>
-        </Box>
-
-        <Box w={"50%"} h={"100%"} visibleFrom={"sm"}>
-          <WebNavLinks/>
-        </Box>
-
-        <Box w={{ base: "60%", sm: "25%" }} h={"100%"}>
-          <HomeHeaderButtons/>
+        {/**For Jalen: Social Media stuff goes here*/}
+        <Box w={"25%"} h={"100%"}>
+          <Flex h={"100%"} w={"100%"} align={"right"} justify={"center"} px={"xs"}>
+            {/**Right Media**/}
+            <SocialMediaLinks></SocialMediaLinks>
+          </Flex>
         </Box>
 
       </Flex>

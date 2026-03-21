@@ -1,12 +1,12 @@
 "use client";
 
 import React, {createContext} from "react";
-import {AuthContextData} from "@/lib/schemas";
+import {SessionData} from "@/lib/auth";
 
-export const AuthContext = createContext({} as AuthContextData);
+export const AuthContext = createContext({} as SessionData);
 
 export function AuthContextProvider(
-  {children, session}: Readonly<{ children: React.ReactNode, session: AuthContextData }>
+  {children, session}: Readonly<{ children: React.ReactNode, session: SessionData}>
 ) {
 
   return (

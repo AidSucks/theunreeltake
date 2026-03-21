@@ -25,7 +25,7 @@ export function SocialMediaLinks() {
           size={"lg"}
           radius={"md"}
           aria-label={item.label}>
-
+          
           <Icon size={20}/>
         </ActionIcon>
       );
@@ -33,7 +33,7 @@ export function SocialMediaLinks() {
 
   return (
     <Flex h={"100%"} w={"100%"} align={"center"} justify={"flex-end"} pr={{ base: "none", md: "md"}} wrap={"nowrap"}>
-      <Group gap={"sm"}>
+      <Group gap={"md"}>
         {socialMediaIcons}
       </Group>
     </Flex>

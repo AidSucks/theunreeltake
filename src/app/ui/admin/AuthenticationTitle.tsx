@@ -3,14 +3,15 @@
 import {
   Anchor,
   Button,
-  Checkbox,
   Container,
   Group, LoadingOverlay,
   Paper,
   PasswordInput,
   TextInput,
   Title,
-  Text, Center
+  Text,
+  Center,
+  Flex,
 } from '@mantine/core';
 import {useForm} from "@mantine/form";
 import {zod4Resolver} from "mantine-form-zod-resolver";
@@ -27,80 +28,99 @@ export function AuthenticationTitle() {
     mode: "uncontrolled",
     initialValues: {
       email: "",
-      password: "",
-      rememberMe: false
+      password: ""
     },
     validate: zod4Resolver(LoginFormSchema)
   });
 
-  const handleSubmit = async (formData: LoginForm) => {
+  const handleSignIn = async (formData: LoginForm) => {
 
     setErrorMessage("");
 
-    const { error } = await authClient.signIn.email({...formData, callbackURL: "/dashboard"});
+    const { error } = await authClient.signIn.email({...formData, rememberMe: true, callbackURL: "/dashboard"});
 
-    if(error) {
+    if(error)
       setErrorMessage(error.message ?? "An unknown error occurred");
-      return;
-    }
 
   }
 
   return (
-    <Container size={420} my={40}>
-      <Title ta="center">
-        Welcome back!
-      </Title>
+    <Flex mih={"100vh"}>
+      <Flex
+        style={{
+          flex: "0 0 40%",
+          backgroundImage: "linear-gradient(135deg, #c3c3c3, #9d9d9d)",
+          backgroundRepeat: "no-repeat",
+          backgroundSize: "cover"
+        }}
+        align={"center"}
+        justify={"center"}
+      >
+      <Flex>
+        <Container size={420} w={420} h={420} my={40} ml={0}>
+          <Title ta="center">
+            Welcome back!
+          </Title>
 
-      <Paper withBorder shadow="sm" p={22} mt={30} radius={"md"} pos={"relative"}>
+          <Paper withBorder shadow="sm" p={22} mt={30} radius={"md"} pos={"relative"}>
 
-        <LoadingOverlay visible={loginForm.submitting} zIndex={1000} overlayProps={{ radius: "sm", blur: 2 }}/>
+            <LoadingOverlay visible={loginForm.submitting} zIndex={1000} overlayProps={{ radius: "sm", blur: 2 }}/>
 
-        {errorMessage ? <Text c={"red"}>{errorMessage}</Text> : null }
+            {errorMessage ? <Text c={"red"}>{errorMessage}</Text> : null }
 
-        <form onSubmit={loginForm.onSubmit(handleSubmit)}>
+            <form onSubmit={loginForm.onSubmit(handleSignIn)}>
 
-          <TextInput
-            label={"Email"}
-            placeholder={"johndoe@example.com"}
-            radius={"md"}
-            key={"email"}
-            {...loginForm.getInputProps("email")}
-          />
+              <TextInput
+                label={"Email"}
+                placeholder={"someuser@domain.com"}
+                radius={"md"}
+                key={"email"}
+                {...loginForm.getInputProps("email")}
+              />
 
-          <PasswordInput
-            label={"Password"}
-            placeholder={"Your password"}
-            mt={"md"}
-            radius={"md"}
-            key={"password"}
-            {...loginForm.getInputProps("password")}
-          />
+              <PasswordInput
+                label={"Password"}
+                placeholder={"Your password"}
+                mt={"md"}
+                radius={"md"}
+                key={"password"}
+                {...loginForm.getInputProps("password")}
+              />
 
-          <Group justify="space-between" mt="lg">
+              <Group justify="space-between" mt="lg">
 
-            <Checkbox
-              label="Remember me"
-              key={"rememberMe"}
-              {...loginForm.getInputProps("rememberMe")}
-            />
+                <Anchor
+                  size={"sm"}
+                  href={"/reset-password"}
+                  c="dark"
+                >
+                  Forgot password?
+                </Anchor>
 
-            <Anchor component="button" size="sm">
-              Forgot password?
-            </Anchor>
+              </Group>
 
-          </Group>
+              <Button fullWidth mt={"xl"} radius={"md"} type={"submit"} color="dark">
+                Sign in
+              </Button>
 
-          <Button fullWidth mt={"xl"} radius={"md"} type={"submit"}>
-            Sign in
-          </Button>
+            </form>
+          </Paper>
 
-        </form>
-      </Paper>
+          <Center m={"lg"}>
+            <Anchor component={Link} href={"/"} c={"dark"}>Back to Home</Anchor>
+          </Center>
 
-      <Center m={"lg"}>
-        <Anchor component={Link} href={"/"}>Back to Home</Anchor>
-      </Center>
-    </Container>
+        </Container>
+      </Flex>
+    </Flex>
+
+    {/* - Can insert picture or branding for the login page here*/}
+    <Flex
+      style={{
+        flex: "0 0 60%",
+        backgroundColor: "#ffffff"
+      }}
+    />
+    </Flex>
   );
 }

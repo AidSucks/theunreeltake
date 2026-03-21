@@ -10,33 +10,12 @@ import {
 export type CatalogItem = z.infer<typeof CatalogItemSchema>;
 export type RequestForm = z.infer<typeof RequestFormSchema>;
 export type LoginForm = z.infer<typeof LoginFormSchema>;
-
-export interface AuthContextData {
-  user: {
-    id: string,
-    createdAt: Date,
-    updatedAt: Date,
-    email: string,
-    emailVerified: boolean,
-    name: string,
-    image?: string | null | undefined,
-    banned: boolean | null | undefined,
-    role?: string | null | undefined,
-    banReason?: string | null | undefined,
-    banExpires?: Date | null | undefined
-  },
-  session: {
-    id: string,
-    createdAt: Date,
-    updatedAt: Date,
-    userId: string,
-    expiresAt: Date,
-    token: string,
-    ipAddress?: string | null | undefined,
-    userAgent?: string | null | undefined,
-    impersonatedBy?: string | null | undefined
-  }
-}
+export type CreateUserForm = z.infer<typeof CreateUserSchema>;
+export type ChangePasswordForm = z.infer<typeof ChangePasswordSchema>;
+export type ForgotPasswordForm = z.infer<typeof ForgotPasswordSchema>;
+export type ResetPasswordForm = z.infer<typeof ResetPasswordSchema>;
+export type InviteUserForm = z.infer<typeof InviteUserSchema>;
+export type RegisterUserForm = z.infer<typeof RegisterUserSchema>;
 
 const httpUrl = z.url({
   protocol: /^https?$/,
@@ -54,6 +33,22 @@ export const CatalogItemSchema = z.object({
   mediaType: z.string().default(AllowedMediaType.Book)
 });
 
+export const CreateUserSchema = z.object({
+  name: z
+    .string()
+    .max(maxTextInputLength, `Max of ${maxTextInputLength} characters allowed`)
+    .min(3, "Must be at least 3 characters")
+    .nonempty("Required"),
+  email: z.email().nonempty("Required"),
+  password: z
+    .string()
+    .refine((val) => /[^a-zA-Z0-9]/.test(val), "Must contain one special character")
+    .refine((val) => /[0-9]/.test(val), "Must contain one number")
+    .refine((val) => /[A-Z]/.test(val), "Must contain one uppercase letter")
+    .min(8, "Must be at least 8 characters")
+    .nonempty("Required")
+});
+
 export const RequestFormSchema = z.object({
   name: z.string().max(maxTextInputLength).optional(),
   email: z.email({ error: "Invalid Email" }).nonempty({ error: "Required" }),
@@ -64,6 +59,40 @@ export const RequestFormSchema = z.object({
 
 export const LoginFormSchema = z.object({
   email: z.email({ error: "Invalid email"}).nonempty({ error: "Required" }),
-  password: z.string().nonempty({ error: "Required" }),
-  rememberMe: z.boolean().default(false)
+  password: z.string().nonempty({ error: "Required" })
+});
+
+export const ChangePasswordSchema = z.object({
+  currentPassword: z.string().nonempty({ error: "Required" }),
+  newPassword: z.string().nonempty({ error: "Required" }),
+});
+
+export const ForgotPasswordSchema = LoginFormSchema.pick({
+  email: true
+});
+
+export const ResetPasswordSchema = LoginFormSchema.pick({
+  password: true,
+});
+
+export const RegisterUserSchema = CreateUserSchema.extend({
+  confirmPassword: z.string().nonempty("Required")
+}).superRefine(({ confirmPassword, password }, ctx) => {
+  if(confirmPassword !== password) {
+    ctx.addIssue({
+      code: "custom",
+      message: "Passwords must match",
+      path: ["confirmPassword"]
+    });
+  }
+});
+
+// Validates the email input in the InviteUserModal
+export const InviteUserSchema = z.object({
+  email: z.string()
+    .trim()
+    .toLowerCase()
+    .email({ message: "Invalid email address"})
+    .min(1, { message: "Required" })
+    .max(255, { message: "Email is too long" })
 });
