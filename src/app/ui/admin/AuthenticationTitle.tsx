@@ -9,7 +9,8 @@ import {
   PasswordInput,
   TextInput,
   Title,
-  Text, Center,
+  Text,
+  Center,
   Flex,
 } from '@mantine/core';
 import {useForm} from "@mantine/form";
@@ -71,7 +72,7 @@ export function AuthenticationTitle() {
 
               <TextInput
                 label={"Email"}
-                placeholder={"johndoe@example.com"}
+                placeholder={"someuser@domain.com"}
                 radius={"md"}
                 key={"email"}
                 {...loginForm.getInputProps("email")}
@@ -91,13 +92,14 @@ export function AuthenticationTitle() {
                 <Anchor
                   size={"sm"}
                   href={"/reset-password"}
+                  c="dark"
                 >
                   Forgot password?
                 </Anchor>
 
               </Group>
 
-              <Button fullWidth mt={"xl"} radius={"md"} type={"submit"}>
+              <Button fullWidth mt={"xl"} radius={"md"} type={"submit"} color="dark">
                 Sign in
               </Button>
 
@@ -105,14 +107,15 @@ export function AuthenticationTitle() {
           </Paper>
 
           <Center m={"lg"}>
-            <Anchor component={Link} href={"/"}>Back to Home</Anchor>
+            <Anchor component={Link} href={"/"} c={"dark"}>Back to Home</Anchor>
           </Center>
+
         </Container>
       </Flex>
     </Flex>
 
     {/* - Can insert picture or branding for the login page here*/}
-    <Flex 
+    <Flex
       style={{
         flex: "0 0 60%",
         backgroundColor: "#ffffff"

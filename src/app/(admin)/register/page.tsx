@@ -1,6 +1,7 @@
 import {redirect} from "next/navigation";
 import {verifyInvitationToken} from "@/lib/actions";
 import {RegisterUser} from "@/app/ui/admin/forms/RegisterUser";
+import RegisterError from "@/app/ui/admin/forms/RegisterError";
 
 export default async function AccountRegisterPage(
   {searchParams}: { searchParams: Promise<{ [_: string]: string | string[] | undefined }> }
@@ -17,8 +18,8 @@ export default async function AccountRegisterPage(
   const { data, error } = await verifyInvitationToken(token);
 
   if(error || !data) {
-    return <h1>{error}</h1>;
+    return <RegisterError errorString={error ?? ""}/>;
   }
-
+  
   return <RegisterUser verificationID={data.id} email={data.value}/>;
 }
