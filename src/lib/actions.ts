@@ -2,10 +2,13 @@
 
 import {RequestForm} from "@/lib/schemas";
 import prisma from "@/lib/prisma";
+import { headers } from "next/headers";
+import { auth } from "@/lib/auth";
 import * as crypto from "node:crypto";
 import dayjs from "dayjs";
 import {Verification} from "@/generated/prisma/client";
 import { sendInvitationEmail } from "@/lib/emailer";
+import { sendPasswordWasResetEmail } from "@/lib/emailer";
 
 export async function testRequestForm(data: RequestForm) {
   console.log(data);
@@ -101,5 +104,18 @@ export async function checkUserExists(email: string) {
   } catch (error) {
     console.error("Database Error: ", error);
     return true;
+  }
+}
+
+export async function notifyPasswordChanged() {
+  const session = await auth.api.getSession({
+    headers: await headers()
+  });
+
+  if (session && session.user) {
+    await sendPasswordWasResetEmail({
+      name: session.user.name,
+      email: session.user.email
+    });
   }
 }
