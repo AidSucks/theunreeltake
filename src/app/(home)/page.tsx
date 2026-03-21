@@ -13,25 +13,25 @@ export default function HomePage() {
         breakpoints={{ xs: '425px', sm: '500px', md: '850px', lg: '900px', xl: '1024' }}
         m={{ base: "md", md: "xl"}}
         gutter={"xl"}>
-  
+
         <Grid.Col span={12}>
           <Flex h={"100%"} align={"center"} justify={"center"}>
             <Title fz={50} order={1} ta={"center"}>Unprofessional Reviews</Title>
           </Flex>
         </Grid.Col>
-  
+
         <Grid.Col span={12}>
           <Flex h={"100%"} align={"center"} justify={"center"}>
             <Text fz={30} ta={"center"}>That Give You the Reel Information</Text>
           </Flex>
         </Grid.Col>
-  
+
         <Grid.Col span={12}>
-                  <Flex h={"100%"} align={"center"} justify={"center"}>
+          <Flex h={"100%"} align={"center"} justify={"center"}>
             <TextInput w={400} size="md" radius="lg" placeholder="Find what you're looking for" mb="xl" />
           </Flex>
         </Grid.Col>
-        
+
         <Grid.Col span={{ base: 12, lg: 6 }}>
           <Flex direction="column">
             <AspectRatio ratio={1}>
@@ -43,7 +43,7 @@ export default function HomePage() {
             </AspectRatio>
           </Flex>
         </Grid.Col>
-        
+
         <Grid.Col span={{base: 12, lg: 6}}>
           <Flex direction={"column"}>
             <Title order={1}>Welcome</Title>
@@ -56,7 +56,7 @@ export default function HomePage() {
               boring critic reviews with fanciful language, or inaccurate casual viewers who rate a movie badly because it
               didn’t have enough nudity, or didn’t align with their political views.
             </p>
-  
+
             <p>
               We watch TONS of movies, and our mission is to provide you with all of the the information you need when
               you go to select your next movie to watch, whether it be date night, family movie night, or a “netflix and
@@ -66,7 +66,7 @@ export default function HomePage() {
             </p>
           </Flex>
         </Grid.Col>
-  
+
         <Grid.Col span={{ base: 12, sm: 6 }}>
           <Flex direction="column">
             <AspectRatio ratio={1}>
@@ -79,28 +79,28 @@ export default function HomePage() {
             </AspectRatio>
           </Flex>
         </Grid.Col>
-  
+
         <Grid.Col span={{base: 12, lg: 6}}>
           <Flex direction={"column"}>
             <Title order={1}>The UnReel Method</Title>
             <Title order={2} fw={200}>Everything you need to know:</Title>
-  
+
             <p>
-              We’ve been let down too many times whether it be from spoilers, 
-              boring critic reviews with fanciful language, 
-              or casual viewers who rate a movie badly because it didn’t have enough nudity. 
+              We’ve been let down too many times whether it be from spoilers,
+              boring critic reviews with fanciful language,
+              or casual viewers who rate a movie badly because it didn’t have enough nudity.
               With everything we review, we&#39;ll give you quick rundown of our take and the experience you can expect to have.
             </p>
-  
-            <p>We strive to make the movie selection process easier. 
-              We don’t know about you, but we constantly come across movies whose primary category 
-              couldn’t be further from the truth; whether it’s a drama that was clearly an action, 
-              or horror that was actually comedy. We came up with our own categories we think better 
+
+            <p>We strive to make the movie selection process easier.
+              We don’t know about you, but we constantly come across movies whose primary category
+              couldn’t be further from the truth; whether it’s a drama that was clearly an action,
+              or horror that was actually comedy. We came up with our own categories we think better
               match the movie. </p>
-    
+
           </Flex>
         </Grid.Col>
-  
+
         <Grid.Col span={12}>
           <Center>
             <Stack gap={"xs"} align={"center"}>
@@ -113,7 +113,7 @@ export default function HomePage() {
             </Stack>
           </Center>
         </Grid.Col>
-  
+
         <Grid.Col span={12}>
           <Center>
             <Stack maw={"300"} justify={"center"}>
