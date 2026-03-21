@@ -1,9 +1,15 @@
 'use client';
 
 import {AspectRatio, Button, Center, Flex, Grid, Image, List, Space, Stack, Text, Title, TextInput, Container} from "@mantine/core";
+import {useRouter} from "next/navigation"
+import React from "react";
 
 export default function HomePage() {
-
+  const router = useRouter()
+  const handleSubmit = (e: React.FormEvent) =>{
+    e.preventDefault()
+    router.push('/catalog')
+  }
   return (
     <div style={{ padding: "0 40px" }}>
     <Grid
@@ -27,8 +33,10 @@ export default function HomePage() {
       </Grid.Col>
 
       <Grid.Col span={12}>
-                <Flex h={"100%"} align={"center"} justify={"center"}>
-          <TextInput w={400} size="md" radius="lg" placeholder="Find what you're looking for" mb="xl" />
+        <Flex h={"100%"} align={"center"} justify={"center"}>
+          <form onSubmit={handleSubmit}>
+            <TextInput w={400} size="md" radius="lg" placeholder="Find what you're looking for" mb="xl" />
+          </form>
         </Flex>
       </Grid.Col>
       
