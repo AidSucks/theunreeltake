@@ -1,6 +1,6 @@
 'use client';
 
-import {AspectRatio, Button, Center, Flex, Grid, Image, List, Space, Stack, Text, Title} from "@mantine/core";
+import {AspectRatio, Button, Center, Flex, Grid, Image, List, Space, Stack, Text, Title, TextInput, Group} from "@mantine/core";
 
 export default function HomePage() {
 
@@ -145,6 +145,19 @@ export default function HomePage() {
             experience even more immersive.
           </Text>
         </Flex>
+      </Grid.Col>
+
+      <Grid.Col span={12}>
+        <Center>
+          <Stack gap={"xs"} align={"center"}>
+            <Title size={"h3"}>Never Miss a Review</Title>
+            <Text>Signup For Our Newsletter</Text>
+            <Group>
+              <TextInput placeholder="you@example.com" radius="md" type="email"/>
+              <Button radius={"md"} type={"submit"} color={"#2C2E33"}>Submit</Button>
+            </Group>
+          </Stack>
+        </Center>
       </Grid.Col>
 
       <Grid.Col span={12}>
