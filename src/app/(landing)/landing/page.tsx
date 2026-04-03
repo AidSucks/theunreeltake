@@ -14,6 +14,7 @@ import {useForm} from "@mantine/form";
 import {useState} from "react";
 import Link from "next/link";
 import {XCircle} from "react-bootstrap-icons";
+import {createTriviaCookie} from "@/lib/actions";
 
 const MAX_ATTEMPTS = 3;
 
@@ -26,18 +27,22 @@ export default function LandingPage() {
   const [attempts, setAttempts] = useState(0);
   const [isCorrect, setIsCorrect] = useState(false);
 
-  const handleSubmit = (formData: typeof triviaForm.values) => {
+  const handleSubmit = async (formData: typeof triviaForm.values) => {
 
     const userAnswer = formData.answer.trim().toLowerCase();
     const answer = TEST_ANSWER.trim().toLowerCase();
 
     if(userAnswer === answer) {
       setIsCorrect(true);
+      await createTriviaCookie();
       return;
     }
 
     triviaForm.reset();
     setAttempts(attempts + 1);
+
+    if((attempts + 1) >= MAX_ATTEMPTS)
+      await createTriviaCookie();
   }
 
   const triviaForm = useForm({
@@ -51,7 +56,8 @@ export default function LandingPage() {
     }
   });
 
-  if(attempts >= MAX_ATTEMPTS || isCorrect)
+  if(attempts >= MAX_ATTEMPTS || isCorrect) {
+
     return (
       <Container>
 
@@ -71,6 +77,7 @@ export default function LandingPage() {
 
       </Container>
     );
+  }
 
   return (
     <Container>
