@@ -82,3 +82,15 @@ model Verification {
   @@map("verification")
   @@index([identifier])
 }
+
+model Post {
+  id          String   @id @default(cuid())
+  title       String
+  slug        String   @unique
+  mediaType   String
+  content     String
+  
+  createdAt   DateTime @default(now()) 
+
+  @@map("post")
+}

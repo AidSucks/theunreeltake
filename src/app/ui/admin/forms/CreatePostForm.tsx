@@ -15,6 +15,7 @@ import {
   Title,
   Box
 } from "@mantine/core";
+import { createNewPost } from "@/lib/actions";
 
 export function CreatePostForm() {
   const [opened, { open, close }] = useDisclosure(false);
@@ -30,11 +31,18 @@ export function CreatePostForm() {
     }
   });
 
-  const handleSubmit = (values: typeof form.values) => {
-    // TODO: connect to backend
+  const handleSubmit = async (values: typeof form.values) => {
+    const result = await createNewPost(values);
+
+    if (result.success) {
+      router.push('/dashboard/posts');
+    } else {
+      alert("Failed to create post");
+    }
   };
 
   const handleDeleteConfirm = () => {
+    // TODO: delete from database
     close();
     router.push('/dashboard/posts');
   }

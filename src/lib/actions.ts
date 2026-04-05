@@ -9,6 +9,7 @@ import dayjs from "dayjs";
 import {Verification} from "@/generated/prisma/client";
 import { sendInvitationEmail } from "@/lib/emailer";
 import { sendPasswordWasResetEmail } from "@/lib/emailer";
+import { success } from "zod";
 
 export async function testRequestForm(data: RequestForm) {
   console.log(data);
@@ -117,5 +118,22 @@ export async function notifyPasswordChanged() {
       name: session.user.name,
       email: session.user.email
     });
+  }
+}
+
+export async function createNewPost(formData: { title: string, slug: string, mediaType: string, pageContent: string }) {
+  try {
+    await prisma.post.create({
+      data: {
+        title: formData.title,
+        slug: formData.slug,
+        mediaType: formData.mediaType,
+        content: formData.pageContent,
+      }
+    });
+
+    return { error: null, success: true };
+  } catch (error) {
+    return { error: "Failed to save post", success: false };
   }
 }
