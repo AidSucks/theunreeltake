@@ -1,6 +1,7 @@
 "use client";
 
 import { useForm } from "@mantine/form";
+import Link from "next/link";
 import {
   TextInput,
   Textarea,
@@ -69,7 +70,13 @@ export function CreatePostForm() {
           />
 
           <Group justify="flex-end" mt="md">
-            <Button color="red">Delete</Button>
+            <Button
+              component={Link}
+              href="/dashboard/posts"
+              color="red"
+            >
+              Delete
+            </Button>
             <Button type="submit" color="dark">Save</Button>
           </Group>
 
