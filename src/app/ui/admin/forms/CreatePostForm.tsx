@@ -4,6 +4,7 @@ import { useForm } from "@mantine/form";
 import { useDisclosure } from "@mantine/hooks"; 
 import { useRouter } from "next/navigation"; 
 import { DeletePostModal } from "@/app/ui/admin/DeletePostModal";
+import { zod4Resolver } from "mantine-form-zod-resolver";
 import {
   TextInput,
   Textarea,
@@ -16,6 +17,8 @@ import {
   Box
 } from "@mantine/core";
 import { createNewPost } from "@/lib/actions";
+import { CreatePostSchema } from "@/lib/schemas";
+
 
 export function CreatePostForm() {
   const [opened, { open, close }] = useDisclosure(false);
@@ -28,7 +31,9 @@ export function CreatePostForm() {
       slug: "",
       mediaType: "",
       pageContent: ""
-    }
+    },
+    validate: zod4Resolver(CreatePostSchema),
+    validateInputOnChange: true,
   });
 
   const handleSubmit = async (values: typeof form.values) => {
