@@ -1,7 +1,8 @@
+import { CreatePostForm } from "@/app/ui/admin/forms/CreatePostForm";
 export default function CreatePostPage() {
   return (
     <div>
-      <h1>New Post</h1>
+      <CreatePostForm/>
     </div>
   );
 }
