@@ -70,7 +70,7 @@ export function CreatePostForm() {
 
           <Group justify="flex-end" mt="md">
             <Button color="red">Delete</Button>
-            <Button type="submit" color="dark">Save Post</Button>
+            <Button type="submit" color="dark">Save</Button>
           </Group>
 
         </Stack>
