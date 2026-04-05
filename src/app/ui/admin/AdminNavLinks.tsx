@@ -3,7 +3,7 @@
 import {NavLink, Text} from "@mantine/core";
 import classes from "@/app/ui/admin/NavbarSimple.module.css";
 import React from "react";
-import {BarChartLine, ChatLeftDots, FileRichtext, Gear, House, Journal, People, Send} from "react-bootstrap-icons";
+import {BarChartLine, CameraVideo, ChatLeftDots, FileRichtext, Gear, House, Journal, People, Send} from "react-bootstrap-icons";
 import {usePathname} from "next/navigation";
 
 const data = [
@@ -11,6 +11,7 @@ const data = [
   { link: '/dashboard/posts', label: 'Posts', icon: FileRichtext, disabled: true},
   { link: '/dashboard/drafts', label: 'Drafts', icon: Journal, disabled: true},
   { link: '/dashboard/comments', label: 'Comments', icon: ChatLeftDots, disabled: true},
+  { link: '/dashboard/trivia', label: 'Trivia', icon: CameraVideo, disabled: false},
   { link: '/dashboard/requests', label: 'Requests', icon: Send, disabled: true},
   { link: '/dashboard/analytics', label: 'Analytics', icon: BarChartLine, disabled: true},
   { link: '/dashboard/users', label: 'Users', icon: People, disabled: false},
