@@ -1,7 +1,9 @@
 "use client";
 
 import { useForm } from "@mantine/form";
-import Link from "next/link";
+import { useDisclosure } from "@mantine/hooks"; 
+import { useRouter } from "next/navigation"; 
+import { DeletePostModal } from "@/app/ui/admin/DeletePostModal";
 import {
   TextInput,
   Textarea,
@@ -15,6 +17,9 @@ import {
 } from "@mantine/core";
 
 export function CreatePostForm() {
+  const [opened, { open, close }] = useDisclosure(false);
+  const router = useRouter();
+
   const form = useForm({
     mode: "uncontrolled",
     initialValues: {
@@ -29,7 +34,21 @@ export function CreatePostForm() {
     // TODO: connect to backend
   };
 
+  const handleDeleteConfirm = () => {
+    close();
+    router.push('/dashboard/posts');
+  }
+
   return (
+    <>
+
+
+    <DeletePostModal 
+        opened={opened} 
+        onClose={close} 
+        onConfirm={handleDeleteConfirm} 
+      />
+
     <Paper withBorder shadow="sm" p="xl" radius="md" maw={800}>
       <Title order={3} mb="lg">Create New Post</Title>
 
@@ -70,18 +89,13 @@ export function CreatePostForm() {
           />
 
           <Group justify="flex-end" mt="md">
-            <Button
-              component={Link}
-              href="/dashboard/posts"
-              color="red"
-            >
-              Delete
-            </Button>
+            <Button color="red" onClick={open}>Delete</Button>
             <Button type="submit" color="dark">Save</Button>
           </Group>
 
         </Stack>
       </form>
     </Paper>
+    </>
   );
 }
