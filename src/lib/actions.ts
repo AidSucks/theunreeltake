@@ -119,3 +119,27 @@ export async function notifyPasswordChanged() {
     });
   }
 }
+
+export async function deleteUser(id : string){
+  try{
+      const deleteUser = await prisma.user.delete({
+        where: {id},
+      });
+    return {data: deleteUser, error: "none"};
+  } catch(e){
+    console.error("Database Error: ", e);
+    return {data: null, error: "User not found"};
+  }
+}
+
+export async function getAllUsers(Id?: string) {
+  try {
+    const users = await prisma.user.findMany({
+      where: Id ? { NOT: { id: Id } } : undefined,
+    });
+    return users;
+  } catch (e) {
+    console.error("Error fetching users:", e);
+    return null;
+  }
+}
