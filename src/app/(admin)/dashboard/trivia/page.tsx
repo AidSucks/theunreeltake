@@ -7,10 +7,10 @@ export default function DashboardTriviaPage() {
   // Placeholder data
   const data = [
     { question: "What is ___?", category: "Horror", difficulty: "Medium", type: "True/False", status: "Published", correct: "85%" },
-    { question: "What is ___?", category: "Horror", difficulty: "Medium", type: "True/False", status: "Published", correct: "85%" },
-    { question: "What is ___?", category: "Thriller", difficulty: "Extreme", type: "True/False", status: "Published", correct: "20%" },
-    { question: "What is ___?", category: "Action", difficulty: "Medium", type: "True/False", status: "Published", correct: "85%" },
-    { question: "What is ___?", category: "Horror", difficulty: "Medium", type: "Multiple Choice", status: "Draft", correct: "85%" },
+    { question: "Which is ___?", category: "Horror", difficulty: "Medium", type: "True/False", status: "Published", correct: "85%" },
+    { question: "Who is ___?", category: "Thriller", difficulty: "Extreme", type: "True/False", status: "Published", correct: "20%" },
+    { question: "How is ___?", category: "Action", difficulty: "Medium", type: "True/False", status: "Published", correct: "85%" },
+    { question: "Where is ___?", category: "Horror", difficulty: "Medium", type: "Multiple Choice", status: "Draft", correct: "85%" },
   ];
   const [category, setCategory] = useState<string | null>(null);
   const [type, setType] = useState<string | null>(null);
