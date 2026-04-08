@@ -16,7 +16,6 @@ interface FormValues {
   content: string;
 }
 
-// This default export is what Next.js renders when you visit /dashboard/posts
 export default function EditPostPage() {
   const form = useForm<FormValues>({
     initialValues: {
