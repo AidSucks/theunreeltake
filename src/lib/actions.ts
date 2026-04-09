@@ -119,3 +119,11 @@ export async function notifyPasswordChanged() {
     });
   }
 }
+
+export async function getPostByUser(userId: string) {
+  const userPosts = await prisma.post.findMany({
+    where: { userId: userId },
+  });
+  
+  return userPosts; 
+}
