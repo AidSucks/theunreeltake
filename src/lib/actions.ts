@@ -137,3 +137,21 @@ export async function createNewPost(formData: { title: string, slug: string, med
     return { error: "Failed to save post", success: false };
   }
 }
+
+export async function deletePost(id:string)
+{
+  console.log("deleting post with title: ", id);
+  try
+  {
+    await prisma.post.delete({
+      where:{
+        id: id,
+      }
+    });
+
+    return { error: null, success: true};
+  } catch (error) {
+    return { error: "Failed to delete post", success: false };
+  }
+}
+
