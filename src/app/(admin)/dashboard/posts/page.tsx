@@ -56,9 +56,7 @@ export default function DashboardPostsPage() {
 
                 <Flex
                     style={{ marginTop: '32px' }}>
-                    <Grid  
-                        gutter={"sm"}
-                        >
+                    <Grid>
                         <Grid.Col
                             span={{ base: 12, md: 6, lg: 3 }}
                             >
