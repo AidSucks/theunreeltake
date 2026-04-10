@@ -19,7 +19,6 @@ import {
 import { createNewPost } from "@/lib/actions";
 import { deletePost } from "@/lib/actions";
 import { CreatePostSchema } from "@/lib/schemas";
-import { getRandomValues } from "crypto";
 
 
 export function CreatePostForm() {
@@ -50,7 +49,6 @@ export function CreatePostForm() {
 
   const handleDeleteConfirm = async () => {
     // TODO: delete from database
-    const result = await deletePost(post.id)
     close();
     router.push('/dashboard/posts');
   }

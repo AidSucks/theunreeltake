@@ -9,7 +9,7 @@ import dayjs from "dayjs";
 import {Verification} from "@/generated/prisma/client";
 import { sendInvitationEmail } from "@/lib/emailer";
 import { sendPasswordWasResetEmail } from "@/lib/emailer";
-import { success } from "zod";
+import { string, success } from "zod";
 
 export async function testRequestForm(data: RequestForm) {
   console.log(data);
@@ -140,7 +140,7 @@ export async function createNewPost(formData: { title: string, slug: string, med
 
 export async function deletePost(id:string)
 {
-  console.log("deleting post with title: ", id);
+  console.log("deleting post with id: ", id);
   try
   {
     await prisma.post.delete({
@@ -152,6 +152,28 @@ export async function deletePost(id:string)
     return { error: null, success: true};
   } catch (error) {
     return { error: "Failed to delete post", success: false };
+  }
+}
+
+export async function savePost(id:string, title:string, slug:string, mediaType:string, content:string)
+{
+  console.log("saving post with id: ", id)
+  try
+  {
+    await prisma.post.update({
+      where: {
+        id: id,
+      },
+      data: {
+        title: title,
+        slug: slug,
+        mediaType: mediaType,
+        content: content,
+      }
+    });
+    return { error: null, success: true};
+  } catch (error) {
+    return { error: "Failed to saved post", success: false };
   }
 }
 

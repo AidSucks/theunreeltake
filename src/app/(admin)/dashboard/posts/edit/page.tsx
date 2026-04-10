@@ -5,10 +5,15 @@ import {
   Button, Group, Title, Stack, Box 
 } from '@mantine/core';
 import { useForm } from '@mantine/form';
+import { DeletePostModal } from "@/app/ui/admin/DeletePostModal";
+import { useDisclosure } from "@mantine/hooks"; 
+import { useRouter } from "next/navigation"; 
+import { deletePost } from "@/lib/actions";
 
 const MEDIA_TYPES = ['Movie', 'TV Show', 'Book', 'Game', 'Music'];
 
 interface FormValues {
+  id: string;
   slug: string;
   title: string;
   mediaType: string;
@@ -17,8 +22,11 @@ interface FormValues {
 }
 
 export default function EditPostPage() {
+  const [opened, { open, close }] = useDisclosure(false);
+  const router = useRouter();
   const form = useForm<FormValues>({
     initialValues: {
+      id: '',
       slug: 'media-title-slug',
       title: 'Post Display Title',
       mediaType: 'Movie',
@@ -35,7 +43,21 @@ export default function EditPostPage() {
     console.log('Form submitted:', values);
   };
 
+    const handleDeleteConfirm = async () => {
+    // TODO: delete from database
+    const result = await deletePost(form.getValues().id) //form.getValues().id
+    close();
+    router.push('/dashboard/posts');
+  }
+
   return (
+    <>
+    <DeletePostModal 
+        opened={opened} 
+        onClose={close} 
+        onConfirm={handleDeleteConfirm} 
+      />
+
     <Box maw={800}>
       <Title order={1} mb="xl">Edit Post</Title>
 
@@ -76,10 +98,11 @@ export default function EditPostPage() {
           <Group mt="xl">
             <Button type="submit" color="dark">Save Changes</Button>
             <Button variant="filled" color="dark">Send to Draft</Button>
-            <Button variant="filled" color="red">Delete Post</Button>
+            <Button variant="filled" color="red" onClick={open}>Delete Post</Button>
           </Group>
         </Stack>
       </form>
     </Box>
+    </>
   );
 }
