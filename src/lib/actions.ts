@@ -2,7 +2,7 @@
 
 import {RequestForm} from "@/lib/schemas";
 import prisma from "@/lib/prisma";
-import { headers } from "next/headers";
+import {cookies, headers} from "next/headers";
 import { auth } from "@/lib/auth";
 import * as crypto from "node:crypto";
 import dayjs from "dayjs";
@@ -118,4 +118,18 @@ export async function notifyPasswordChanged() {
       email: session.user.email
     });
   }
+}
+
+export async function createTriviaCookie() {
+
+  const cookieStore = await cookies();
+
+  cookieStore.set({
+    name: "unreel",
+    value: "",
+    priority: "low",
+    httpOnly: true,
+    sameSite: "strict",
+    expires: dayjs(new Date()).add(1, "year").toDate()
+  });
 }
