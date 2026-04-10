@@ -4,6 +4,7 @@ import {useContext, useRef} from "react";
 import {AuthContext} from "@/app/ui/admin/AuthContext";
 import {redirect} from "next/navigation";
 import {Flex, Group} from '@mantine/core';
+import {SiteTextEditor} from "@/app/ui/admin/SiteTextEditor"
 
 export default function DashboardPage() {
 
@@ -11,7 +12,9 @@ export default function DashboardPage() {
 
   if(!contextData) redirect("/login");
 
-  
+  const handleEditorChange = (value: string) => {
+      console.log('This is the HTML now: ', value);
+    }  
 
   return (
     <>
