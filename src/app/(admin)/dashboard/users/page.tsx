@@ -1,6 +1,6 @@
 "use client";
 
-import { Box, Button, Title, Stack, Group } from "@mantine/core";
+import { Box, Button, Title, Group } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { InviteUserModal } from "@/app/ui/admin/InviteUserModal";
 import  {UserTable}  from "@/app/ui/admin/UserTable";

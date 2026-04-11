@@ -12,7 +12,8 @@ export default function HomePage() {
         type={"container"}
         breakpoints={{ xs: '425px', sm: '500px', md: '850px', lg: '900px', xl: '1024' }}
         m={{ base: "md", md: "xl"}}
-        gutter={"xl"}>
+        gap={"xl"}
+        >
 
         <Grid.Col span={12}>
           <Flex h={"100%"} align={"center"} justify={"center"}>

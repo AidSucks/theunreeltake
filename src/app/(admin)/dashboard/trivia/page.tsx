@@ -1,6 +1,6 @@
 "use client";
 
-import {Box, Button, Title, Stack, Group, Select, TextInput, Table, Badge, Checkbox, ActionIcon, Paper, Pagination} from "@mantine/core";
+import {Box, Button, Title, Stack, Group, Select, TextInput, Table, Badge, Checkbox, Paper, Pagination} from "@mantine/core";
 import {useState} from "react"
 
 export default function DashboardTriviaPage() {
