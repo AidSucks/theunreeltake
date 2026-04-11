@@ -3,6 +3,7 @@
 import { Button, Flex, TextInput, ActionIcon, Pagination, Grid, Group} from "@mantine/core";
 import { Search, Funnel, Filter, ArrowClockwise, PencilSquare, Chat, Trash, BarChart } from "react-bootstrap-icons"
 import { GridPostCard } from "./gridPost";
+import { NewPostButton } from "@/app/ui/admin/NewPostButton";
 
 export default function DashboardPostsPage() {
     return(
@@ -43,14 +44,7 @@ export default function DashboardPostsPage() {
                     </Group>
                     <Group
                         justify={"flex-end"}>
-                        <Button
-                            variant={"light"}
-                            size={"xs"}
-                            radius={"md"}
-                            color={"gray"}
-                            >
-                            + New
-                        </Button>
+                        <NewPostButton/>
                     </Group>
                 </Flex>
 

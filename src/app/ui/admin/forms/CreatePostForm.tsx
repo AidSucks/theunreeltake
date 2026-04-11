@@ -14,10 +14,13 @@ import {
   Paper,
   Group,
   Title,
-  Box
+  Box,
+  Input
 } from "@mantine/core";
 import { createNewPost } from "@/lib/actions";
 import { CreatePostSchema } from "@/lib/schemas";
+import {SiteTextEditor} from "@/app/ui/admin/SiteTextEditor"
+
 
 
 export function CreatePostForm() {
@@ -62,7 +65,7 @@ export function CreatePostForm() {
         onConfirm={handleDeleteConfirm} 
       />
 
-    <Paper withBorder shadow="sm" p="xl" radius="md" maw={800}>
+    <Paper withBorder shadow="sm" p="xl" radius="md" w="100%" mih="85vh" display="flex" style={{ flexDirection: 'column' }}>
       <Title order={3} mb="lg">Create New Post</Title>
 
       <form onSubmit={form.onSubmit(handleSubmit)}>
@@ -92,14 +95,15 @@ export function CreatePostForm() {
             />
           </Group>
 
-          <Textarea
-            label="Page Content"
-            placeholder="Write your post content here..."
-            minRows={8}
-            autosize
-            key="pageContent"
-            {...form.getInputProps('pageContent')}
-          />
+          <Input.Wrapper 
+            label="Page Content" 
+            error={form.errors.pageContent}
+          >
+            <SiteTextEditor
+              value={form.getInputProps('pageContent').defaultValue}
+              onChange={form.getInputProps('pageContent').onChange}
+            />
+          </Input.Wrapper>
 
           <Group justify="flex-end" mt="md">
             <Button color="red" onClick={open}>Delete</Button>
