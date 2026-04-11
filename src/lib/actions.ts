@@ -123,17 +123,36 @@ export async function notifyPasswordChanged() {
 
 export async function createNewPost(formData: { title: string, slug: string, mediaType: string, pageContent: string }) {
   try {
+
+    const session = await auth.api.getSession({
+      headers: await headers()
+    });
+
+    if(!session || !session.user) {
+      return { error: "You must be logged in to create a post.", success: false };
+    }
     await prisma.post.create({
       data: {
         title: formData.title,
         slug: formData.slug,
-        mediaType: formData.mediaType,
-        content: formData.pageContent,
+        htmlContent: formData.pageContent,
+        authorId: session.user.id,
+        tags: {
+          create: {
+            tag: {
+              create: {
+                type: "MediaType",
+                displayName: formData.mediaType,
+              }
+            }
+          }
+        }
       }
     });
 
     return { error: null, success: true };
   } catch (error) {
+    console.error("PRISMA DATABASE ERROR:", error);
     return { error: "Failed to save post", success: false };
   }
 }
