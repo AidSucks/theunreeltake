@@ -1,6 +1,7 @@
 
 import films from "@/../public/film.json";
-import { Title, Grid, GridCol,Image,Text,Divider,Group,Stack, Textarea, ScrollArea, Box, Flex, Paper, UnstyledButton, SimpleGrid } from "@mantine/core";
+import { redirect } from 'next/navigation'
+import { Title, Grid, GridCol,Image,Text,Divider,Group,Stack, Textarea, ScrollArea, Box, Flex, Paper, UnstyledButton, SimpleGrid,  } from "@mantine/core";
 
 export default async function BlogPostPage(
   {
@@ -14,7 +15,7 @@ export default async function BlogPostPage(
 
   const fullPostData = films.find((entry) => entry.slug === slug);
 
-  if(!fullPostData) return <h1>Not Found</h1>;
+  if (!fullPostData) return redirect ("/catalog");
 
   return (
 
