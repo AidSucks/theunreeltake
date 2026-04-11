@@ -36,7 +36,7 @@ const TEAM_MEMBERS = [
 export default function AboutPage() {
   return (
     <Container size="lg" py="xl">
-      <Grid columns={12} gutter="xl">
+      <Grid columns={12} gap={"xl"}>
         {/*About Section*/}
         <Grid.Col span={{ base: 12, md: 6 }}>
           <Title order={1}>About The Unreel Take</Title>
@@ -68,7 +68,7 @@ export default function AboutPage() {
                 >
                   {/* Image Container */}
                   <Paper bg="gray.1" radius="md" w={{ base: '100%', sm: 180 }} style={{ overflow: 'hidden' }}>
-                    <AspectRatio ratio={1 / 1}>
+                    <AspectRatio ratio={1}>
                       <Image
                         src={member.image}
                         alt={member.name}

@@ -16,7 +16,7 @@ export function HomeBurgerMenu() {
         <ThemeToggleButton/>
       </Flex>
 
-      <Collapse in={opened} hiddenFrom={"sm"}>
+      <Collapse expanded={opened} hiddenFrom={"sm"}>
         <MobileNavLinks/>
       </Collapse>
     </>

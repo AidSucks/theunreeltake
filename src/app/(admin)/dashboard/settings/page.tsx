@@ -4,6 +4,7 @@ import { redirect } from "next/navigation";
 import { ChangePassword } from "@/app/ui/admin/forms/ChangePassword";
 import { Box, Title, Divider,Text,TextInput,UnstyledButton,Stack,Checkbox } from "@mantine/core";
 import { PasswordSettings } from "./PasswordSettings";
+import { UsernameSettings } from "./UsernameSettings";
 
 export default async function DashboardSettingsPage() {
   const session = await auth.api.getSession({
@@ -34,7 +35,7 @@ export default async function DashboardSettingsPage() {
         Personal Information
       </Title>
 
-      <TextInput pl="lg" w={200} size="sm" radius="lg" label="Username" placeholder="New Username" mb="md"/>
+      <UsernameSettings/>
 
       <Stack gap="md">
         <Title order={6}>
