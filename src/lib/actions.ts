@@ -9,14 +9,9 @@ import dayjs from "dayjs";
 import {Verification} from "@/generated/prisma/client";
 import { sendInvitationEmail } from "@/lib/emailer";
 import { sendPasswordWasResetEmail } from "@/lib/emailer";
-import { success } from "zod";
 
 export async function testRequestForm(data: RequestForm) {
   console.log(data);
-}
-
-export async function artificialLag(delayMs: number) {
-  await new Promise(resolve => setTimeout(resolve, delayMs));
 }
 
 function generateInvitationToken(): string {
@@ -169,4 +164,27 @@ export async function createTriviaCookie() {
     sameSite: "strict",
     expires: dayjs(new Date()).add(1, "year").toDate()
   });
+}
+
+export async function deleteUser(id : string){
+  try{
+      const deleteUser = await prisma.user.delete({
+        where: {id},
+      });
+    return {data: deleteUser, error: "none"};
+  } catch(e){
+    console.error("Database Error: ", e);
+    return {data: null, error: "User not found"};
+  }
+}
+
+export async function getAllUsers(Id?: string) {
+  try {
+    return await prisma.user.findMany({
+      where: Id ? { NOT: { id: Id } } : undefined,
+    });
+  } catch (e) {
+    console.error("Error fetching users:", e);
+    return null;
+  }
 }
