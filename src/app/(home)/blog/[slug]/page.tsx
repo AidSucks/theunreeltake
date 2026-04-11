@@ -126,7 +126,24 @@ export default async function BlogPostPage(
           </Stack>
         </Stack>
 
-        
+        <Stack gap="sm">
+            <Text fw={600}>Tags</Text>
+            <SimpleGrid cols={3}>
+
+              <Paper withBorder p="sm" radius="md">
+                <Text size="sm" mt={4}>tag 1</Text>
+              </Paper>
+              <Paper withBorder p="sm" radius="md">
+                <Text size="sm" mt={4}>tag 2</Text>
+              </Paper>
+              <Paper withBorder p="sm" radius="md">
+                <Text size="sm" mt={4}>tag 3</Text>
+              </Paper>
+              <Paper withBorder p="sm" radius="md">
+                <Text size="sm" mt={4}>tag 4</Text>
+              </Paper>
+            </SimpleGrid>
+          </Stack>
         
         <Stack gap="xs">
           <Text size="sm" ta="left">Reviews you may also like:</Text>
