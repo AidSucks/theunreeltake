@@ -2,22 +2,6 @@ import { useEditor } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import { RichTextEditor } from '@mantine/tiptap';
 
-/*
-INSTRUCTIONS:
-
-Put this in the imports section:
-  import {SiteTextEditor} from "@/app/ui/admin/SiteTextEditor"
-
-Put this variable in the page you want the rich text editor. This function runs on a change to the editor: 
-  const handleEditorChange = (value: string) => {
-      console.log('This is the HTML now: ', value);
-    }  
-
-Put this where you want the rich text editor:
-  <SiteTextEditor value={"Inital Text"} onChange={handleEditorChange}/>
-*/
-
-
 interface RichTextEditorProps {
   value: string;
   onChange: (value: string) => void;
@@ -27,6 +11,7 @@ export function SiteTextEditor({
   value,
   onChange,
 }: RichTextEditorProps) {
+
   const editor = useEditor({
     immediatelyRender: false,
     extensions: [StarterKit],

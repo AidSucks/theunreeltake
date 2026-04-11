@@ -1,9 +1,3 @@
-/*
-Template for the Grid post
-    Can change
-        icon: size, color, position etc..
-        card: padding, shadow, etc..
-*/
 
 "use client"
 
@@ -27,6 +21,7 @@ export function GridPostCard({ imageSrc, icon_1: EditIcon, icon_2: ChatIcon, ico
             <Card.Section>
                 <Box style={{ position: 'relative' }}>
                     <Image
+                        alt={"Post Card"}
                         radius={"md"}
                         h={"300"} 
                         src={imageSrc} />
