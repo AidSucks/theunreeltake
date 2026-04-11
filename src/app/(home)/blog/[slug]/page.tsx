@@ -1,6 +1,6 @@
 
 import films from "@/../public/film.json";
-import { Title, Grid, GridCol,Image,Text,Divider,Group,Stack, Textarea, ScrollArea, Box, Flex, Paper, UnstyledButton } from "@mantine/core";
+import { Title, Grid, GridCol,Image,Text,Divider,Group,Stack, Textarea, ScrollArea, Box, Flex, Paper, UnstyledButton, SimpleGrid } from "@mantine/core";
 
 export default async function BlogPostPage(
   {
@@ -86,16 +86,51 @@ export default async function BlogPostPage(
       
       
       <Group justify="space-between" align="flex-start">
-        <Textarea 
-        w={600} 
-        label="Review the Review"
-        placeholder="Start Here"
-        autosize
-        minRows={2}
-        />
+        <Stack gap="xs">
+          <Textarea 
+          w={600} 
+          label="Review the Review"
+          placeholder="Start Here"
+          autosize
+          minRows={2}
+          />
+          <Stack gap="sm">
+            <Text fw={600}>Comments</Text>
+            <SimpleGrid cols={3}>
+
+              <Paper withBorder p="sm" radius="md">
+                <Text fw={500} size="sm">John Doe</Text>
+                <Text size="xs" c="dimmed">2 days ago</Text>
+
+                <Text size="sm" mt={4}>This movie was really good.</Text>
+              </Paper>
+              <Paper withBorder p="sm" radius="md">
+                <Text fw={500} size="sm">John Doe</Text>
+                <Text size="xs" c="dimmed">2 days ago</Text>
+
+                <Text size="sm" mt={4}>This movie was really good.</Text>
+              </Paper>
+              <Paper withBorder p="sm" radius="md">
+                <Text fw={500} size="sm">John Doe</Text>
+                <Text size="xs" c="dimmed">2 days ago</Text>
+
+                <Text size="sm" mt={4}>This movie was really good.</Text>
+              </Paper>
+              <Paper withBorder p="sm" radius="md">
+                <Text fw={500} size="sm">John Doe</Text>
+                <Text size="xs" c="dimmed">2 days ago</Text>
+
+                <Text size="sm" mt={4}>This movie was really good.</Text>
+              </Paper>
+            </SimpleGrid>
+          </Stack>
+        </Stack>
+
+        
+        
         <Stack gap="xs">
           <Text size="sm" ta="left">Reviews you may also like:</Text>
-          <ScrollArea  maw={800} w="100%" mx="auto" scrollbars="x">
+          <ScrollArea  maw={800} mx="auto">
             <Flex gap="md">
               <UnstyledButton>
                 <Paper w={180} h={220} withBorder radius="md" p="sm">
