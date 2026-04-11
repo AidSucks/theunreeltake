@@ -1,21 +1,25 @@
 'use client'; 
 
 import { 
-  TextInput, Select, Checkbox, Textarea, 
+  TextInput, Select, Checkbox,
   Button, Group, Title, Stack, Box 
 } from '@mantine/core';
 import { useForm } from '@mantine/form';
+import { DeletePostModal } from "@/app/ui/admin/DeletePostModal";
+import { useDisclosure } from "@mantine/hooks";
+import { useRouter } from "next/navigation";
+import {deletePost, savePost} from "@/lib/actions";
 import {SiteTextEditor} from "@/app/ui/admin/SiteTextEditor"
 
 
-export default function EditPostForm({fullReviewData} : {fullReviewData: {id: string, slug: string, 
+export default function EditPostForm({fullReviewData} : {fullReviewData: {id: string, slug: string,
     title: string, mediaType: string, published: boolean, content: string} | undefined})
 {
     const MEDIA_TYPES = ['Movie', 'TV Show', 'Book', 'Game', 'Music'];
 
     const handleEditorChange = (value: string) => {
         console.log('This is the HTML now: ', value);
-        }  
+        }
 
     interface FormValues {
     slug: string;
@@ -25,6 +29,9 @@ export default function EditPostForm({fullReviewData} : {fullReviewData: {id: st
     content: string;
     }
 
+
+    const [opened, { open, close }] = useDisclosure(false);
+    const router = useRouter();
 
     const form = useForm<FormValues>({
         initialValues: {
@@ -40,13 +47,26 @@ export default function EditPostForm({fullReviewData} : {fullReviewData: {id: st
         },
     });
 
-  const onSubmit = (values: FormValues) => {
-    console.log('Form submitted:', values);
+  const onSubmit = async (values: FormValues) => {
+    await savePost(fullReviewData?.id ?? "", values.title, values.slug, values.mediaType, values.content);
   };
 
+  const handleDeleteConfirm = async () => {
+    await deletePost(fullReviewData?.id ?? "");
+    close();
+    router.push('/dashboard/posts');
+  }
+
   return (
+    <>
+    <DeletePostModal
+        opened={opened}
+        onClose={close}
+        onConfirm={handleDeleteConfirm}
+      />
+
     <Box maw={800}>
-      
+
       <Title order={1} mb="xl">Edit Post</Title>
 
       <form onSubmit={form.onSubmit(onSubmit)}>
@@ -80,10 +100,11 @@ export default function EditPostForm({fullReviewData} : {fullReviewData: {id: st
           <Group mt="xl">
             <Button type="submit" color="dark">Save Changes</Button>
             <Button variant="filled" color="dark">Send to Draft</Button>
-            <Button variant="filled" color="red">Delete Post</Button>
+            <Button variant="filled" color="red" onClick={open}>Delete Post</Button>
           </Group>
         </Stack>
       </form>
     </Box>
+    </>
   );
 }

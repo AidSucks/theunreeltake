@@ -1,5 +1,7 @@
 "use client";
 
+import { PostScalarFieldEnum } from "@/generated/prisma/internal/prismaNamespace";
+import { deletePost } from "@/lib/actions";
 import { Modal, Button, Group, Text } from "@mantine/core";
 
 interface DeletePostModalProps {
@@ -8,7 +10,7 @@ interface DeletePostModalProps {
   onConfirm: () => void;
 }
 
-export function DeletePostModal({ opened, onClose, onConfirm }: DeletePostModalProps) {
+export function DeletePostModal({ opened, onClose, onConfirm}: DeletePostModalProps) {
   return (
     <Modal 
       opened={opened} 

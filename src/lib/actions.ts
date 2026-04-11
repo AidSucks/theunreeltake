@@ -188,3 +188,42 @@ export async function getAllUsers(Id?: string) {
     return null;
   }
 }
+
+export async function deletePost(id:string)
+{
+  console.log("deleting post with id: ", id);
+  try
+  {
+    await prisma.post.delete({
+      where:{
+        id: id,
+      }
+    });
+
+    return { error: null, success: true};
+  } catch (error) {
+    return { error: "Failed to delete post", success: false };
+  }
+}
+
+export async function savePost(id:string, title:string, slug:string, mediaType:string, content:string)
+{
+  console.log("saving post with id: ", id)
+  try
+  {
+    await prisma.post.update({
+      where: {
+        id: id,
+      },
+      data: {
+        title: title,
+        slug: slug,
+        htmlContent: content
+      }
+    });
+    return { error: null, success: true};
+  } catch (error) {
+    return { error: "Failed to save post", success: false };
+  }
+}
+

@@ -18,6 +18,7 @@ import {
   Input
 } from "@mantine/core";
 import { createNewPost } from "@/lib/actions";
+import { deletePost } from "@/lib/actions";
 import { CreatePostSchema } from "@/lib/schemas";
 import {SiteTextEditor} from "@/app/ui/admin/SiteTextEditor"
 
@@ -49,7 +50,7 @@ export function CreatePostForm() {
     }
   };
 
-  const handleDeleteConfirm = () => {
+  const handleDeleteConfirm = async () => {
     // TODO: delete from database
     close();
     router.push('/dashboard/posts');
