@@ -96,3 +96,33 @@ export const InviteUserSchema = z.object({
     .min(1, { message: "Required" })
     .max(255, { message: "Email is too long" })
 });
+
+export const ChangeUsernameSchema = z.object({
+  username: z
+    .string()
+    .min(3, "Username must be at least 3 characters")
+    .max(128, "Username must be less than 128 characters")
+    .regex(
+      /^[a-zA-Z0-9_-]+$/,
+      "Username can only contain letters, numbers, underscores, and hyphens"
+    ),
+});
+
+export type ChangeUsernameForm = z.infer<typeof ChangeUsernameSchema>;
+
+export const CreatePostSchema = z.object({
+  title: z
+    .string()
+    .min(1, "Title is required")
+    .max(100, "Title is too long"),
+  slug: z
+    .string()
+    .min(1, "Slug is required")
+    .regex(/^[a-z0-9-]+$/, "Only lowercase letters, numbers, and dashes allowed"),
+  mediaType: z
+    .string()
+    .min(1, "Media Type is required"),
+  pageContent: z
+    .string()
+    .min(10, "Content must be at least 10 characters long"),
+});

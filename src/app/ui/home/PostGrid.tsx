@@ -25,7 +25,6 @@ export default function PostGrid(
   return (
     <Grid
       columns={12}
-      gutter={"lg"}
       p={{ base: "sm", md: "xl"}}
       type={"container"}
       breakpoints={{ xs: '320px', sm: '425px', md: '650px', lg: '900px', xl: '1300px' }}>

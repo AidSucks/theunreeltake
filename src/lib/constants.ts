@@ -3,8 +3,10 @@ import {
   Film,
   House,
   PersonCircle,
-  Send
+  Send,
+  CameraVideo
 } from "react-bootstrap-icons";
+
 
 export const maxTextInputLength = 100;
 export const maxTextAreaLength = 250;
@@ -41,7 +43,14 @@ export const publicRouteMetadata = [
     prefetch: true
   }
 ];
-
+export const navlinks = [
+    {
+        label: "Trivia", 
+        href: "/dashboard/trivia",
+        icon: CameraVideo, 
+        disabled: false,
+    }
+]
 export enum AllowedMediaType {
   Book = "Book",
   Movie = "Movie"

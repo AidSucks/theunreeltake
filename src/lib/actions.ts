@@ -2,7 +2,7 @@
 
 import {RequestForm} from "@/lib/schemas";
 import prisma from "@/lib/prisma";
-import { headers } from "next/headers";
+import {cookies, headers} from "next/headers";
 import { auth } from "@/lib/auth";
 import * as crypto from "node:crypto";
 import dayjs from "dayjs";
@@ -12,10 +12,6 @@ import { sendPasswordWasResetEmail } from "@/lib/emailer";
 
 export async function testRequestForm(data: RequestForm) {
   console.log(data);
-}
-
-export async function artificialLag(delayMs: number) {
-  await new Promise(resolve => setTimeout(resolve, delayMs));
 }
 
 function generateInvitationToken(): string {
@@ -119,3 +115,115 @@ export async function notifyPasswordChanged() {
     });
   }
 }
+
+export async function createNewPost(formData: { title: string, slug: string, mediaType: string, pageContent: string }) {
+  try {
+
+    const session = await auth.api.getSession({
+      headers: await headers()
+    });
+
+    if(!session || !session.user) {
+      return { error: "You must be logged in to create a post.", success: false };
+    }
+    await prisma.post.create({
+      data: {
+        title: formData.title,
+        slug: formData.slug,
+        htmlContent: formData.pageContent,
+        authorId: session.user.id,
+        tags: {
+          create: {
+            tag: {
+              create: {
+                type: "MediaType",
+                displayName: formData.mediaType,
+              }
+            }
+          }
+        }
+      }
+    });
+
+    return { error: null, success: true };
+  } catch (error) {
+    console.error("PRISMA DATABASE ERROR:", error);
+    return { error: "Failed to save post", success: false };
+  }
+}
+
+export async function createTriviaCookie() {
+
+  const cookieStore = await cookies();
+
+  cookieStore.set({
+    name: "unreel",
+    value: "",
+    priority: "low",
+    httpOnly: true,
+    sameSite: "strict",
+    expires: dayjs(new Date()).add(1, "year").toDate()
+  });
+}
+
+export async function deleteUser(id : string){
+  try{
+      const deleteUser = await prisma.user.delete({
+        where: {id},
+      });
+    return {data: deleteUser, error: "none"};
+  } catch(e){
+    console.error("Database Error: ", e);
+    return {data: null, error: "User not found"};
+  }
+}
+
+export async function getAllUsers(Id?: string) {
+  try {
+    return await prisma.user.findMany({
+      where: Id ? { NOT: { id: Id } } : undefined,
+    });
+  } catch (e) {
+    console.error("Error fetching users:", e);
+    return null;
+  }
+}
+
+export async function deletePost(id:string)
+{
+  console.log("deleting post with id: ", id);
+  try
+  {
+    await prisma.post.delete({
+      where:{
+        id: id,
+      }
+    });
+
+    return { error: null, success: true};
+  } catch (error) {
+    return { error: "Failed to delete post", success: false };
+  }
+}
+
+export async function savePost(id:string, title:string, slug:string, mediaType:string, content:string)
+{
+  console.log("saving post with id: ", id)
+  try
+  {
+    await prisma.post.update({
+      where: {
+        id: id,
+      },
+      data: {
+        title: title,
+        slug: slug,
+        htmlContent: content
+      }
+    });
+    return { error: null, success: true};
+  } catch (error) {
+    return { error: "Failed to save post", success: false };
+  }
+}
+
