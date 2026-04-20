@@ -9,6 +9,7 @@ import dayjs from "dayjs";
 import {Verification} from "@/generated/prisma/client";
 import { sendInvitationEmail } from "@/lib/emailer";
 import { sendPasswordWasResetEmail } from "@/lib/emailer";
+import { revalidatePath } from "next/cache";
 
 export async function testRequestForm(data: RequestForm) {
   console.log(data);
@@ -171,6 +172,7 @@ export async function deleteUser(id : string){
       const deleteUser = await prisma.user.delete({
         where: {id},
       });
+    revalidatePath("/dashboard/users")
     return {data: deleteUser, error: "none"};
   } catch(e){
     console.error("Database Error: ", e);
