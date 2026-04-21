@@ -103,8 +103,8 @@ export const ChangeUsernameSchema = z.object({
     .min(3, "Username must be at least 3 characters")
     .max(128, "Username must be less than 128 characters")
     .regex(
-      /^[a-zA-Z0-9_-]+$/,
-      "Username can only contain letters, numbers, underscores, and hyphens"
+      /^[a-zA-Z0-9_-\s]+$/,
+      "Username can only contain letters, spaces, numbers, underscores, and hyphens"
     ),
 });
 
