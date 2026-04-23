@@ -1,6 +1,6 @@
-import reviews from "@/../public/review.json";
-import EditPostForm from "@/app/ui/admin/forms/EditPostForm";
-import { redirect } from 'next/navigation';
+import { PostForm } from "@/app/ui/admin/forms/PostForm";
+import prisma from "@/lib/prisma";
+import {redirect} from "next/navigation";
 
 export default async function EditPostPage({
     params
@@ -9,9 +9,23 @@ export default async function EditPostPage({
   }) {
 
   const { id } = await params;
-    
-  const fullReviewData = reviews.find((entry) => entry.id === id);
 
-  return <EditPostForm fullReviewData={fullReviewData}/>
-  
+  const data = await prisma.post.findUnique({ where: { id: id }, include: { tags: { include: { tag: true }, omit: { postId: true, tagId: true }} }});
+
+  if (!data) redirect("/dashboard/posts") 
+
+  const post = {
+    id: data.id,
+    title: data.title,
+    slug: data.slug,
+    htmlContent: data.htmlContent,
+    published: data.published,
+    mediaType: data.tags[0].tag.displayName
+  }
+
+  return (
+    <div>
+      <PostForm post={post}/>
+    </div>
+  )
 }

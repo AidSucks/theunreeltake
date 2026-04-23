@@ -26,7 +26,7 @@ interface PostProp {
   id: string;
   title: string;
   slug: string;
-  content: string;
+  htmlContent: string;
   published: boolean;
   mediaType: string; 
 }
@@ -43,7 +43,7 @@ export function PostForm({ post }: { post?: PostProp | null }) {
       title: post?.title || "",
       slug: post?.slug || "",
       mediaType: post?.mediaType || "",
-      pageContent: post?.content || ""
+      pageContent: post?.htmlContent || ""
     },
     validate: zod4Resolver(CreatePostSchema),
     validateInputOnChange: true,
