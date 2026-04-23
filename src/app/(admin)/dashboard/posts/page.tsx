@@ -1,11 +1,81 @@
 "use client"
 
-import { Button, Flex, TextInput, ActionIcon, Pagination, Grid, Group} from "@mantine/core";
+import { Flex, TextInput, ActionIcon, Pagination, Group} from "@mantine/core";
 import { Search, Funnel, Filter, ArrowClockwise, PencilSquare, Chat, Trash, BarChart } from "react-bootstrap-icons"
-import { GridPostCard } from "./gridPost";
+import { PostGrid } from "../../../ui/admin/AdminPostGrid";
 import { NewPostButton } from "@/app/ui/admin/NewPostButton";
+import React, { useState } from "react";
 
 export default function DashboardPostsPage() {
+    const [page, setPage] = useState(1)
+    // Placeholder posts data
+    // Testing Pagination as well 10 per page
+    const [posts, setPosts] = useState([
+    {
+        id: "1",
+        imageSrc: "https://placehold.co/600x800?text=Placeholder",
+    },
+    {
+        id: "2",
+        imageSrc: "https://placehold.co/600x800?text=Placeholder",
+    },
+    {
+        id: "3",
+        imageSrc: "https://placehold.co/600x800?text=Placeholder",
+    },
+    {
+        id: "4",
+        imageSrc: "https://placehold.co/600x800?text=Placeholder",
+    },
+    {
+        id: "5",
+        imageSrc: "https://placehold.co/600x800?text=Placeholder",
+    },
+    {
+        id: "6",
+        imageSrc: "https://placehold.co/600x800?text=Placeholder",
+    },
+    {
+        id: "7",
+        imageSrc: "https://placehold.co/600x800?text=Placeholder",
+    },
+    {
+        id: "8",
+        imageSrc: "https://placehold.co/600x800?text=Placeholder",
+    },
+    {
+        id: "9",
+        imageSrc: "https://placehold.co/600x800?text=Placeholder",
+    },
+    {
+        id: "10",
+        imageSrc: "https://placehold.co/600x800?text=Placeholder",
+    },
+    {
+        id: "11",
+        imageSrc: "https://placehold.co/600x800?text=Placeholder",
+    },
+    {
+        id: "12",
+        imageSrc: "https://placehold.co/600x800?text=Placeholder",
+    },
+    ]);
+
+    const nextPage = () => setPage(prev => prev + 1)
+    const prevPage = () => setPage(prev => prev - 1)
+    const postsPerPage = 10;
+    const totalPages = Math.ceil(posts.length / postsPerPage)
+    const paginatedPosts = posts.slice(
+        (page - 1) * postsPerPage, page * postsPerPage
+    );
+
+    const icons = {
+        Edit: PencilSquare,
+        Chat: Chat,
+        Stats: BarChart,
+        Delete: Trash,
+    };
+
     return(
         <div style={{ padding: "0 40px" }}>
             <h1>Your Posts</h1>
@@ -18,7 +88,7 @@ export default function DashboardPostsPage() {
                         size={"xs"}  
                         radius={"md"} 
                         placeholder={"Search"}
-                        rightSection={<Search size={16}/>}
+                        rightSection={<Search size={ 16 }/>}
                     ></TextInput>
                     <ActionIcon 
                         variant={"light"}
@@ -50,94 +120,14 @@ export default function DashboardPostsPage() {
 
                 <Flex
                     style={{ marginTop: '32px' }}>
-                    <Grid>
-                        <Grid.Col
-                            span={{ base: 12, md: 6, lg: 3 }}
-                            >
-                            <GridPostCard 
-                                imageSrc="https://placehold.co/600x800?text=Placeholder"
-                                icon_1={PencilSquare} 
-                                icon_2={Chat}
-                                icon_3={BarChart}
-                                icon_4={Trash} />
-                        </Grid.Col>
-                        <Grid.Col
-                            span={{ base: 12, md: 6, lg: 3 }}
-                            >
-                            <GridPostCard 
-                                imageSrc="https://placehold.co/600x800?text=Placeholder"
-                                icon_1={PencilSquare} 
-                                icon_2={Chat}
-                                icon_3={BarChart}
-                                icon_4={Trash} />
-                        </Grid.Col>
-                        <Grid.Col
-                            span={{ base: 12, md: 6, lg: 3 }}
-                            >
-                            <GridPostCard 
-                                imageSrc="https://placehold.co/600x800?text=Placeholder"
-                                icon_1={PencilSquare} 
-                                icon_2={Chat}
-                                icon_3={BarChart}
-                                icon_4={Trash} />
-                        </Grid.Col>
-                        <Grid.Col
-                            span={{ base: 12, md: 6, lg: 3 }}
-                            >
-                            <GridPostCard 
-                                imageSrc="https://placehold.co/600x800?text=Placeholder"
-                                icon_1={PencilSquare} 
-                                icon_2={Chat}
-                                icon_3={BarChart}
-                                icon_4={Trash} />
-                        </Grid.Col>
-                        <Grid.Col
-                            span={{ base: 12, md: 6, lg: 3 }}
-                            >
-                            <GridPostCard 
-                                imageSrc="https://placehold.co/600x800?text=Placeholder"
-                                icon_1={PencilSquare} 
-                                icon_2={Chat}
-                                icon_3={BarChart}
-                                icon_4={Trash} />
-                        </Grid.Col>
-                        <Grid.Col
-                            span={{ base: 12, md: 6, lg: 3 }}
-                            >
-                            <GridPostCard 
-                                imageSrc="https://placehold.co/600x800?text=Placeholder"
-                                icon_1={PencilSquare} 
-                                icon_2={Chat}
-                                icon_3={BarChart}
-                                icon_4={Trash} />
-                        </Grid.Col>
-                        <Grid.Col
-                            span={{ base: 12, md: 6, lg: 3 }}
-                            >
-                            <GridPostCard 
-                                imageSrc="https://placehold.co/600x800?text=Placeholder"
-                                icon_1={PencilSquare} 
-                                icon_2={Chat}
-                                icon_3={BarChart}
-                                icon_4={Trash} />
-                        </Grid.Col>
-                        <Grid.Col
-                            span={{ base: 12, md: 6, lg: 3 }}
-                            >
-                            <GridPostCard 
-                                imageSrc="https://placehold.co/600x800?text=Placeholder"
-                                icon_1={PencilSquare} 
-                                icon_2={Chat}
-                                icon_3={BarChart}
-                                icon_4={Trash} />
-                        </Grid.Col>
-                    </Grid>
-                    
+                    <PostGrid data={paginatedPosts} icons={icons} />
                 </Flex>
+
                     <Pagination 
-                        total={15} 
+                        total={totalPages} 
                         siblings={1} 
-                        defaultValue={1} 
+                        value={page}
+                        onChange={setPage}
                         color={"gray"}
                         style={{
                             marginTop: 32,
