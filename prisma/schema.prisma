@@ -1,3 +1,4 @@
+
 generator client {
   provider = "prisma-client"
   output   = "../src/generated/prisma"
@@ -10,36 +11,41 @@ datasource db {
 model User {
   id            String    @id
   name          String
-  email         String    @unique
+  email         String
   emailVerified Boolean
   image         String?
   createdAt     DateTime
   updatedAt     DateTime
-  banExpires    DateTime?
-  banReason     String?
-  banned        Boolean?  @default(false)
-  role          String?
+
+  sessions      Session[]
   accounts      Account[]
   posts         Post[]
-  sessions      Session[]
 
+  role       String?
+  banned     Boolean?  @default(false)
+  banReason  String?
+  banExpires DateTime?
+
+  @@unique([email])
   @@map("user")
 }
 
 model Session {
-  id             String   @id
-  expiresAt      DateTime
-  token          String   @unique
-  createdAt      DateTime
-  updatedAt      DateTime
-  ipAddress      String?
-  userAgent      String?
-  userId         String
-  impersonatedBy String?
-  user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id        String   @id
+  expiresAt DateTime
+  token     String
+  createdAt DateTime
+  updatedAt DateTime
+  ipAddress String?
+  userAgent String?
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  @@index([userId])
+  impersonatedBy String?
+
+  @@unique([token])
   @@map("session")
+  @@index([userId])
 }
 
 model Account {
@@ -47,6 +53,7 @@ model Account {
   accountId             String
   providerId            String
   userId                String
+  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
   accessToken           String?
   refreshToken          String?
   idToken               String?
@@ -56,10 +63,9 @@ model Account {
   password              String?
   createdAt             DateTime
   updatedAt             DateTime
-  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  @@index([userId])
   @@map("account")
+  @@index([userId])
 }
 
 model Verification {
@@ -70,41 +76,53 @@ model Verification {
   createdAt  DateTime?
   updatedAt  DateTime?
 
-  @@index([identifier])
   @@map("verification")
+  @@index([identifier])
 }
 
 model Post {
-  id          String       @id @default(uuid(7))
-  slug        String       @unique
+  id          String      @id @default(uuid(7))
+  slug        String      @unique
   title       String
   posterUrl   String?
   htmlContent String
-  published   Boolean      @default(false)
+  published   Boolean     @default(false)
+
   imageUrls   String[]
-  createdAt   DateTime     @default(now())
-  updatedAt   DateTime     @updatedAt
-  authorId    String
   tags        TagsOnPost[]
-  author      User         @relation(fields: [authorId], references: [id], onDelete: Cascade)
+
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+
+  author      User        @relation(fields:[authorId], references: [id], onDelete: Cascade)
+  authorId    String
 
   @@map("post")
 }
 
 model Tag {
-  id          Int          @id @default(autoincrement())
+  id          Int         @id @default(autoincrement())
   type        String
   displayName String
+
   posts       TagsOnPost[]
 
   @@map("tag")
 }
 
 model TagsOnPost {
-  postId String
-  tagId  Int
-  post   Post   @relation(fields: [postId], references: [id], onDelete: Cascade)
-  tag    Tag    @relation(fields: [tagId], references: [id], onDelete: Cascade)
-
+  post    Post    @relation(fields: [postId], references: [id], onDelete: Cascade)
+  postId  String
+  tag     Tag     @relation(fields: [tagId], references: [id], onDelete: Cascade)
+  tagId   Int
   @@id([postId, tagId])
+}
+
+model Request {
+  id      String    @id @default(uuid(7))
+  email   String
+  title   String
+  type    String?
+  name    String?
+  message String?
 }
