@@ -9,6 +9,7 @@ import dayjs from "dayjs";
 import {Verification} from "@/generated/prisma/client";
 import { sendInvitationEmail } from "@/lib/emailer";
 import { sendPasswordWasResetEmail } from "@/lib/emailer";
+import {revalidatePath} from "next/cache";
 
 export async function testRequestForm(data: RequestForm) {
   console.log(data);
@@ -224,6 +225,19 @@ export async function savePost(id:string, title:string, slug:string, mediaType:s
     return { error: null, success: true};
   } catch (error) {
     return { error: "Failed to save post", success: false };
+  }
+}
+
+export async function deleteTag(id: number) {
+
+  try {
+    await prisma.tag.delete({where: {id: id}});
+
+    revalidatePath("/dashboard/tags");
+    return { error : null, success: true };
+
+  } catch (error) {
+    return { error: error, success: false };
   }
 }
 
