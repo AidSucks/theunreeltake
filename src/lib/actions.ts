@@ -230,3 +230,35 @@ export async function savePost(id:string, title:string, slug:string, mediaType:s
   }
 }
 
+export async function getDraftPosts() {
+  try {
+    const session = await auth.api.getSession({
+      headers: await headers()
+    });
+
+    if (!session || !session.user) {
+      return { success: false, data: [] };
+    }
+
+    const draftPosts = await prisma.post.findMany({
+      where: {
+        authorId: session.user.id,
+        published: false,
+      },
+      orderBy: {
+        updatedAt: 'desc'
+      }
+    });
+
+    const formattedDrafts = draftPosts.map((post) => ({
+      id: post.id,
+      imageSrc: post.posterUrl || "https://placehold.co/600x400?text=No+Poster",
+    }));
+
+    return { success: true, data: formattedDrafts };
+  } catch (error) {
+    console.error("Failed to fetch drafts:", error);
+    return { success: false, data: [] };
+  }
+}
+
