@@ -1,6 +1,6 @@
 "use server";
 
-import {RequestForm} from "@/lib/schemas";
+import {CreateTagFom, RequestForm} from "@/lib/schemas";
 import prisma from "@/lib/prisma";
 import {cookies, headers} from "next/headers";
 import { auth } from "@/lib/auth";
@@ -235,6 +235,23 @@ export async function deleteTag(id: number) {
 
     revalidatePath("/dashboard/tags");
     return { error : null, success: true };
+
+  } catch (error) {
+    return { error: error, success: false };
+  }
+}
+
+export async function createTag(tag: CreateTagFom) {
+
+  try {
+
+    await prisma.tag.create({
+      data: { displayName: tag.name, type: tag.type }
+    });
+
+    revalidatePath("/dashboard/tags");
+
+    return { error: null, success: true };
 
   } catch (error) {
     return { error: error, success: false };

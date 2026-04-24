@@ -55,3 +55,9 @@ export enum AllowedMediaType {
   Book = "Book",
   Movie = "Movie"
 }
+
+export enum AllowedTagType {
+  Category = "category",
+  Media = "media",
+  Informational = "informational"
+}

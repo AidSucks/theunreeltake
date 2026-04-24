@@ -4,7 +4,7 @@ import * as z from "zod";
 import {
   AllowedMediaType,
   maxTextInputLength,
-  maxTextAreaLength
+  maxTextAreaLength, AllowedTagType
 } from "@/lib/constants";
 
 export type CatalogItem = z.infer<typeof CatalogItemSchema>;
@@ -16,6 +16,7 @@ export type ForgotPasswordForm = z.infer<typeof ForgotPasswordSchema>;
 export type ResetPasswordForm = z.infer<typeof ResetPasswordSchema>;
 export type InviteUserForm = z.infer<typeof InviteUserSchema>;
 export type RegisterUserForm = z.infer<typeof RegisterUserSchema>;
+export type CreateTagFom = z.infer<typeof CreateTagSchema>;
 
 const httpUrl = z.url({
   protocol: /^https?$/,
@@ -126,3 +127,11 @@ export const CreatePostSchema = z.object({
     .string()
     .min(10, "Content must be at least 10 characters long"),
 });
+
+export const CreateTagSchema = z.object({
+  name: z
+    .string()
+    .min(3, "Display name must be at least 3 characters.")
+    .max(128, "Display name must be less than 128 characters."),
+  type: z.enum(AllowedTagType)
+})
