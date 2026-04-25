@@ -113,7 +113,16 @@ model Tag {
 model TagsOnPost {
   post    Post    @relation(fields: [postId], references: [id], onDelete: Cascade)
   postId  String
-  tag     Tag     @relation(fields: [tagId], references: [id])
+  tag     Tag     @relation(fields: [tagId], references: [id], onDelete: Cascade)
   tagId   Int
   @@id([postId, tagId])
+}
+
+model Request {
+  id      String    @id @default(uuid(7))
+  email   String
+  title   String
+  type    String?
+  name    String?
+  message String?
 }
