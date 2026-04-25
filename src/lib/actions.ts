@@ -260,44 +260,14 @@ export async function createTag(tag: CreateTagFom) {
   }
 }
 
-export async function deleteTag(id: number) {
-
-  try {
-    await prisma.tag.delete({where: {id: id}});
-
-    revalidatePath("/dashboard/tags");
-    return { error : null, success: true };
-
-  } catch (error) {
-    return { error: error, success: false };
-  }
-}
-
-export async function createTag(tag: CreateTagFom) {
-
-  try {
-
-    await prisma.tag.create({
-      data: { displayName: tag.name, type: tag.type }
-    });
-
-    revalidatePath("/dashboard/tags");
-
-    return { error: null, success: true };
-
-  } catch (error) {
-    return { error: error, success: false };
-  }
-}
-
 export async function submitRequestForm(data: RequestForm){
   try{
-    await prisma.mediaRequest.create({
+    await prisma.request.create({
       data: {
 				email: data.email,
-				mediaTitle: data.title,
-				requestContent: data.message ?? "",
-				mediaType: data.mediaType,
+				title: data.title,
+				message: data.message ?? "",
+				type: data.mediaType,
 				name: data.name ?? null,
 			},
         });
@@ -310,20 +280,57 @@ export async function submitRequestForm(data: RequestForm){
 }
 
 export async function getAllMediaRequests() {
-  return await prisma.mediaRequest.findMany({
-    orderBy: { submittedAt: "desc" },
+  return await prisma.request.findMany({
+    orderBy: { name: "desc" },
   });
 }
 
 export async function searchMediaRequests(query: string) {
-  return await prisma.mediaRequest.findMany({
+  return await prisma.request.findMany({
     where: {
       OR: [
-        { mediaTitle: { contains: query, mode: "insensitive" } },
-        { requestContent: { contains: query, mode: "insensitive" } },
+        { title: { contains: query, mode: "insensitive" } },
+        { message: { contains: query, mode: "insensitive" } },
         { email: { contains: query, mode: "insensitive" } },
       ],
     },
-    orderBy: { submittedAt: "desc" },
+    orderBy: { name: "desc" },
+  });
+}
+
+export async function getMediaRequests({
+  page = 1,
+  limit = 12,
+  search = "",
+}) {
+  const skip = (page - 1) * limit;
+
+  return prisma.request.findMany({
+    where: search
+      ? {
+          OR: [
+            { title: { contains: search, mode: "insensitive" } },
+            { email: { contains: search, mode: "insensitive" } },
+            { name: { contains: search, mode: "insensitive" } },
+          ],
+        }
+      : {},
+    skip,
+    take: limit,
+    orderBy: { name: "desc" },
+  });
+}
+
+export async function getMediaRequestCount(search = "") {
+  return prisma.request.count({
+    where: search
+      ? {
+          OR: [
+            { title: { contains: search, mode: "insensitive" } },
+            { email: { contains: search, mode: "insensitive" } },
+            { name: { contains: search, mode: "insensitive" } },
+          ],
+        }
+      : {},
   });
 }
