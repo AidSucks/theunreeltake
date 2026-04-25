@@ -10,6 +10,7 @@ import {Verification} from "@/generated/prisma/client";
 import { sendInvitationEmail } from "@/lib/emailer";
 import { sendPasswordWasResetEmail } from "@/lib/emailer";
 import { revalidatePath } from "next/cache";
+import { success } from "zod";
 
 export async function testRequestForm(data: RequestForm) {
   console.log(data);
@@ -259,3 +260,70 @@ export async function createTag(tag: CreateTagFom) {
   }
 }
 
+export async function deleteTag(id: number) {
+
+  try {
+    await prisma.tag.delete({where: {id: id}});
+
+    revalidatePath("/dashboard/tags");
+    return { error : null, success: true };
+
+  } catch (error) {
+    return { error: error, success: false };
+  }
+}
+
+export async function createTag(tag: CreateTagFom) {
+
+  try {
+
+    await prisma.tag.create({
+      data: { displayName: tag.name, type: tag.type }
+    });
+
+    revalidatePath("/dashboard/tags");
+
+    return { error: null, success: true };
+
+  } catch (error) {
+    return { error: error, success: false };
+  }
+}
+
+export async function submitRequestForm(data: RequestForm){
+  try{
+    await prisma.mediaRequest.create({
+      data: {
+				email: data.email,
+				mediaTitle: data.title,
+				requestContent: data.message ?? "",
+				mediaType: data.mediaType,
+				name: data.name ?? null,
+			},
+        });
+    return{e: null, success: true};
+    }
+    catch(e){
+      return {e: "Failed to submit form", success: false}
+    }
+
+}
+
+export async function getAllMediaRequests() {
+  return await prisma.mediaRequest.findMany({
+    orderBy: { submittedAt: "desc" },
+  });
+}
+
+export async function searchMediaRequests(query: string) {
+  return await prisma.mediaRequest.findMany({
+    where: {
+      OR: [
+        { mediaTitle: { contains: query, mode: "insensitive" } },
+        { requestContent: { contains: query, mode: "insensitive" } },
+        { email: { contains: query, mode: "insensitive" } },
+      ],
+    },
+    orderBy: { submittedAt: "desc" },
+  });
+}
