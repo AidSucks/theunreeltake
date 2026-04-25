@@ -12,7 +12,24 @@ interface CatalogParams {
 
 export interface PostPageData {
   totalCount: number;
-  pageItems: any[]; 
+  pageItems: CatalogItem[];
+}
+
+export interface CatalogItem {
+  slug: string,
+  title: string,
+  posterUrl: string | null,
+  createdAt: Date,
+  author: {
+    name: string
+  },
+  tags: {
+    tag: {
+      id: number,
+      displayName: string,
+      type: string
+    }
+  }[]
 }
 
 export async function GET(request: NextRequest) {
@@ -51,7 +68,7 @@ export async function GET(request: NextRequest) {
     orderByClause.push({ title: "asc" }); // Always alphabetized fallback
 
     // Execute Prisma Query and Count within a transaction for synchronization
-    const [totalCount, posts] = await prisma.$transaction([
+    const [totalCount, posts]: [number, CatalogItem[]] = await prisma.$transaction([
       prisma.post.count({ where: whereClause }),
       prisma.post.findMany({
         where: whereClause,
@@ -78,7 +95,7 @@ export async function GET(request: NextRequest) {
 
     // Return successfully fetched and optionally sorted records
     return NextResponse.json(
-      { totalCount, pageItems: posts } as PostPageData,
+      { totalCount: totalCount, pageItems: posts } as PostPageData,
       { status: 200 }
     );
   } catch (error) {

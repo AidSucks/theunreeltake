@@ -1,7 +1,7 @@
 'use client';
 
 import {Grid} from "@mantine/core";
-import {CatalogItem} from "@/lib/schemas";
+import {CatalogItem} from "@/app/api/catalog/route";
 import {MoviePostCard} from "@/app/ui/home/MoviePostCard";
 
 export default function PostGrid(

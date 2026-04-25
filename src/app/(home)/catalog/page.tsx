@@ -6,7 +6,7 @@ import PostGrid from "@/app/ui/home/PostGrid";
 import CatalogActionButtons from "@/app/ui/home/CatalogActionButtons";
 import { useCallback, useEffect, useState, useTransition, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
-import { CatalogItem } from "@/lib/schemas";
+import { CatalogItem } from "@/app/api/catalog/route";
 import RefreshDataButton from "@/app/ui/home/RefreshDataButton";
 import { PostPageData } from "@/app/api/catalog/route";
 import { allowedPostsPerPage } from "@/lib/constants";
