@@ -7,6 +7,7 @@ import {testRequestForm} from "@/lib/actions";
 import {useState} from "react";
 import {RequestFormSchema} from "@/lib/schemas";
 import {AllowedMediaType, maxTextAreaLength, maxTextInputLength} from "@/lib/constants";
+import { submitRequestForm } from "@/lib/actions";
 
 
 export function RequestForm() {
@@ -25,11 +26,15 @@ export function RequestForm() {
   });
 
   const [completed, setCompleted] = useState(false);
-
+  
   const handleSubmit = async (values: typeof form.values) => {
-    await testRequestForm(values);
-    //TODO implement backend logic
-    setCompleted(true);
+    try{
+        await submitRequestForm(values);
+        form.reset();
+        setCompleted(true);
+    }catch(e) {
+        console.error(e);
+    }
   }
 
   if(completed) {
