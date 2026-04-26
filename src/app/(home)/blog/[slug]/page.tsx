@@ -1,7 +1,8 @@
-
 import films from "@/../public/film.json";
-import { redirect } from 'next/navigation'
-import { Title, Grid, GridCol,Image,Text,Divider,Group,Stack, Textarea, ScrollArea, Box, Flex, Paper, UnstyledButton, SimpleGrid,  } from "@mantine/core";
+import prisma from "@/lib/prisma";
+import { redirect } from 'next/navigation';
+import Link from "next/link";
+import { Title, Grid, GridCol,Image,Text,Divider,Group,Stack, Textarea, ScrollArea, Box, Flex, Paper, UnstyledButton, SimpleGrid, Button,  } from "@mantine/core";
 
 export default async function BlogPostPage(
   {
@@ -15,11 +16,36 @@ export default async function BlogPostPage(
 
   const fullPostData = films.find((entry) => entry.slug === slug);
 
-  if (!fullPostData) return redirect ("/catalog");
+  const data = await prisma.post.findUnique({ where: { slug: slug }, include: { tags: { include: { tag: true }, omit: { postId: true, tagId: true }} }});
+
+  if (!data) redirect ("/catalog");
+
+  const tagElements = data.tags.map((value, index) => {
+    return(
+      <Button 
+      key = {index}
+      size = "sm"
+      mt={4}
+      onClick={async () => {
+        "use server"
+        let url: string = "/catalog/?tags="+value.tag.id;
+        redirect (url);
+      }}
+      >
+        {value.tag.displayName}
+      </Button>
+    );
+  });
+
+  async function whoosh(){
+    "use server"
+
+    redirect 
+  }
+
+  if (!fullPostData) redirect ("/catalog");
 
   return (
-
-
     <div>
     <Stack ta="center" gap="1">
       <Group justify="space-between" align="flex-start">
@@ -130,19 +156,7 @@ export default async function BlogPostPage(
         <Stack gap="sm">
             <Text fw={600}>Tags</Text>
             <SimpleGrid cols={3}>
-
-              <Paper withBorder p="sm" radius="md">
-                <Text size="sm" mt={4}>tag 1</Text>
-              </Paper>
-              <Paper withBorder p="sm" radius="md">
-                <Text size="sm" mt={4}>tag 2</Text>
-              </Paper>
-              <Paper withBorder p="sm" radius="md">
-                <Text size="sm" mt={4}>tag 3</Text>
-              </Paper>
-              <Paper withBorder p="sm" radius="md">
-                <Text size="sm" mt={4}>tag 4</Text>
-              </Paper>
+                {tagElements}
             </SimpleGrid>
           </Stack>
         

@@ -9,6 +9,7 @@ import dayjs from "dayjs";
 import {Verification} from "@/generated/prisma/client";
 import { sendInvitationEmail } from "@/lib/emailer";
 import { sendPasswordWasResetEmail } from "@/lib/emailer";
+import { success } from "zod";
 
 export async function testRequestForm(data: RequestForm) {
   console.log(data);
@@ -116,7 +117,7 @@ export async function notifyPasswordChanged() {
   }
 }
 
-export async function createNewPost(formData: { title: string, slug: string, mediaType: string, pageContent: string }) {
+export async function createNewPost(formData: { title: string, slug: string, mediaType: string, pageContent: string, published: boolean }) {
   try {
 
     const session = await auth.api.getSession({
@@ -131,6 +132,7 @@ export async function createNewPost(formData: { title: string, slug: string, med
         title: formData.title,
         slug: formData.slug,
         htmlContent: formData.pageContent,
+        published: formData.published,
         authorId: session.user.id,
         tags: {
           create: {
@@ -206,7 +208,7 @@ export async function deletePost(id:string)
   }
 }
 
-export async function savePost(id:string, title:string, slug:string, mediaType:string, content:string)
+export async function savePost(id:string, title:string, slug:string, mediaType:string, content:string, published: boolean)
 {
   console.log("saving post with id: ", id)
   try
@@ -218,7 +220,8 @@ export async function savePost(id:string, title:string, slug:string, mediaType:s
       data: {
         title: title,
         slug: slug,
-        htmlContent: content
+        htmlContent: content,
+        published: published
       }
     });
     return { error: null, success: true};
