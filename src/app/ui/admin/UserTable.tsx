@@ -1,10 +1,13 @@
 "use client"
 
-import { Box, Button, Stack, Table, Pagination, Badge, Group, Paper, Avatar , Modal, Text } from "@mantine/core";
-import { getAllUsers, deleteUser } from "@/lib/actions";
+import { Box, Button, Stack, Table, Pagination, Badge, Group, Paper, Avatar , Modal, Text, TextInput, Select} from "@mantine/core";
+import { getAllUsers, deleteUser, updateUser } from "@/lib/actions";
 import {useState, useContext, useTransition, useEffect} from "react"
 import {AuthContext} from "@/app/ui/admin/AuthContext";
 import {User} from "@/generated/prisma/client";
+import { zod4Resolver } from "mantine-form-zod-resolver";
+import { EditUserSchema } from "@/lib/schemas";
+import { useForm } from "@mantine/form";
 
 const PAGE_SIZE = 10;
 
@@ -15,6 +18,17 @@ export function UserTable() {
   const [isLoading, startTransition] = useTransition();
   const [selectedUserId, setSelectedUserId] = useState<string | null>(null);
   const [modalOpened, setModalOpened] = useState(false);
+  const [activeModal, setActiveModal] = useState<string | null>(null);
+    const form = useForm({
+      mode: "uncontrolled",
+      initialValues: {
+        name: "",
+        role: "",
+      },
+      validate: zod4Resolver(EditUserSchema),
+      validateInputOnChange: true,
+    });
+  
 
   const authContext = useContext(AuthContext);
 
@@ -52,7 +66,15 @@ export function UserTable() {
       </Table.Td>
       <Table.Td>
         <Group gap="xs">
-          <Button size="sm" variant="light">Edit</Button>
+          <Button 
+            size="sm" 
+            variant="light"
+            onClick={() => {
+              setSelectedUserId(user.id)
+              setModalOpened(true);
+              setActiveModal("edit")
+            }}
+            >Edit</Button>
           <Button size="sm" variant="light">Message</Button>
           <Button
             size="sm"
@@ -61,6 +83,7 @@ export function UserTable() {
             onClick={() => {
               setSelectedUserId(user.id)
               setModalOpened(true);
+              setActiveModal("delete")
           }}
           >
             Delete
@@ -72,14 +95,21 @@ export function UserTable() {
 
   return (
     <>
+    {activeModal == "delete" && (
       <Modal
         opened={modalOpened}
-        onClose={() => setModalOpened(false)}
+        onClose={() => {
+          setModalOpened(false);
+          setActiveModal(null);
+        }}
         title="Confirm Deletion"
       >
         <Text>Are you sure you want to delete this user?</Text>
         <Group mt="md">
-          <Button variant="default" onClick={() => setModalOpened(false)}>
+          <Button variant="default" onClick={() => {
+            setModalOpened(false);
+            setActiveModal(null);
+            }}>
             Cancel
           </Button>
           <Button
@@ -87,12 +117,66 @@ export function UserTable() {
             onClick={async () => {
               if (selectedUserId) await deleteUser(selectedUserId);
               setModalOpened(false);
+              setActiveModal(null);
             }}
           >
             Confirm
           </Button>
         </Group>
       </Modal>
+      )}
+
+      {activeModal == "edit" && (
+        <Modal
+          opened={modalOpened}
+          onClose={() => {
+            setModalOpened(false);
+            setActiveModal(null);
+          }}
+          title = "Edit User">
+          <TextInput
+            label = "Change Name"
+            placeholder = "Name"
+            {...form.getInputProps('name')}>
+            </TextInput>
+
+          <Select
+            label = "Change Role"
+            placeholder = "Role"
+            data={['Admin', 'User']}
+            {...form.getInputProps('role')}>
+            </Select>
+
+          <Button variant="default" onClick={() => {
+            setModalOpened(false);
+            setActiveModal(null);
+            }}>
+            Cancel
+          </Button>
+
+          <Button
+            onClick={async () => {
+              const validation = form.validate();
+              if (validation.hasErrors) return;
+
+              const { name, role } = form.getValues();
+              if (!selectedUserId) return;
+              const result = await updateUser(selectedUserId, name, role);
+              console.log(result);
+              if (!result.success) 
+              {
+                alert("Failed to update user");
+                return;
+              }
+              setModalOpened(false);
+              setActiveModal(null);
+            }}
+          >
+            Save
+          </Button>
+
+        </Modal>
+      )}
 
       <Box p="lg">
         <Stack style={{flex:1}} gap="md">

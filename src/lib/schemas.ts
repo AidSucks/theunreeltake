@@ -6,6 +6,7 @@ import {
   maxTextInputLength,
   maxTextAreaLength, AllowedTagType
 } from "@/lib/constants";
+import AdminDashboardLayout from "@/app/(admin)/dashboard/layout";
 
 export type CatalogItem = z.infer<typeof CatalogItemSchema>;
 export type RequestForm = z.infer<typeof RequestFormSchema>;
@@ -134,4 +135,17 @@ export const CreateTagSchema = z.object({
     .min(3, "Display name must be at least 3 characters.")
     .max(128, "Display name must be less than 128 characters."),
   type: z.enum(AllowedTagType)
+})
+
+export const EditUserSchema = z.object({
+  name: z
+    .string()
+    .min(3, "Username must be at least 3 characters")
+    .max(128, "Username must be less than 128 characters")
+    .regex(
+      /^[a-zA-Z0-9_\- ]+$/,
+      "Username can only contain letters, numbers, underscores, spaces and hyphens"
+    ),
+  role: z
+    .enum(["Admin", "User"])
 })

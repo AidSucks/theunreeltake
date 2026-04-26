@@ -10,6 +10,8 @@ import {Verification} from "@/generated/prisma/client";
 import { sendInvitationEmail } from "@/lib/emailer";
 import { sendPasswordWasResetEmail } from "@/lib/emailer";
 import {revalidatePath} from "next/cache";
+import { UsernameOptions } from "better-auth/plugins";
+import { string } from "zod";
 
 export async function testRequestForm(data: RequestForm) {
   console.log(data);
@@ -192,7 +194,6 @@ export async function getAllUsers(Id?: string) {
 
 export async function deletePost(id:string)
 {
-  console.log("deleting post with id: ", id);
   try
   {
     await prisma.post.delete({
@@ -209,7 +210,6 @@ export async function deletePost(id:string)
 
 export async function savePost(id:string, title:string, slug:string, mediaType:string, content:string)
 {
-  console.log("saving post with id: ", id)
   try
   {
     await prisma.post.update({
@@ -255,6 +255,27 @@ export async function createTag(tag: CreateTagFom) {
 
   } catch (error) {
     return { error: error, success: false };
+  }
+}
+
+export async function updateUser(id:string, name:string, role:string) 
+{
+  try{
+    await prisma.user.update({
+      where:{
+        id:id,
+      },
+      data: {
+        name: name,
+        role: role
+      }
+    });
+
+    revalidatePath("/dashboard/users");
+
+    return {error: null, success: true};
+  } catch (error) {
+    return {error: "Failed to update user",success:false};
   }
 }
 
