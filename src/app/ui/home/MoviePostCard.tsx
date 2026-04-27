@@ -15,7 +15,7 @@ import {
 
 import classes from "./MoviePostCard.module.css";
 
-import {CatalogItem} from "@/lib/schemas";
+import {CatalogItem} from "@/app/api/catalog/route";
 import {useElementSize} from "@mantine/hooks";
 import {Flip} from "@gfazioli/mantine-flip";
 import {useState} from "react";
@@ -70,12 +70,10 @@ export function MoviePostCard(
               <Stack align={"stretch"} h={"100%"} pb={"xs"} px={rem(width / 20)} gap={6}>
 
                 <Text size={rem(width / 10)} fw={"bold"} lineClamp={2}>{postData.title}</Text>
-                <Text size={rem(width / 12)} fw={"bold"}>({postData.releaseYear})</Text>
-                <Badge style={{fontSize: rem(width / 24), height: rem(width / 12), width: rem(width / 4), padding: 0}}>{postData.mediaType}</Badge>
+                <Badge style={{fontSize: rem(width / 24), height: rem(width / 12), width: rem(width / 4), padding: 0}}>{postData.tags[0].tag.displayName}</Badge>
 
-                <Text size={rem(width / 16)}>UnReel AR: {postData.rating.toFixed(1)}</Text>
-                <Text size={rem(width / 16)}>Written By: {postData.author}</Text>
-                <Text size={rem(width / 16)}>Posted: {dayjs(postData.datePosted).format("MMM D, YYYY")}</Text>
+                <Text size={rem(width / 16)}>Written By: {postData.author.name}</Text>
+                <Text size={rem(width / 16)}>Posted: {dayjs(postData.createdAt).format("MMM D, YYYY")}</Text>
 
 
 
