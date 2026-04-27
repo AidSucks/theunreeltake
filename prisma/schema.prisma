@@ -108,3 +108,12 @@ model TagsOnPost {
 
   @@id([postId, tagId])
 }
+
+model Trivia {
+  id          String    @id
+  question    String
+  answer      String
+  category    String
+  published   Boolean   @default(false)
+
+}
