@@ -1,6 +1,6 @@
 {
   "name": "the-unreel-take",
-  "version": "0.2.0",
+  "version": "0.4.0",
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",
@@ -48,7 +48,7 @@
     "eslint-config-next": "15.1.7",
     "eslint-plugin-react": "^7.37.5",
     "eslint-plugin-react-hooks": "^7.0.1",
-    "postcss": "^8.5.6",
+    "postcss": "8.5.10",
     "postcss-preset-mantine": "^1.18.0",
     "postcss-simple-vars": "^7.0.1",
     "prisma": "^7.2.0",

@@ -14,7 +14,6 @@ export default async function BlogPostPage(
 
   const { slug } = await params;
 
-  const fullPostData = films.find((entry) => entry.slug === slug);
 
   const data = await prisma.post.findUnique({ where: { slug: slug }, include: { tags: { include: { tag: true }, omit: { postId: true, tagId: true }} }});
 
@@ -28,7 +27,7 @@ export default async function BlogPostPage(
       mt={4}
       onClick={async () => {
         "use server"
-        let url: string = "/catalog/?tags="+value.tag.id;
+        const url: string = "/catalog?tags="+value.tag.id;
         redirect (url);
       }}
       >
@@ -37,13 +36,6 @@ export default async function BlogPostPage(
     );
   });
 
-  async function whoosh(){
-    "use server"
-
-    redirect 
-  }
-
-  if (!fullPostData) redirect ("/catalog");
 
   return (
     <div>
@@ -57,9 +49,8 @@ export default async function BlogPostPage(
         </Stack>
       </Group>
 
-      <Title size="80" > {fullPostData["Title"]}  </Title>
+      <Title size="80" > {data.title}  </Title>
 
-      <Text size="md">{fullPostData["Released"]} • {fullPostData["Rated"]} • {fullPostData["Runtime"]} • {fullPostData["Genre"]} • {fullPostData["Director"]} • {fullPostData["Country"]} • {fullPostData["Language"]}</Text>
       </Stack>
 
 
@@ -68,19 +59,19 @@ export default async function BlogPostPage(
         <GridCol span={2}><Image
           radius="md"
       
-          src={fullPostData.Images[0]}
+          src={null}
           />
         </GridCol>
         <GridCol span={2}><Image
           radius="md"
       
-          src={fullPostData.Images[1]}
+          src={null}
           />
         </GridCol>
         <GridCol span={2}><Image
           radius="md"
       
-          src={fullPostData.Images[2]}
+          src={null}
         />
         </GridCol>
       </Grid>
@@ -89,24 +80,7 @@ export default async function BlogPostPage(
 
       <Divider my="md" size={10} variant="dotted" />
 
-      <Text>Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis
-            convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer 
-            nunc posuere. Ut hendrerit semper vel class aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos.
-            Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus 
-            leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit 
-            semper vel class aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos.
-            Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus 
-            leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit 
-            semper vel class aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos.
-            Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus 
-            leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit 
-            semper vel class aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos.
-            Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus 
-            leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit 
-            semper vel class aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos.
-            Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus 
-            leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit 
-            semper vel class aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos.
+      <Text dangerouslySetInnerHTML={{__html: data.htmlContent}}>
       </Text>
       
       <Divider my="md" size={10} variant="dotted" />
