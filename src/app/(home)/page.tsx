@@ -1,8 +1,16 @@
 'use client';
 
 import {AspectRatio, Button, Center, Flex, Grid, Image, Stack, Text, Title, TextInput, Group} from "@mantine/core";
+import {HomeSearchBar} from "@/app/ui/home/HomeSearchBar";
+import {useState} from "react";
+import { useRouter } from "next/navigation"; 
 
 export default function HomePage() {
+  const router = useRouter();
+  const [page, setPage] = useState(1);
+  const handleSearch = (value: string) => {router.push(`/catalog?search=${value}`)};
+  
+
 
   return (
     <div style={{ padding: "0 40px" }}>
@@ -29,7 +37,9 @@ export default function HomePage() {
 
         <Grid.Col span={12}>
           <Flex h={"100%"} align={"center"} justify={"center"}>
-            <TextInput w={400} size="md" radius="lg" placeholder="Find what you're looking for" mb="xl" />
+            <HomeSearchBar 
+            onSearchAction={(value) => { handleSearch(value); setPage(1)}}
+            />
           </Flex>
         </Grid.Col>
 

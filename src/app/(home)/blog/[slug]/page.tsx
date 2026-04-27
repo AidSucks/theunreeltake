@@ -1,7 +1,8 @@
-
 import films from "@/../public/film.json";
-import { redirect } from 'next/navigation'
-import { Title, Grid, GridCol,Image,Text,Divider,Group,Stack, Textarea, ScrollArea, Box, Flex, Paper, UnstyledButton, SimpleGrid,  } from "@mantine/core";
+import prisma from "@/lib/prisma";
+import { redirect } from 'next/navigation';
+import Link from "next/link";
+import { Title, Grid, GridCol,Image,Text,Divider,Group,Stack, Textarea, ScrollArea, Box, Flex, Paper, UnstyledButton, SimpleGrid, Button,  } from "@mantine/core";
 
 export default async function BlogPostPage(
   {
@@ -13,13 +14,30 @@ export default async function BlogPostPage(
 
   const { slug } = await params;
 
-  const fullPostData = films.find((entry) => entry.slug === slug);
 
-  if (!fullPostData) return redirect ("/catalog");
+  const data = await prisma.post.findUnique({ where: { slug: slug }, include: { tags: { include: { tag: true }, omit: { postId: true, tagId: true }} }});
+
+  if (!data) redirect ("/catalog");
+
+  const tagElements = data.tags.map((value, index) => {
+    return(
+      <Button 
+      key = {index}
+      size = "sm"
+      mt={4}
+      onClick={async () => {
+        "use server"
+        const url: string = "/catalog?tags="+value.tag.id;
+        redirect (url);
+      }}
+      >
+        {value.tag.displayName}
+      </Button>
+    );
+  });
+
 
   return (
-
-
     <div>
     <Stack ta="center" gap="1">
       <Group justify="space-between" align="flex-start">
@@ -31,9 +49,8 @@ export default async function BlogPostPage(
         </Stack>
       </Group>
 
-      <Title size="80" > {fullPostData["Title"]}  </Title>
+      <Title size="80" > {data.title}  </Title>
 
-      <Text size="md">{fullPostData["Released"]} • {fullPostData["Rated"]} • {fullPostData["Runtime"]} • {fullPostData["Genre"]} • {fullPostData["Director"]} • {fullPostData["Country"]} • {fullPostData["Language"]}</Text>
       </Stack>
 
 
@@ -42,19 +59,19 @@ export default async function BlogPostPage(
         <GridCol span={2}><Image
           radius="md"
       
-          src={fullPostData.Images[0]}
+          src={null}
           />
         </GridCol>
         <GridCol span={2}><Image
           radius="md"
       
-          src={fullPostData.Images[1]}
+          src={null}
           />
         </GridCol>
         <GridCol span={2}><Image
           radius="md"
       
-          src={fullPostData.Images[2]}
+          src={null}
         />
         </GridCol>
       </Grid>
@@ -63,24 +80,7 @@ export default async function BlogPostPage(
 
       <Divider my="md" size={10} variant="dotted" />
 
-      <Text>Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis
-            convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer 
-            nunc posuere. Ut hendrerit semper vel class aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos.
-            Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus 
-            leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit 
-            semper vel class aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos.
-            Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus 
-            leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit 
-            semper vel class aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos.
-            Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus 
-            leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit 
-            semper vel class aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos.
-            Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus 
-            leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit 
-            semper vel class aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos.
-            Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus 
-            leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit 
-            semper vel class aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos.
+      <Text dangerouslySetInnerHTML={{__html: data.htmlContent}}>
       </Text>
       
       <Divider my="md" size={10} variant="dotted" />
@@ -130,19 +130,7 @@ export default async function BlogPostPage(
         <Stack gap="sm">
             <Text fw={600}>Tags</Text>
             <SimpleGrid cols={3}>
-
-              <Paper withBorder p="sm" radius="md">
-                <Text size="sm" mt={4}>tag 1</Text>
-              </Paper>
-              <Paper withBorder p="sm" radius="md">
-                <Text size="sm" mt={4}>tag 2</Text>
-              </Paper>
-              <Paper withBorder p="sm" radius="md">
-                <Text size="sm" mt={4}>tag 3</Text>
-              </Paper>
-              <Paper withBorder p="sm" radius="md">
-                <Text size="sm" mt={4}>tag 4</Text>
-              </Paper>
+                {tagElements}
             </SimpleGrid>
           </Stack>
         
