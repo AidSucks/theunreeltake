@@ -1,5 +1,11 @@
 import { useEditor } from '@tiptap/react';
+import Link from '@tiptap/extension-link';
 import StarterKit from '@tiptap/starter-kit';
+import Highlight from '@tiptap/extension-highlight';
+import TextAlign from '@tiptap/extension-text-align';
+import Superscript from '@tiptap/extension-superscript';
+import SubScript from '@tiptap/extension-subscript';
+
 import { RichTextEditor } from '@mantine/tiptap';
 
 interface RichTextEditorProps {
@@ -13,8 +19,16 @@ export function SiteTextEditor({
 }: RichTextEditorProps) {
 
   const editor = useEditor({
+    shouldRerenderOnTransaction: true,
     immediatelyRender: false,
-    extensions: [StarterKit],
+    extensions: [
+      StarterKit.configure({ link: false }),
+      Link,
+      Superscript,
+      SubScript,
+      Highlight,
+      TextAlign.configure({ types: ['heading', 'paragraph'] }),
+    ],
     content: value,
     onUpdate: ({ editor }) => {
       onChange(editor.getHTML());
