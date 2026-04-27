@@ -174,6 +174,7 @@ export async function deleteUser(id : string){
       const deleteUser = await prisma.user.delete({
         where: {id},
       });
+    revalidatePath("/dashboard/users")
     return {data: deleteUser, error: "none"};
   } catch(e){
     console.error("Database Error: ", e);
@@ -293,3 +294,77 @@ export async function getDraftPosts() {
   }
 }
 
+export async function submitRequestForm(data: RequestForm){
+  try{
+    await prisma.request.create({
+      data: {
+				email: data.email,
+				title: data.title,
+				message: data.message ?? "",
+				type: data.mediaType,
+				name: data.name ?? null,
+			},
+        });
+    return{e: null, success: true};
+    }
+    catch(e){
+      return {e: "Failed to submit form", success: false}
+    }
+
+}
+
+export async function getAllMediaRequests() {
+  return await prisma.request.findMany({
+    orderBy: { name: "desc" },
+  });
+}
+
+export async function searchMediaRequests(query: string) {
+  return await prisma.request.findMany({
+    where: {
+      OR: [
+        { title: { contains: query, mode: "insensitive" } },
+        { message: { contains: query, mode: "insensitive" } },
+        { email: { contains: query, mode: "insensitive" } },
+      ],
+    },
+    orderBy: { name: "desc" },
+  });
+}
+
+export async function getMediaRequests({
+  page = 1,
+  limit = 12,
+  search = "",
+}) {
+  const skip = (page - 1) * limit;
+
+  return prisma.request.findMany({
+    where: search
+      ? {
+          OR: [
+            { title: { contains: search, mode: "insensitive" } },
+            { email: { contains: search, mode: "insensitive" } },
+            { name: { contains: search, mode: "insensitive" } },
+          ],
+        }
+      : {},
+    skip,
+    take: limit,
+    orderBy: { name: "desc" },
+  });
+}
+
+export async function getMediaRequestCount(search = "") {
+  return prisma.request.count({
+    where: search
+      ? {
+          OR: [
+            { title: { contains: search, mode: "insensitive" } },
+            { email: { contains: search, mode: "insensitive" } },
+            { name: { contains: search, mode: "insensitive" } },
+          ],
+        }
+      : {},
+  });
+}

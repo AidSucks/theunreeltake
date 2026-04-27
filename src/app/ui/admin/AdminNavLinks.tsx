@@ -22,7 +22,7 @@ const data = [
   { link: '/dashboard/drafts', label: 'Drafts', icon: Journal, disabled: false},
   { link: '/dashboard/comments', label: 'Comments', icon: ChatLeftDots, disabled: true},
   { link: '/dashboard/trivia', label: 'Trivia', icon: CameraVideo, disabled: false},
-  { link: '/dashboard/requests', label: 'Requests', icon: Send, disabled: true},
+  { link: '/dashboard/requests', label: 'Requests', icon: Send, disabled: false},
   { link: '/dashboard/analytics', label: 'Analytics', icon: BarChartLine, disabled: true},
   { link: '/dashboard/tags', label: 'Tags', icon: Tag, disabled: false},
   { link: '/dashboard/users', label: 'Users', icon: People, disabled: false},

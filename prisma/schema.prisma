@@ -117,3 +117,11 @@ model Trivia {
   published   Boolean   @default(false)
 
 }
+model Request {
+  id      String    @id @default(uuid(7))
+  email   String
+  title   String
+  type    String?
+  name    String?
+  message String?
+}
