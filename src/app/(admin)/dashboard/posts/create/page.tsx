@@ -1,8 +1,8 @@
-import { CreatePostForm } from "@/app/ui/admin/forms/CreatePostForm";
+import { PostForm } from "@/app/ui/admin/forms/PostForm";
 export default function CreatePostPage() {
   return (
     <div>
-      <CreatePostForm/>
+      <PostForm/>
     </div>
   );
-}
+} 

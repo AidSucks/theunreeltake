@@ -10,6 +10,7 @@ import {Verification} from "@/generated/prisma/client";
 import { sendInvitationEmail } from "@/lib/emailer";
 import { sendPasswordWasResetEmail } from "@/lib/emailer";
 import {revalidatePath} from "next/cache";
+import { success } from "zod";
 
 export async function testRequestForm(data: RequestForm) {
   console.log(data);
@@ -117,7 +118,7 @@ export async function notifyPasswordChanged() {
   }
 }
 
-export async function createNewPost(formData: { title: string, slug: string, mediaType: string, pageContent: string }) {
+export async function createNewPost(formData: { title: string, slug: string, mediaType: string, pageContent: string, published: boolean }) {
   try {
 
     const session = await auth.api.getSession({
@@ -132,6 +133,7 @@ export async function createNewPost(formData: { title: string, slug: string, med
         title: formData.title,
         slug: formData.slug,
         htmlContent: formData.pageContent,
+        published: formData.published,
         authorId: session.user.id,
         tags: {
           create: {
@@ -207,7 +209,7 @@ export async function deletePost(id:string)
   }
 }
 
-export async function savePost(id:string, title:string, slug:string, mediaType:string, content:string)
+export async function savePost(id:string, title:string, slug:string, mediaType:string, content:string, published: boolean)
 {
   console.log("saving post with id: ", id)
   try
@@ -219,7 +221,8 @@ export async function savePost(id:string, title:string, slug:string, mediaType:s
       data: {
         title: title,
         slug: slug,
-        htmlContent: content
+        htmlContent: content,
+        published: published
       }
     });
     return { error: null, success: true};
@@ -255,6 +258,38 @@ export async function createTag(tag: CreateTagFom) {
 
   } catch (error) {
     return { error: error, success: false };
+  }
+}
+
+export async function getDraftPosts() {
+  try {
+    const session = await auth.api.getSession({
+      headers: await headers()
+    });
+
+    if (!session || !session.user) {
+      return { success: false, data: [] };
+    }
+
+    const draftPosts = await prisma.post.findMany({
+      where: {
+        authorId: session.user.id,
+        published: false,
+      },
+      orderBy: {
+        updatedAt: 'desc'
+      }
+    });
+
+    const formattedDrafts = draftPosts.map((post) => ({
+      id: post.id,
+      imageSrc: post.posterUrl || "https://placehold.co/600x400?text=No+Poster",
+    }));
+
+    return { success: true, data: formattedDrafts };
+  } catch (error) {
+    console.error("Failed to fetch drafts:", error);
+    return { success: false, data: [] };
   }
 }
 

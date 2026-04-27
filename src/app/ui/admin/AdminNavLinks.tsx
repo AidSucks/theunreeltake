@@ -19,7 +19,7 @@ import {usePathname} from "next/navigation";
 const data = [
   { link: '/dashboard', label: 'Dashboard', icon: House, disabled: false},
   { link: '/dashboard/posts', label: 'Posts', icon: FileRichtext, disabled: false},
-  { link: '/dashboard/drafts', label: 'Drafts', icon: Journal, disabled: true},
+  { link: '/dashboard/drafts', label: 'Drafts', icon: Journal, disabled: false},
   { link: '/dashboard/comments', label: 'Comments', icon: ChatLeftDots, disabled: true},
   { link: '/dashboard/trivia', label: 'Trivia', icon: CameraVideo, disabled: false},
   { link: '/dashboard/requests', label: 'Requests', icon: Send, disabled: true},
