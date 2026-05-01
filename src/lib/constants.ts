@@ -53,7 +53,10 @@ export const navlinks = [
 ]
 export enum AllowedMediaType {
   Book = "Book",
-  Movie = "Movie"
+  Movie = "Movie",
+  Tv_Show= "TV Show",
+  Game = "Game",
+  Music = "Music"
 }
 
 export enum AllowedTagType {
