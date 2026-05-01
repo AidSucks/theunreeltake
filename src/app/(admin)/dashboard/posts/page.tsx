@@ -5,6 +5,7 @@ import { Search, Funnel, Filter, ArrowClockwise, PencilSquare, Chat, Trash, BarC
 import { PostGrid } from "@/app/ui/admin/AdminPostGrid";
 import { NewPostButton } from "@/app/ui/admin/NewPostButton";
 import React, { useState } from "react";
+import { HomeSearchBar } from "@/app/ui/home/HomeSearchBar";
 
 export default function DashboardPostsPage() {
     const [page, setPage] = useState(1)
@@ -75,6 +76,11 @@ export default function DashboardPostsPage() {
         Stats: BarChart,
         Delete: Trash,
     };
+    const [search, setSearch] = useState("");
+    const handleSearch = (value: string) => {
+		setSearch(value);
+		setPage(1);
+	}
 
     return(
         <div style={{ padding: "0 40px" }}>
@@ -83,13 +89,11 @@ export default function DashboardPostsPage() {
                     justify={"space-between"}
                     gap={"md"}>
                     <Group>
-                    <TextInput 
-                        w={400} 
-                        size={"xs"}  
-                        radius={"md"} 
-                        placeholder={"Search"}
-                        rightSection={<Search size={ 16 }/>}
-                    ></TextInput>
+                    <Flex miw={500}>
+					<HomeSearchBar
+						onSearchAction={(value: string) => handleSearch(value)}
+					/>
+				    </Flex>
                     <ActionIcon 
                         variant={"light"}
                         color={"gray"}
