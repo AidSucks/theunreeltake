@@ -19,6 +19,7 @@ import { createNewPost, savePost } from "@/lib/actions";
 import { deletePost } from "@/lib/actions";
 import { CreatePostSchema } from "@/lib/schemas";
 import {SiteTextEditor} from "@/app/ui/admin/SiteTextEditor"
+import { AllowedMediaType } from "@/lib/constants";
 
 interface PostProp {
   id: string;
@@ -94,7 +95,7 @@ export function PostForm({ post }: { post?: PostProp | null }) {
 
           <Group grow align="flex-start">
             <TextInput label="Slug" placeholder="e.g., my-new-post" key="slug" {...form.getInputProps('slug')} />
-            <Select label="Media Type" placeholder="Select media type" data={['Movie', 'Book', 'TV Show', 'Game', 'Music']} key="mediaType" {...form.getInputProps('mediaType')} />
+            <Select label="Media Type" placeholder="Select media type" data={Object.values(AllowedMediaType)} key="mediaType" {...form.getInputProps('mediaType')} />
           </Group>
 
           <Input.Wrapper label="Page Content" error={form.errors.pageContent}>
