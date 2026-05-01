@@ -6,10 +6,11 @@ import {cookies, headers} from "next/headers";
 import { auth } from "@/lib/auth";
 import * as crypto from "node:crypto";
 import dayjs from "dayjs";
-import {Verification} from "@/generated/prisma/client";
+import {Post, Verification} from "@/generated/prisma/client";
 import { sendInvitationEmail } from "@/lib/emailer";
 import { sendPasswordWasResetEmail } from "@/lib/emailer";
 import {revalidatePath} from "next/cache";
+import { PostItem } from "./constants";
 
 export async function testRequestForm(data: RequestForm) {
   console.log(data);
@@ -288,6 +289,60 @@ export async function getDraftPosts() {
   } catch (error) {
     console.error("Failed to fetch drafts:", error);
     return { success: false, data: [] };
+  }
+}
+
+export async function getPostAction({
+  page = 1,
+  limit = 10,
+  search = "", }: {
+  page?: number;
+  limit?: number;
+  search?: string;
+}) {
+
+  try {
+    const posts = await prisma.post.findMany({
+      where: {
+        title: {
+          contains: search,
+          mode: "insensitive",
+        },
+      },
+      orderBy: {
+        createdAt: "desc",
+      },
+      skip: (page - 1) * limit,
+      take: limit,
+    });
+
+    const total = await prisma.post.count({
+      where: {
+        title: {
+          contains: search,
+          mode: "insensitive",
+        },
+      },
+    });
+
+    const formatted: PostItem[] = posts.map((post) => ({
+      id: post.id,
+      title: post.title,
+      imageSrc: post.posterUrl ?? "https://placehold.co/600x400?text=No+Poster",
+    }));
+
+    return {
+      success: true,
+      data: formatted,
+      total,
+    };
+  } catch (err) {
+    console.error(err);
+    return {
+      success: false,
+      data: [],
+      total: 0,
+    };
   }
 }
 

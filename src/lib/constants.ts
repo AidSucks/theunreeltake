@@ -61,3 +61,9 @@ export enum AllowedTagType {
   Media = "media",
   Informational = "informational"
 }
+
+export type PostItem = {
+  id: string;
+  title: string;
+  imageSrc: string;
+};
