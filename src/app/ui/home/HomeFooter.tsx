@@ -1,7 +1,7 @@
 import {Box, Flex, Title} from '@mantine/core';
 import {SocialMediaLinks} from "@/app/ui/home/SocialMediaLinks";
 import {WebNavLinks} from "@/app/ui/home/WebNavLinks";
-import {Bootstrap, BorderTop} from "react-bootstrap-icons";
+import {Bootstrap} from "react-bootstrap-icons";
 
 export function HomeFooter() {
 

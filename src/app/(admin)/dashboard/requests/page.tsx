@@ -1,52 +1,53 @@
 "use client";
 
-import {Box, Title, Text, Button, Paper,Stack, Group, TextInput, Pagination, ActionIcon} from "@mantine/core"
-import {useState, useEffect} from "react"
-import { Search, Funnel, Filter, ArrowClockwise} from "react-bootstrap-icons"
-import GridReview, {Review} from "./gridReview";  
+import {Box, Title, Text, Button, Paper, Stack, Group, Pagination, ActionIcon, Flex} from "@mantine/core"
+import {useState, useEffect, useTransition, useCallback} from "react"
+import { Funnel, Filter, ArrowClockwise } from "react-bootstrap-icons"
+import GridReview from "./gridReview";
 import Link from "next/link"
-import { getMediaRequests, getMediaRequestCount } from "@/lib/actions";
+import { getMediaRequests } from "@/lib/actions";
+import {HomeSearchBar} from "@/app/ui/home/HomeSearchBar";
+import {Request} from "@/generated/prisma/client";
+const limit = 10;
 
 export default function DashboardRequestsPage() {
+
 	const [selectedId, setSelectedId] = useState<string | undefined>();
-	const [requests, setRequests] = useState<Review[]>([]);
-    const [loading, setLoading] = useState(false);
-    const selectedItem = requests.find((item) => item.id === selectedId);
-    const [page, setPage] = useState(1);
-    const [search, setSearch] = useState("");
-    const [total, setTotal] = useState(0);
-    const limit = 10;
-	const fetchRequests = async (pageValue = page, searchValue = search) => {
-        setLoading(true);
-        try {
-            const res = await getMediaRequests({page: pageValue,limit,search: searchValue,}); 
-            const count = await getMediaRequestCount(searchValue);
-            const formatted: Review[] = res.map((req, i) => ({
-            id: req.id,
-            title: req.title,
-            user: req.name ?? req.email,
-            date: "N/A",
-            body: req.message ?? "",
-        }));
-            setRequests(formatted);
-            setTotal(Math.ceil(count / limit));
-        } catch (err) {
-            console.error("Failed to fetch requests", err);
-        } finally {
-            setLoading(false);
-        }
-    };
-    const searchHandler = (value: string) =>{
-        setSearch(value);
-        setPage(1);
-    }
-    const handlePage = (newPage : number) => {
-        setPage(newPage);
-        fetchRequests(newPage, search);
-    }
-    useEffect(() => {
-            fetchRequests(page, search);
-    }, [page, search]);
+	const [requests, setRequests] = useState<Request[]>([]);
+	const selectedItem = requests.find((item) => item.id === selectedId);
+	const [page, setPage] = useState(1);
+	const [search, setSearch] = useState("");
+	const [total, setTotal] = useState(0);
+
+	const [isLoading, startTransition] = useTransition();
+
+	const handleSearch = (value: string) => {
+		setSearch(value);
+		setPage(1);
+	}
+
+	const handlePage = (newPage: number) => setPage(newPage);
+
+	const refresh = useCallback(() => {
+		startTransition(async () => {
+
+			try {
+
+				const res: Request[] = await getMediaRequests({page, limit, search});
+				const count = res.length;
+
+				setRequests(res);
+				setTotal(Math.ceil(count / limit));
+
+			} catch (error) {
+				console.log("Failed to fetch requests", error);
+			}
+		})
+	}, [page, search]);
+
+	useEffect(() => {
+		refresh();
+	}, [refresh]);
 	
 	return(
 		<Box p="lg">
@@ -58,7 +59,7 @@ export default function DashboardRequestsPage() {
 				<Stack>
 					<Title order={4}>{"Selected: " + selectedItem.title}</Title>
 					<Text size="sm" c="dimmed">
-						{selectedItem.body}
+						{selectedItem.message}
 					</Text>
 					<Group>
 					<Button size="xs" variant="light" component= {Link} href={"/dashboard/posts/create"}>
@@ -78,48 +79,51 @@ export default function DashboardRequestsPage() {
 			</Paper>
 
 			<Group mb="md">
-				<TextInput
-					w={400} 
-					size={"xs"}  
-					radius={"md"} 
-					placeholder={"Search"}
-					rightSection={<Search size={16}/>}
-                    value={search}
-                    onChange={(e) => searchHandler(e.currentTarget.value)}
-				></TextInput>
-				<ActionIcon 
+				<Flex miw={500}>
+					<HomeSearchBar
+						onSearchAction={(value: string) => handleSearch(value)}
+					/>
+				</Flex>
+
+				<ActionIcon
+					size={"lg"}
 					variant={"light"}
 					color={"gray"}
-					radius={"lg"}
 					aria-label={"Filter Button"}>
-					<Funnel size={16}/>
+					<Funnel size={24}/>
 				</ActionIcon>
 				<ActionIcon
+					size={"lg"}
 					variant={"light"}
 					color={"gray"}
-					radius={"lg"}
 					aria-label={"Sort Button"}>
-					<Filter size={16}/>
+					<Filter size={24}/>
 				</ActionIcon>
 				<ActionIcon
+					size={"lg"}
 					variant={"light"}
 					color={"gray"}
-					radius={"lg"}
 					aria-label={"Refresh Button"}
-					onClick={() => fetchRequests()}>
-					<ArrowClockwise size={16}/>
+					onClick={refresh}
+				>
+					<ArrowClockwise size={24}/>
 				</ActionIcon>
 			</Group>
-		
-			<GridReview
-					data={requests}
-					selectedId={selectedId}
-					onSelect={(id) => setSelectedId(id)}
-			/>
-			
-			<Group mt="xl">
-					<Pagination total={total} value={page} onChange={handlePage} />
-			</Group>
+
+			{!isLoading ?
+				<>
+					<GridReview
+						data={requests}
+						selectedId={selectedId}
+						onSelectAction={(id) => setSelectedId(id)}
+					/>
+					<Group mt="xl">
+						<Pagination total={total} value={page} onChange={handlePage}/>
+					</Group>
+				</>
+				: null
+			}
+
 		</Box>
 	)
 

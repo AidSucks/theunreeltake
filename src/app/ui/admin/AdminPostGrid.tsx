@@ -25,7 +25,6 @@ type Icons = {
 
 export function PostCard({post, icons}: {post: Post; icons: Icons}) {
     const [opened, setOpened] = useState(false);
-    const onClose = () => setOpened(false);
     const onConfirm = async () => {
         await deletePost(post.id);
         setOpened(false);

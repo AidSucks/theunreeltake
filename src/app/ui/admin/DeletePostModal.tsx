@@ -1,7 +1,5 @@
 "use client";
 
-import { PostScalarFieldEnum } from "@/generated/prisma/internal/prismaNamespace";
-import { deletePost } from "@/lib/actions";
 import { Modal, Button, Group, Text } from "@mantine/core";
 
 interface DeletePostModalProps {

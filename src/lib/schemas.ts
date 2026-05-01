@@ -6,7 +6,6 @@ import {
   maxTextInputLength,
   maxTextAreaLength, AllowedTagType
 } from "@/lib/constants";
-import AdminDashboardLayout from "@/app/(admin)/dashboard/layout";
 
 export type CatalogItem = z.infer<typeof CatalogItemSchema>;
 export type RequestForm = z.infer<typeof RequestFormSchema>;
@@ -91,10 +90,9 @@ export const RegisterUserSchema = CreateUserSchema.extend({
 
 // Validates the email input in the InviteUserModal
 export const InviteUserSchema = z.object({
-  email: z.string()
+  email: z.email({ error: "Invalid email address"})
     .trim()
     .toLowerCase()
-    .email({ message: "Invalid email address"})
     .min(1, { message: "Required" })
     .max(255, { message: "Email is too long" })
 });

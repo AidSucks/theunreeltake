@@ -34,68 +34,49 @@ export interface CatalogItem {
 
 export async function GET(request: NextRequest) {
   try {
+
     const catalogParams = parseSearchParams(request.nextUrl.searchParams);
     const offset = catalogParams.postsPerPage * (catalogParams.page - 1);
 
-    // Build the dynamic WHERE clause
-    const whereClause: any = {
-      published: true,
-    };
 
-    if (catalogParams.search) {
-      whereClause.title = {
-        contains: catalogParams.search,
-        mode: "insensitive", // case-insensitive search
-      };
-    }
-
-    // Filter by tags if any are provided
-    if (catalogParams.tags.length > 0) {
-      whereClause.tags = {
-        some: {
-          tag: { 
-            id: { in: catalogParams.tags.map(id => parseInt(id)) } 
-          },
+    const posts: CatalogItem[] = await prisma.post.findMany({
+      where: {
+        published: true,
+        title: catalogParams.search ? {
+          contains: catalogParams.search,
+          mode: "insensitive"
+        } : undefined,
+        tags: (catalogParams.tags.length > 0) ? {
+          some: { tag: {
+              id: { in: catalogParams.tags.map(id => parseInt(id)) }
+          }}
+        } : undefined
+      },
+      orderBy: {
+        title: "asc"
+      },
+      skip: offset,
+      take: catalogParams.postsPerPage,
+      omit: {
+        id: true,
+        htmlContent: true,
+        published: true,
+        imageUrls: true,
+        updatedAt: true,
+        authorId: true,
+      },
+      include: {
+        author: { select: { name: true } },
+        tags: {
+          include: { tag: true },
+          omit: { postId: true, tagId: true },
         },
-      };
-    }
-
-    // Handle Sorting: Alphabetical by default, override/augment with rating if requested
-    const orderByClause: any[] = [];
-    if (catalogParams.sort === "Rating") {
-      orderByClause.push({ rating: "desc" });
-    }
-    orderByClause.push({ title: "asc" }); // Always alphabetized fallback
-
-    // Execute Prisma Query and Count within a transaction for synchronization
-    const [totalCount, posts]: [number, CatalogItem[]] = await prisma.$transaction([
-      prisma.post.count({ where: whereClause }),
-      prisma.post.findMany({
-        where: whereClause,
-        orderBy: orderByClause,
-        skip: offset,
-        take: catalogParams.postsPerPage,
-        omit: {
-          id: true,
-          htmlContent: true,
-          published: true,
-          imageUrls: true,
-          updatedAt: true,
-          authorId: true,
-        },
-        include: {
-          author: { select: { name: true } },
-          tags: {
-            include: { tag: true },
-            omit: { postId: true, tagId: true },
-          },
-        },
-      }),
-    ]);
+      }
+    });
 
     // Return successfully fetched and optionally sorted records
     return NextResponse.json(
-      { totalCount: totalCount, pageItems: posts } as PostPageData,
+      { totalCount: posts.length, pageItems: posts } as PostPageData,
       { status: 200 }
     );
   } catch (error) {
@@ -103,7 +84,7 @@ export async function GET(request: NextRequest) {
     // Requirements specification: Properly handle database errors & return empty list
     return NextResponse.json(
       { totalCount: 0, pageItems: [] } as PostPageData,
-      { status: 200 }
+      { status: 500 }
     );
   }
 }

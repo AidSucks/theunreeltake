@@ -2,7 +2,7 @@
 
 import { Flex, TextInput, ActionIcon, Pagination, Group} from "@mantine/core";
 import { Search, Funnel, Filter, ArrowClockwise, PencilSquare, Chat, Trash, BarChart } from "react-bootstrap-icons"
-import { PostGrid } from "../../../ui/admin/AdminPostGrid";
+import { PostGrid } from "@/app/ui/admin/AdminPostGrid";
 import { NewPostButton } from "@/app/ui/admin/NewPostButton";
 import React, { useState } from "react";
 

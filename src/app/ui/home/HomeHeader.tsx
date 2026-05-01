@@ -1,6 +1,5 @@
 import {Box, Flex, Title} from '@mantine/core';
 import {HomeBurgerMenu} from "@/app/ui/home/HomeBurgerMenu";
-import {SocialMediaLinks} from "@/app/ui/home/SocialMediaLinks";
 import {WebNavLinks} from "@/app/ui/home/WebNavLinks";
 import {HomeHeaderButtons} from "@/app/ui/home/HomeHeaderButtons";
 import {Bootstrap} from "react-bootstrap-icons";

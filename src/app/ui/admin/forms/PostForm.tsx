@@ -7,14 +7,12 @@ import { DeletePostModal } from "@/app/ui/admin/DeletePostModal";
 import { zod4Resolver } from "mantine-form-zod-resolver";
 import {
   TextInput,
-  Textarea,
   Select,
   Button,
   Stack,
   Paper,
   Group,
   Title,
-  Box,
   Input
 } from "@mantine/core";
 import { createNewPost, savePost } from "@/lib/actions";
@@ -58,7 +56,7 @@ export function PostForm({ post }: { post?: PostProp | null }) {
     if (isEditMode && post) {
       const isPublishing = action === "publish" ? true : post.published;
       
-      await savePost(post.id, values.title, values.slug, values.mediaType, values.pageContent, isPublishing);
+      await savePost(post.id, values.title, values.slug, values.pageContent, isPublishing);
       router.push('/dashboard/posts');
 
     } else {

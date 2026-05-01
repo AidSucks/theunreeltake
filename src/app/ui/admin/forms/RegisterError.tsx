@@ -1,6 +1,6 @@
 "use client";
 
-import {AspectRatio, Button, Center, Flex, Grid, Image, List, Space, Stack, Text,Anchor, Title, Paper} from "@mantine/core";
+import { Center, Anchor, Title, Paper } from "@mantine/core";
 import Link from "next/link";
 
 export default function RegisterError(
