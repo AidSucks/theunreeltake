@@ -65,10 +65,6 @@ export default function DashboardPostsPage() {
     const nextPage = () => setPage(prev => prev + 1)
     const prevPage = () => setPage(prev => prev - 1)
     const postsPerPage = 10;
-    const totalPages = Math.ceil(posts.length / postsPerPage)
-    const paginatedPosts = posts.slice(
-        (page - 1) * postsPerPage, page * postsPerPage
-    );
 
     const icons = {
         Edit: PencilSquare,
@@ -81,6 +77,14 @@ export default function DashboardPostsPage() {
 		setSearch(value);
 		setPage(1);
 	}
+    const filteredPosts = posts.filter((post) =>
+        post.id.toLowerCase().includes(search.toLowerCase())
+    );
+
+    const totalPages = Math.ceil(filteredPosts.length / postsPerPage)
+    const paginatedPosts = filteredPosts.slice(
+        (page - 1) * postsPerPage, page * postsPerPage
+    );
 
     return(
         <div style={{ padding: "0 40px" }}>
