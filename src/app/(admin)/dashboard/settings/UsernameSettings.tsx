@@ -1,6 +1,6 @@
 "use client";
 
-import { Box, Title, Stack } from "@mantine/core";
+import { Box, Stack } from "@mantine/core";
 import { ChangeUsername } from "@/app/ui/admin/forms/ChangeUsername";
 
 export function UsernameSettings() {

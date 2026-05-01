@@ -1,8 +1,22 @@
-import films from "@/../public/film.json";
 import prisma from "@/lib/prisma";
 import { redirect } from 'next/navigation';
-import Link from "next/link";
-import { Title, Grid, GridCol,Image,Text,Divider,Group,Stack, Textarea, ScrollArea, Box, Flex, Paper, UnstyledButton, SimpleGrid, Button,  } from "@mantine/core";
+import {
+  Title,
+  Grid,
+  GridCol,
+  Image,
+  Text,
+  Divider,
+  Group,
+  Stack,
+  Textarea,
+  ScrollArea,
+  Flex,
+  Paper,
+  UnstyledButton,
+  SimpleGrid,
+  Button
+} from "@mantine/core";
 
 export default async function BlogPostPage(
   {
@@ -13,7 +27,6 @@ export default async function BlogPostPage(
 ) {
 
   const { slug } = await params;
-
 
   const data = await prisma.post.findUnique({ where: { slug: slug }, include: { tags: { include: { tag: true }, omit: { postId: true, tagId: true }} }});
 

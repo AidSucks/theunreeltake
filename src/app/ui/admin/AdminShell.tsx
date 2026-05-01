@@ -1,18 +1,13 @@
 'use client';
 
 import React from "react";
-import {Anchor, AppShell, Box, Button, Code, ScrollArea, Stack} from '@mantine/core';
+import {Anchor, AppShell, Box, Code, ScrollArea, Stack} from '@mantine/core';
 import {SignOutButton} from "@/app/ui/admin/SignOutButton";
 import {UserButton} from "@/app/ui/admin/UserButton";
-
-import {
-  Lock
-} from "react-bootstrap-icons";
 
 import classes from './NavbarSimple.module.css';
 import pack from "@/../package.json";
 import {useDisclosure} from "@mantine/hooks";
-import Link from "next/link";
 import AdminNavLinks from "@/app/ui/admin/AdminNavLinks";
 import RoleBadge from "@/app/ui/admin/RoleBadge";
 import { SettingsButton } from "./SettingsButton";

@@ -1,8 +1,7 @@
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
-import { ChangePassword } from "@/app/ui/admin/forms/ChangePassword";
-import { Box, Title, Divider,Text,TextInput,UnstyledButton,Stack,Checkbox } from "@mantine/core";
+import { Box, Title, Divider, Text, UnstyledButton, Stack, Checkbox } from "@mantine/core";
 import { PasswordSettings } from "./PasswordSettings";
 import { UsernameSettings } from "./UsernameSettings";
 
@@ -48,7 +47,7 @@ export default async function DashboardSettingsPage() {
       </Stack>
 
       <Title mt="lg" order={6} mb="xs">Delete Account</Title>
-      <Text size ="sm"mb="sm">Deleting your account will permanently remove all data</Text>
+      <Text size ="sm" mb="sm">Deleting your account will permanently remove all data</Text>
       <UnstyledButton fw={1000} c="red">I want to delete my account</UnstyledButton>
     </Box>
   );

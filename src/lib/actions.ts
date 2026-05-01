@@ -10,9 +10,6 @@ import {Verification} from "@/generated/prisma/client";
 import { sendInvitationEmail } from "@/lib/emailer";
 import { sendPasswordWasResetEmail } from "@/lib/emailer";
 import {revalidatePath} from "next/cache";
-import { UsernameOptions } from "better-auth/plugins";
-import { string } from "zod";
-import { success } from "zod";
 
 export async function testRequestForm(data: RequestForm) {
   console.log(data);
@@ -211,7 +208,7 @@ export async function deletePost(id:string)
   }
 }
 
-export async function savePost(id:string, title:string, slug:string, mediaType:string, content:string, published: boolean)
+export async function savePost(id:string, title:string, slug:string, content:string, published: boolean)
 {
   try
   {
@@ -314,13 +311,13 @@ export async function submitRequestForm(data: RequestForm){
 }
 
 export async function getAllMediaRequests() {
-  return await prisma.request.findMany({
+  return prisma.request.findMany({
     orderBy: { name: "desc" },
   });
 }
 
 export async function searchMediaRequests(query: string) {
-  return await prisma.request.findMany({
+  return prisma.request.findMany({
     where: {
       OR: [
         { title: { contains: query, mode: "insensitive" } },
