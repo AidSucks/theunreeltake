@@ -6,17 +6,15 @@ import {
   GridCol,
   Image,
   Text,
-  Divider,
   Group,
   Stack,
   Textarea,
   ScrollArea,
   Flex,
   Paper,
-  UnstyledButton,
-  SimpleGrid,
-  Button
+  Button, Container, Box
 } from "@mantine/core";
+import dayjs from "dayjs";
 
 export default async function BlogPostPage(
   {
@@ -28,21 +26,30 @@ export default async function BlogPostPage(
 
   const { slug } = await params;
 
-  const data = await prisma.post.findUnique({ where: { slug: slug }, include: { tags: { include: { tag: true }, omit: { postId: true, tagId: true }} }});
+  const data = await prisma.post.findUnique({
+    where: { slug: slug },
+    include: {
+      tags: { include: { tag: true }, omit: { postId: true, tagId: true }},
+      author: { select: { name: true, image: true } }
+    },
+    omit: { authorId: true }
+  });
 
-  if (!data) redirect ("/catalog");
+  if (!data || !data.published) redirect ("/catalog");
 
   const tagElements = data.tags.map((value, index) => {
     return(
       <Button 
-      key = {index}
-      size = "sm"
-      mt={4}
-      onClick={async () => {
-        "use server"
-        const url: string = "/catalog?tags="+value.tag.id;
-        redirect (url);
-      }}
+        key={index}
+        color={"dark"}
+        variant={"outline"}
+        size={"sm"}
+        mt={4}
+        onClick={async () => {
+          "use server"
+          const url: string = "/catalog?tags="+value.tag.id;
+          redirect (url);
+        }}
       >
         {value.tag.displayName}
       </Button>
@@ -51,167 +58,86 @@ export default async function BlogPostPage(
 
 
   return (
-    <div>
-    <Stack ta="center" gap="1">
-      <Group justify="space-between" align="flex-start">
-        <Text size="sm">Review by:</Text>
+    <Flex bg={"gray.0"}>
+      <Container px={{ base: 0, md: "md"}}>
+        <Paper shadow={"sm"} p={{ base: "md", sm: "xl"}} bdrs={0}>
+          <Stack>
 
-        <Stack gap={2} align="flex-end">
-          <Text size="xs">Posted on:</Text>
-          <Text size="xs">Last Updated:</Text>
-        </Stack>
-      </Group>
+            <Group gap={"md"}>
 
-      <Title size="80" > {data.title}  </Title>
-
-      </Stack>
-
-
-
-      <Grid justify="center" align="flex-start">
-        <GridCol span={2}><Image
-          radius="md"
-      
-          src={null}
-          />
-        </GridCol>
-        <GridCol span={2}><Image
-          radius="md"
-      
-          src={null}
-          />
-        </GridCol>
-        <GridCol span={2}><Image
-          radius="md"
-      
-          src={null}
-        />
-        </GridCol>
-      </Grid>
-
-
-
-      <Divider my="md" size={10} variant="dotted" />
-
-      <Text dangerouslySetInnerHTML={{__html: data.htmlContent}}>
-      </Text>
-      
-      <Divider my="md" size={10} variant="dotted" />
-      
-      
-      <Group justify="space-between" align="flex-start">
-        <Stack gap="xs">
-          <Textarea 
-          w={600} 
-          label="Review the Review"
-          placeholder="Start Here"
-          autosize
-          minRows={2}
-          />
-          <Stack gap="sm">
-            <Text fw={600}>Comments</Text>
-            <SimpleGrid cols={3}>
-
-              <Paper withBorder p="sm" radius="md">
-                <Text fw={500} size="sm">John Doe</Text>
-                <Text size="xs" c="dimmed">2 days ago</Text>
-
-                <Text size="sm" mt={4}>This movie was really good.</Text>
+              <Paper shadow={"xs"} bg={"gray.0"} p={"xs"} bdrs={0} miw={175}>
+                <Stack gap={0}>
+                  <Text component={"span"} size={"xs"} fw={500}>Written By:</Text>
+                  <Text>{data.author.name}</Text>
+                </Stack>
               </Paper>
-              <Paper withBorder p="sm" radius="md">
-                <Text fw={500} size="sm">John Doe</Text>
-                <Text size="xs" c="dimmed">2 days ago</Text>
 
-                <Text size="sm" mt={4}>This movie was really good.</Text>
+              <Paper shadow={"xs"} bg={"gray.0"} p={"xs"} bdrs={0} miw={175}>
+                <Stack gap={0}>
+                  <Text component={"span"} size={"xs"} fw={500}>Posted:</Text>
+                  <Text>{dayjs(data.createdAt).format("MMM D, YYYY h:mm A")}</Text>
+                </Stack>
               </Paper>
-              <Paper withBorder p="sm" radius="md">
-                <Text fw={500} size="sm">John Doe</Text>
-                <Text size="xs" c="dimmed">2 days ago</Text>
 
-                <Text size="sm" mt={4}>This movie was really good.</Text>
+              <Paper shadow={"xs"} bg={"gray.0"} p={"xs"} bdrs={0} miw={175}>
+                <Stack gap={0}>
+                  <Text component={"span"} size={"xs"} fw={500}>Updated:</Text>
+                  <Text>{dayjs(data.updatedAt).format("MMM D, YYYY h:mm A")}</Text>
+                </Stack>
               </Paper>
-              <Paper withBorder p="sm" radius="md">
-                <Text fw={500} size="sm">John Doe</Text>
-                <Text size="xs" c="dimmed">2 days ago</Text>
 
-                <Text size="sm" mt={4}>This movie was really good.</Text>
-              </Paper>
-            </SimpleGrid>
+            </Group>
+
+            <Title order={1} my={"lg"}> {data.title}  </Title>
+
+            <Grid align="flex-start" columnGap={"xs"}>
+              <GridCol span={{base: 12, md: 6}}>
+                <Image
+                  alt={"Test"}
+                  src={"https://placehold.co/640x360"}
+                />
+              </GridCol>
+              <GridCol span={{base: 12, md: 6}}>
+                <Image
+                  alt={"Test"}
+                  src={"https://placehold.co/640x360"}
+                />
+              </GridCol>
+            </Grid>
+
+            <Box>
+              <div dangerouslySetInnerHTML={{__html: data.htmlContent}}></div>
+            </Box>
+
+            <Text size="sm" ta="left" fw={500}>Tags:</Text>
+            <Group>
+              {tagElements}
+            </Group>
+
+            <Textarea
+              label="Leave a comment"
+              placeholder="Your comment"
+              autosize
+              minRows={4}
+            />
+
+            <Text size="sm" ta="left" fw={500}>Reviews you may also like:</Text>
+
+            <ScrollArea w={"100%"} h={240} scrollbars={"x"}>
+              <Group w={288} wrap={"nowrap"} px={"sm"}>
+
+                {new Array<number>(10).fill(0).map((_, i) =>
+                  <Box key={i}>
+                    <Paper w={180} h={220} bg={"gray.2"}></Paper>
+                  </Box>
+                )}
+
+              </Group>
+            </ScrollArea>
+
           </Stack>
-        </Stack>
-
-        <Stack gap="sm">
-            <Text fw={600}>Tags</Text>
-            <SimpleGrid cols={3}>
-                {tagElements}
-            </SimpleGrid>
-          </Stack>
-        
-        <Stack gap="xs">
-          <Text size="sm" ta="left">Reviews you may also like:</Text>
-          <ScrollArea  maw={800} mx="auto">
-            <Flex gap="md">
-              <UnstyledButton>
-                <Paper w={180} h={220} withBorder radius="md" p="sm">
-                  <Image src="https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/images/bg-7.png" h={140} radius="md" />
-                  <Text mt="sm">Movie Name</Text>
-                </Paper>
-              </UnstyledButton>
-              <UnstyledButton>
-                <Paper w={180} h={220} withBorder radius="md" p="sm">
-                  <Image src="https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/images/bg-7.png" h={140} radius="md" />
-                  <Text mt="sm">Movie Name</Text>
-                </Paper>
-              </UnstyledButton>
-              <UnstyledButton>
-                <Paper w={180} h={220} withBorder radius="md" p="sm">
-                  <Image src="https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/images/bg-7.png" h={140} radius="md" />
-                  <Text mt="sm">Movie Name</Text>
-                </Paper>
-              </UnstyledButton>
-              <UnstyledButton>
-                <Paper w={180} h={220} withBorder radius="md" p="sm">
-                  <Image src="https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/images/bg-7.png" h={140} radius="md" />
-                  <Text mt="sm">Movie Name</Text>
-                </Paper>
-              </UnstyledButton>
-              <UnstyledButton>
-                <Paper w={180} h={220} withBorder radius="md" p="sm">
-                  <Image src="https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/images/bg-7.png" h={140} radius="md" />
-                  <Text mt="sm">Movie Name</Text>
-                </Paper>
-              </UnstyledButton>
-              <UnstyledButton>
-                <Paper w={180} h={220} withBorder radius="md" p="sm">
-                  <Image src="https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/images/bg-7.png" h={140} radius="md" />
-                  <Text mt="sm">Movie Name</Text>
-                </Paper>
-              </UnstyledButton>
-              <UnstyledButton>
-                <Paper w={180} h={220} withBorder radius="md" p="sm">
-                  <Image src="https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/images/bg-7.png" h={140} radius="md" />
-                  <Text mt="sm">Movie Name</Text>
-                </Paper>
-              </UnstyledButton>
-              <UnstyledButton>
-                <Paper w={180} h={220} withBorder radius="md" p="sm">
-                  <Image src="https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/images/bg-7.png" h={140} radius="md" />
-                  <Text mt="sm">Movie Name</Text>
-                </Paper>
-              </UnstyledButton>
-              <UnstyledButton>
-                <Paper w={180} h={220} withBorder radius="md" p="sm">
-                  <Image src="https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/images/bg-7.png" h={140} radius="md" />
-                  <Text mt="sm">Movie Name</Text>
-                </Paper>
-              </UnstyledButton>
-            </Flex>
-          </ScrollArea>
-        </Stack>
-
-        
-      </Group>
-      
-    </div>
+        </Paper>
+      </Container>
+    </Flex>
   );
 }

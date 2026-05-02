@@ -10,12 +10,12 @@ export function HomeShell(
   {children}: Readonly<{children: React.ReactNode}>
 ) {
 
-  const pinned = useHeadroom({ fixedAt: 120 });
+  const headroom = useHeadroom({ fixedAt: 120 });
 
   return (
     <AppShell
-      header={{ height: {base: 60, sm: 120}, collapsed: !pinned, offset: false }}
-      padding={"sm"}>
+      header={{ height: {base: 60, sm: 120}, collapsed: !headroom.pinned, offset: false }}
+    >
 
       <AppShell.Header>
         <HomeHeader/>
@@ -24,7 +24,7 @@ export function HomeShell(
       <AppShell.Main
         h={"100%"}
         style={{ display: "flex", flexDirection: "column" }}
-        pt={`calc(${rem(120)} + var(--mantine-spacing-sm))`}
+        pt={{base: `calc(${rem(60)})`, sm: `calc(${rem(120)})`}}
       >
         {children}
 
