@@ -1,49 +1,62 @@
-import {Box, Flex, Title} from '@mantine/core';
+"use client";
+
+import {Box, Center, Flex, Title, Group} from '@mantine/core';
 import {HomeBurgerMenu} from "@/app/ui/home/HomeBurgerMenu";
 import {WebNavLinks} from "@/app/ui/home/WebNavLinks";
 import {HomeHeaderButtons} from "@/app/ui/home/HomeHeaderButtons";
-import {Bootstrap} from "react-bootstrap-icons";
+import {AlignCenter, Bootstrap} from "react-bootstrap-icons";
+import { SocialMediaLinks } from './SocialMediaLinks';
+import { useRouter } from "next/navigation"; 
+import { HomeSearchBar } from './HomeSearchBar';
+import {useState} from "react";
 
 export function HomeHeader() {
-
+	const router = useRouter();
+	const [page, setPage] = useState(1);
+	const handleSearch = (value: string) => {router.push(`/catalog?search=${value}`)};
   return (
-    <Flex h={"100%"} w={"100%"} p={"xs"} align={"flex-end"} direction={"column"}>
+    <Flex 
+        justify='space-between'
+        align='center'
+        px='md'
+        py='md'
+        w='100%'
+        gap="xl"
+        style={{
+            backgroundColor: "#7952b3",
+            minHeight: 52,
+        }}
+    >
 
-      <Flex h={"50%"} w={"inherit"} visibleFrom={"sm"}>
+        <Flex align='center' gap={'8'} style={{ minWidth: 220 }}>
+            <Box hiddenFrom="md">
+                <HomeBurgerMenu />
+            </Box>
+            <Bootstrap size={30} color='white' />
+            <Title order={2} style={{ whiteSpace: "nowrap", color:"white", fontWeight: 900}}>
+                The UnReel Take
+            </Title>      
+        </Flex>
 
-        <Box w={"25%"} h={"100%"}>
-          <Flex h={"100%"} w={"100%"} align={"center"} justify={"flex-start"} pl={{ base: "none", md: "md"}} columnGap={8}>
-            <Bootstrap size={30}/>
-            <Title order={4} textWrap={"nowrap"}>The UnReel Take</Title>
-          </Flex>
-        </Box>
+        <Flex align="center" style={{flex : 1}} gap="xl">
 
-        <Box w={"50%"} h={"100%"}>
-          <Flex h={"100%"} w={"100%"} align={"center"} justify={"center"} px={"xs"}>
-            {/**Center Media**/}
-          </Flex>
-        </Box>
+            <Box visibleFrom={"md"} style={{marginLeft: "auto"}}>
+                <WebNavLinks/>
+            </Box>
+			<Box style={{flex : 1}} />
+            <Box style={{flex : 1, maxWidth : 220}} >
+				<HomeSearchBar 
+					onSearchAction={(value) => { handleSearch(value); setPage(1)}}
+				/>	
+			</Box>
+            <Box visibleFrom='xl'>
+                <SocialMediaLinks />
+            </Box>
 
-        
-
-      </Flex>
-
-      <Flex h={{ base: "100%", sm: "50%"}} w={"inherit"}>
-
-        <Box w={{ base: "40%", sm: "25%" }} h={"100%"}>
-          <HomeBurgerMenu/>
-        </Box>
-
-        <Box w={"50%"} h={"100%"} visibleFrom={"sm"}>
-          <WebNavLinks/>
-        </Box>
-
-        <Box w={{ base: "60%", sm: "25%" }} h={"100%"}>
-          <HomeHeaderButtons/>
-        </Box>
-
-      </Flex>
-
+            <Box>
+                <HomeHeaderButtons/>
+            </Box>
+        </Flex>
     </Flex>
   );
 }

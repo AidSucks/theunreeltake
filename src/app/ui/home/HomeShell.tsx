@@ -14,7 +14,7 @@ export function HomeShell(
 
   return (
     <AppShell
-      header={{ height: {base: 60, sm: 120}, collapsed: !pinned, offset: false }}
+      header={{ height: {base: 60, sm: 80}, collapsed: !pinned, offset: false }}
       padding={"sm"}>
 
       <AppShell.Header>
@@ -24,7 +24,7 @@ export function HomeShell(
       <AppShell.Main
         h={"100%"}
         style={{ display: "flex", flexDirection: "column" }}
-        pt={`calc(${rem(120)} + var(--mantine-spacing-sm))`}
+        pt={`calc(${rem(80)} + var(--mantine-spacing-sm))`}
       >
         {children}
 

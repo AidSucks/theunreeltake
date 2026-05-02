@@ -21,7 +21,8 @@ export function SocialMediaLinks() {
           component={"a"}
           href={item.link}
           target={"_blank"}
-          variant={"gradient"}
+          variant={"subtle"}
+          color="white"
           size={"lg"}
           radius={"md"}
           aria-label={item.label}>
