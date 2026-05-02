@@ -9,7 +9,6 @@ import {
   Group,
   Stack,
   Textarea,
-  ScrollArea,
   Flex,
   Paper,
   Button, Container, Box
@@ -63,6 +62,23 @@ export default async function BlogPostPage(
         <Paper shadow={"sm"} p={{ base: "md", sm: "xl"}} bdrs={0}>
           <Stack>
 
+            <Title order={1} my={"lg"}> {data.title}  </Title>
+
+            <Grid align="flex-start" columnGap={"xs"}>
+              <GridCol span={{base: 12, md: 6}}>
+                <Image
+                  alt={"Test"}
+                  src={"https://placehold.co/640x360"}
+                />
+              </GridCol>
+              <GridCol span={{base: 12, md: 6}}>
+                <Image
+                  alt={"Test"}
+                  src={"https://placehold.co/640x360"}
+                />
+              </GridCol>
+            </Grid>
+
             <Group gap={"md"}>
 
               <Paper shadow={"xs"} bg={"gray.0"} p={"xs"} bdrs={0} miw={175}>
@@ -88,23 +104,6 @@ export default async function BlogPostPage(
 
             </Group>
 
-            <Title order={1} my={"lg"}> {data.title}  </Title>
-
-            <Grid align="flex-start" columnGap={"xs"}>
-              <GridCol span={{base: 12, md: 6}}>
-                <Image
-                  alt={"Test"}
-                  src={"https://placehold.co/640x360"}
-                />
-              </GridCol>
-              <GridCol span={{base: 12, md: 6}}>
-                <Image
-                  alt={"Test"}
-                  src={"https://placehold.co/640x360"}
-                />
-              </GridCol>
-            </Grid>
-
             <Box>
               <div dangerouslySetInnerHTML={{__html: data.htmlContent}}></div>
             </Box>
@@ -120,20 +119,6 @@ export default async function BlogPostPage(
               autosize
               minRows={4}
             />
-
-            <Text size="sm" ta="left" fw={500}>Reviews you may also like:</Text>
-
-            <ScrollArea w={"100%"} h={240} scrollbars={"x"}>
-              <Group w={288} wrap={"nowrap"} px={"sm"}>
-
-                {new Array<number>(10).fill(0).map((_, i) =>
-                  <Box key={i}>
-                    <Paper w={180} h={220} bg={"gray.2"}></Paper>
-                  </Box>
-                )}
-
-              </Group>
-            </ScrollArea>
 
           </Stack>
         </Paper>
