@@ -1,64 +1,70 @@
 'use client';
 
-import {AspectRatio, Button, Center, Flex, Grid, Image, Stack, Text, Title, TextInput, Group} from "@mantine/core";
+import {
+  AspectRatio,
+  Button,
+  Center,
+  Flex,
+  Grid,
+  Image,
+  Stack,
+  Text,
+  Title,
+  TextInput,
+  Group,
+  Container,
+  Paper
+} from "@mantine/core";
 import {HomeSearchBar} from "@/app/ui/home/HomeSearchBar";
-import {useState} from "react";
-import { useRouter } from "next/navigation"; 
+import { useRouter } from "next/navigation";
 
 export default function HomePage() {
   const router = useRouter();
-  const [page, setPage] = useState(1);
   const handleSearch = (value: string) => {router.push(`/catalog?search=${value}`)};
-  
-
 
   return (
-    <div style={{ padding: "0 40px" }}>
-      <Grid
-        w="100%"
-        columns={12}
-        type={"container"}
-        breakpoints={{ xs: '425px', sm: '500px', md: '850px', lg: '900px', xl: '1024' }}
-        m={{ base: "md", md: "xl"}}
-        gap={"xl"}
-        >
+    <Container size={"lg"}>
 
-        <Grid.Col span={12}>
-          <Flex h={"100%"} align={"center"} justify={"center"}>
-            <Title fz={50} order={1} ta={"center"}>Unprofessional Reviews</Title>
-          </Flex>
-        </Grid.Col>
+      <Stack mt={48}>
 
-        <Grid.Col span={12}>
-          <Flex h={"100%"} align={"center"} justify={"center"}>
-            <Text fz={30} ta={"center"}>That Give You the Reel Information</Text>
-          </Flex>
-        </Grid.Col>
+        <Flex h={"100%"} align={"center"} justify={"center"}>
+          <Title order={1} ta={"center"}>Unprofessional Reviews</Title>
+        </Flex>
 
-        <Grid.Col span={12}>
-          <Flex h={"100%"} align={"center"} justify={"center"}>
-            <HomeSearchBar 
-            onSearchAction={(value) => { handleSearch(value); setPage(1)}}
+        <Flex h={"100%"} align={"center"} justify={"center"}>
+          <Text fz={30} ta={"center"}>That Give You the Reel Information</Text>
+        </Flex>
+
+        <Flex justify={"center"}>
+          <Flex w={{ base: "100%", sm: "75%" }} align={"center"} justify={"center"}>
+            <HomeSearchBar
+              onSearchAction={(value) => handleSearch(value)}
             />
           </Flex>
+        </Flex>
+      </Stack>
+
+      <Grid gap={"xl"} my={64}>
+
+        <Grid.Col span={{ base: 12, md: 6 }}>
+          <AspectRatio ratio={16 / 9}>
+            <Flex justify={"center"} align={{ base: "center", md: "start"}}>
+              <Paper shadow={"md"} maw={640} mah={360}>
+                <Image
+                  maw={640}
+                  mah={360}
+                  src={"https://placehold.co/640x360"}
+                  alt={"Image Failed to Load"}
+                />
+              </Paper>
+            </Flex>
+          </AspectRatio>
         </Grid.Col>
 
-        <Grid.Col span={{ base: 12, lg: 6 }}>
-          <Flex direction="column">
-            <AspectRatio ratio={1}>
-              <Image
-                radius="md"
-                height={500}
-                src={"https://placehold.co/600x800?text=Placeholder"}
-                alt={"Image Failed to Load"}/>
-            </AspectRatio>
-          </Flex>
-        </Grid.Col>
-
-        <Grid.Col span={{base: 12, lg: 6}}>
+        <Grid.Col span={{base: 12, md: 6}}>
           <Flex direction={"column"}>
-            <Title order={1}>Welcome</Title>
-            <Title order={2} fw={200}>Who we are and what we do:</Title>
+            <Title order={2}>Welcome</Title>
+
             <p>
               Welcome to the UnReel Take; unprofessional reviews that give you reel information. What do we mean by that?
               We think everyone should have access to movie reviews and ratings by people who are passionate about all
@@ -68,34 +74,40 @@ export default function HomePage() {
               didn’t have enough nudity, or didn’t align with their political views.
             </p>
 
-            <p>
-              We watch TONS of movies, and our mission is to provide you with all of the the information you need when
-              you go to select your next movie to watch, whether it be date night, family movie night, or a “netflix and
-              chill” situation. To aid our mission, we developed the UnReel Method. We review movies based off of the quality
-              of the overall viewing experience, not the movie itself. The movie might be bad, but that doesn’t always mean
-              it was a bad movie-watching experience.
-            </p>
           </Flex>
         </Grid.Col>
 
-        <Grid.Col span={{ base: 12, sm: 6 }}>
-          <Flex direction="column">
-            <AspectRatio ratio={1}>
-              <Image
-                radius="md"
-                height={400}
-                width={400}
-                src={"https://placehold.co/600x400?text=Placeholder"}
-                alt={"Image Failed to Load"}/>
-            </AspectRatio>
-          </Flex>
+        <Grid.Col span={12}>
+
+          <Title order={2}>Who we are and what we do</Title>
+          <p>
+            We watch TONS of movies, and our mission is to provide you with all of the the information you need when
+            you go to select your next movie to watch, whether it be date night, family movie night, or a “netflix and
+            chill” situation. To aid our mission, we developed the UnReel Method. We review movies based off of the quality
+            of the overall viewing experience, not the movie itself. The movie might be bad, but that doesn’t always mean
+            it was a bad movie-watching experience.
+          </p>
+
+        </Grid.Col>
+
+        <Grid.Col span={{ base: 12, md: 6 }}>
+          <AspectRatio ratio={16 / 9}>
+            <Flex justify={"center"} align={{ base: "center", md: "start"}}>
+              <Paper shadow={"md"} maw={640} mah={360}>
+                <Image
+                  maw={640}
+                  mah={360}
+                  src={"https://placehold.co/640x360"}
+                  alt={"Image Failed to Load"}
+                />
+              </Paper>
+            </Flex>
+          </AspectRatio>
         </Grid.Col>
 
         <Grid.Col span={{base: 12, lg: 6}}>
           <Flex direction={"column"}>
-            <Title order={1}>The UnReel Method</Title>
-            <Title order={2} fw={200}>Everything you need to know:</Title>
-
+            <Title order={2}>The Unreel Method</Title>
             <p>
               We’ve been let down too many times whether it be from spoilers,
               boring critic reviews with fanciful language,
@@ -137,6 +149,6 @@ export default function HomePage() {
           </Center>
         </Grid.Col>
       </Grid>
-    </div>
+    </Container>
   );
 }

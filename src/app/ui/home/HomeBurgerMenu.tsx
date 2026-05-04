@@ -1,9 +1,8 @@
 'use client';
 
-import {Burger, Flex, Collapse} from "@mantine/core";
+import {Burger, Flex, Drawer} from "@mantine/core";
 import {useDisclosure} from "@mantine/hooks";
 import {MobileNavLinks} from "@/app/ui/home/MobileNavLinks";
-import ThemeToggleButton from "@/app/ui/home/ThemeToggleButton";
 
 export function HomeBurgerMenu() {
 
@@ -11,14 +10,26 @@ export function HomeBurgerMenu() {
 
   return (
     <>
-      <Flex h={"100%"} align={"center"} gap={"sm"} px={{ base: "none", md: "md"}}>
-        <Burger opened={opened} onClick={toggle} aria-label={"Toggle Navigation Menu"} hiddenFrom={"sm"}/>
-        <ThemeToggleButton/>
+      <Flex h={"100%"} px={{ base: "none", md: "md"}}>
+        <Burger opened={opened} onClick={toggle} aria-label={"Toggle Navigation Menu"} color={"gray.0"}/>
       </Flex>
 
-      <Collapse expanded={opened} hiddenFrom={"sm"}>
+      <Drawer
+        opened={opened}
+        onClose={toggle}
+        size={"100%"}
+        closeButtonProps={{ c: "white" }}
+        styles={{
+          header: {
+            backgroundColor: "var(--mantine-color-dark-filled)"
+          },
+          content: {
+            backgroundColor: "var(--mantine-color-dark-filled)"
+          }
+        }}
+      >
         <MobileNavLinks/>
-      </Collapse>
+      </Drawer>
     </>
   );
 }

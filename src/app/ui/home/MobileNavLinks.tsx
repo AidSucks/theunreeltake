@@ -1,4 +1,4 @@
-import {NavLink, Paper} from "@mantine/core";
+import {NavLink} from "@mantine/core";
 import {usePathname} from "next/navigation";
 
 import {publicRouteMetadata} from "@/lib/constants";
@@ -16,18 +16,21 @@ export function MobileNavLinks() {
 
       return(
         <NavLink
+          variant={"filled"}
           key={item.label}
           href={item.href}
           active={path === item.href}
           label={item.label}
           leftSection={<Icon size={16}/>}
+          color={"dark.8"}
+          c={"white"}
         />
       );
     });
 
   return (
-    <Paper shadow={"xs"}>
+    <>
       {mobileNavLinks}
-    </Paper>
+    </>
   );
 }

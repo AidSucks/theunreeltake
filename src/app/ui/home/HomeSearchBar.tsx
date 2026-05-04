@@ -6,10 +6,16 @@ import React, {useState} from "react";
 import {useDebouncedCallback} from "@mantine/hooks";
 
 export function HomeSearchBar(
-  { onSearchAction }: { onSearchAction: (value: string) => void }
+  {
+    initialValue,
+    onSearchAction
+  }: {
+    initialValue?: string,
+    onSearchAction: (value: string) => void
+  }
 ) {
 
-  const [search, setSearch] = useState("");
+  const [search, setSearch] = useState(initialValue ?? "");
 
   const handleKeyUp =
     (event: React.KeyboardEvent<HTMLInputElement>) => {

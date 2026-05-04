@@ -20,7 +20,7 @@ export function WebNavLinks() {
         prefetch={item.prefetch}
         key={item.label}
         style={{ fontWeight: active ? 600 : 400,
-            fontSize: 20,
+            fontSize: 18,
             color: active ? "white" : "rgba(255,255,255,0.75)",
             borderBottom: active ? "2px solid white" : "2px solid transparent",
             paddingBottom: 6,
@@ -29,7 +29,7 @@ export function WebNavLinks() {
         }}
         onMouseEnter={e => e.currentTarget.style.color = "white"}
         onMouseLeave={e => e.currentTarget.style.color = active ? "white" : "rgba(255,255,255,0.6)"}
-        size={"lg"}
+        size={"md"}
         href={item.href}
         underline="never">
         {item.label}

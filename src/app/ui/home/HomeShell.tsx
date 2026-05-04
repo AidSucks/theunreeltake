@@ -1,21 +1,20 @@
 'use client';
 
-import {AppShell, rem} from "@mantine/core";
+import {AppShell} from "@mantine/core";
 import React from "react";
 import {HomeHeader} from "@/app/ui/home/HomeHeader";
-import {HomeFooter} from "@/app/ui/home/HomeFooter";
 import {useHeadroom} from "@mantine/hooks";
 
 export function HomeShell(
   {children}: Readonly<{children: React.ReactNode}>
 ) {
 
-  const headroom = useHeadroom({ fixedAt: 120 });
+  const headroom = useHeadroom({ fixedAt: 80 });
 
   return (
     <AppShell
-      header={{ height: {base: 60, sm: 80}, collapsed: !headroom.pinned, offset: false }}
-      padding={"sm"}>
+      header={{ height: 80, collapsed: !headroom.pinned, offset: false }}
+    >
 
       <AppShell.Header>
         <HomeHeader/>
@@ -24,12 +23,11 @@ export function HomeShell(
       <AppShell.Main
         h={"100%"}
         style={{ display: "flex", flexDirection: "column" }}
-        pt={`calc(${rem(80)} + var(--mantine-spacing-sm))`}
+        pt={80}
       >
         {children}
-
-        <HomeFooter/>
       </AppShell.Main>
+
     </AppShell>
   );
 }

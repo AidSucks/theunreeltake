@@ -14,14 +14,14 @@ import { allowedPostsPerPage } from "@/lib/constants";
 // The main page content needs to be wrapped so useSearchParams doesn't block hydration/static gen
 function MoviesPageContent() {
   const searchParams = useSearchParams();
-  
+
   const [posts, setPosts] = useState<CatalogItem[]>([]);
   const [postsPerPage, setPostsPage] = useState(allowedPostsPerPage[0]);
   const [totalCount, setTotalCount] = useState(0);
   const [page, setPage] = useState(1);
   
   // Initialize states with values from URL if they exist
-  const [search, setSearch] = useState(searchParams.get("search") || "");
+  const [search, setSearch] = useState(searchParams.get("search") ?? "");
   const [tags, setTags] = useState<string[]>(searchParams.getAll("tags"));
   const [sortBy, setSortBy] = useState("");
 
@@ -54,42 +54,44 @@ function MoviesPageContent() {
   }, [search, sortBy, page, postsPerPage, tags]);
 
   useEffect(() => {
+
     refresh();
   }, [refresh]);
 
   return (
-    <Flex direction={"column"} p={{ base: "none", md: "lg" }}>
-      <Group gap={"xs"}>
-        <Flex w={{ base: "100%", sm: "80%", md: "40%" }}>
-          <HomeSearchBar 
-            onSearchAction={(value) => { 
-              handleSearch(value); 
-              setPage(1); 
-            }} 
-          />
-        </Flex>
-        <Group gap={"xs"} ml={{ base: "lg", md: 0 }}>
-          <CatalogActionButtons onSortByAction={handleSortBy} onPostsCountAction={handlePostsCount} />
-          <RefreshDataButton updateData={refresh} />
-        </Group>
-      </Group>
-
-      {isLoading ? (
-        <CatalogLoader />
-      ) : (
-        <>
-          <PostGrid posts={posts} />
-          {totalCount > 0 && (
-            <Pagination 
-              total={Math.ceil(totalCount / postsPerPage)} 
-              value={page} 
-              onChange={setPage} 
-              mb={"md"} 
+      <Flex direction={"column"} p={{ base: "none", md: "lg" }}>
+        <Group gap={"xs"}>
+          <Flex w={{ base: "100%", sm: "80%", md: "40%" }}>
+            <HomeSearchBar
+              initialValue={search}
+              onSearchAction={(value) => {
+                handleSearch(value);
+                setPage(1);
+              }}
             />
-          )}
-        </>
-      )}
-    </Flex>
+          </Flex>
+          <Group gap={"xs"} ml={{ base: "lg", md: 0 }}>
+            <CatalogActionButtons onSortByAction={handleSortBy} onPostsCountAction={handlePostsCount} />
+            <RefreshDataButton updateData={refresh} />
+          </Group>
+        </Group>
+
+        {isLoading ? (
+          <CatalogLoader />
+        ) : (
+          <>
+            <PostGrid posts={posts} />
+            {totalCount > 0 && (
+              <Pagination
+                total={Math.ceil(totalCount / postsPerPage)}
+                value={page}
+                onChange={setPage}
+                mb={"md"}
+              />
+            )}
+          </>
+        )}
+      </Flex>
   );
 }
 
