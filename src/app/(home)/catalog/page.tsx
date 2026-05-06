@@ -59,7 +59,7 @@ function MoviesPageContent() {
   }, [refresh]);
 
   return (
-      <Flex direction={"column"} p={{ base: "none", md: "lg" }}>
+      <Flex direction={"column"} p={{ base: "sm", sm: "lg" }}>
         <Group gap={"xs"}>
           <Flex w={{ base: "100%", sm: "80%", md: "40%" }}>
             <HomeSearchBar

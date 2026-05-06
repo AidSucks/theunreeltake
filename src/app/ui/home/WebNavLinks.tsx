@@ -19,13 +19,14 @@ export function WebNavLinks() {
         component={Link}
         prefetch={item.prefetch}
         key={item.label}
-        style={{ fontWeight: active ? 600 : 400,
-            fontSize: 18,
-            color: active ? "white" : "rgba(255,255,255,0.75)",
-            borderBottom: active ? "2px solid white" : "2px solid transparent",
-            paddingBottom: 6,
-            transition: "background-color 0.2s ease",
-            whiteSpace: "nowrap"
+        style={{
+          fontWeight: 600,
+          fontSize: 18,
+          color: active ? "white" : "rgba(255,255,255,0.75)",
+          borderBottom: active ? "2px solid white" : "2px solid transparent",
+          paddingBottom: 6,
+          transition: "background-color 0.2s ease",
+          whiteSpace: "nowrap"
         }}
         onMouseEnter={e => e.currentTarget.style.color = "white"}
         onMouseLeave={e => e.currentTarget.style.color = active ? "white" : "rgba(255,255,255,0.6)"}

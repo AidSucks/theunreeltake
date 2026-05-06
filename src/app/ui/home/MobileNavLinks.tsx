@@ -16,14 +16,14 @@ export function MobileNavLinks() {
 
       return(
         <NavLink
-          variant={"filled"}
           key={item.label}
           href={item.href}
           active={path === item.href}
           label={item.label}
           leftSection={<Icon size={16}/>}
-          color={"dark.8"}
           c={"white"}
+          variant={"filled"}
+          color={"dark.8"}
         />
       );
     });
