@@ -25,6 +25,7 @@ export default function CatalogActionButtons(
       <Menu.Target>
         <Tooltip label={"Sort By"}>
           <ActionIcon
+            color={"dark"}
             size={"lg"}
             variant={"outline"}>
             <Funnel size={22}/>
@@ -55,6 +56,7 @@ export default function CatalogActionButtons(
       <Menu.Target>
         <Tooltip label={"Posts Per Page"}>
           <ActionIcon
+            color={"dark"}
             size={"lg"}
             variant={"outline"}>
             <CardText size={22}/>

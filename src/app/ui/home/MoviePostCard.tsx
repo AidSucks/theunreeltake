@@ -49,7 +49,7 @@ export function MoviePostCard(
           h={"100%"}
           shadow={`3px 3px 10px ${theme.colors.gray[9]}`}
           p={0}
-          radius={"md"}
+          bdrs={0}
           onClick={() => setIsFlipped(true)}
         >
           <Image
@@ -60,28 +60,38 @@ export function MoviePostCard(
           />
         </Card>
 
-        <Card w={"100%"} h={"100%"} shadow={`3px 3px 10px ${theme.colors.gray[9]}`} radius={"md"} p={"xs"}>
+        <Card w={"100%"} h={"100%"} shadow={`3px 3px 10px ${theme.colors.gray[9]}`} bdrs={0} p={"xs"}>
 
           <Group align={"start"} h={"100%"} wrap={"nowrap"} gap={0}>
 
             <Flex direction={"column"} w={"100%"} h={"100%"}>
 
-
               <Stack align={"stretch"} h={"100%"} pb={"xs"} px={rem(width / 20)} gap={6}>
 
-                <Text size={rem(width / 10)} fw={"bold"} lineClamp={2}>{postData.title}</Text>
-                <Badge style={{fontSize: rem(width / 24), height: rem(width / 12), width: rem(width / 4), padding: 0}}>{postData.tags[0].tag.displayName}</Badge>
+                <Text
+                  lh={{ base: "18px", sm: "20px", md: "22px", lg: "24px"}}
+                  fz={{base: 16, sm: 18, md: 20, lg: 22}}
+                  fw={"bold"}
+                  lineClamp={2}
+                >
+                  {postData.title}
+                </Text>
+                <Badge bdrs={"sm"} color={"blue"} variant={"light"} style={{fontSize: rem(width / 24), height: rem(width / 12), width: rem(width / 5), padding: 0}}>{postData.tags[0].tag.displayName}</Badge>
 
                 <Text size={rem(width / 16)}>Written By: {postData.author.name}</Text>
                 <Text size={rem(width / 16)}>Posted: {dayjs(postData.createdAt).format("MMM D, YYYY")}</Text>
 
-
-
               </Stack>
             </Flex>
 
-            <ActionIcon size={rem(width / 8)} onClick={() => setIsFlipped(false)}>
-              <X size={Math.round(width / 10)}></X>
+            <ActionIcon
+              variant={"outline"}
+              color={"dark"}
+              bdrs={"sm"}
+              size={"sm"}
+              onClick={() => setIsFlipped(false)}
+            >
+              <X size={"sm"}></X>
             </ActionIcon>
           </Group>
 
@@ -90,7 +100,9 @@ export function MoviePostCard(
             component={Link}
             href={`/blog/${postData.slug}`}
             prefetch={false}
-            size={"compact-sm"}
+            size={"sm"}
+            color={"dark"}
+            bdrs={"sm"}
           >
             View Post
           </Button>

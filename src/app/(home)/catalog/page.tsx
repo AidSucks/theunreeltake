@@ -4,7 +4,7 @@ import { Flex, Group, Loader, Pagination } from "@mantine/core";
 import { HomeSearchBar } from "@/app/ui/home/HomeSearchBar";
 import PostGrid from "@/app/ui/home/PostGrid";
 import CatalogActionButtons from "@/app/ui/home/CatalogActionButtons";
-import { useCallback, useEffect, useState, useTransition, Suspense } from "react";
+import { useCallback, useEffect, useState, useTransition } from "react";
 import { useSearchParams } from "next/navigation";
 import { CatalogItem } from "@/app/api/catalog/route";
 import RefreshDataButton from "@/app/ui/home/RefreshDataButton";
@@ -83,6 +83,7 @@ function MoviesPageContent() {
             <PostGrid posts={posts} />
             {totalCount > 0 && (
               <Pagination
+                color={"dark"}
                 total={Math.ceil(totalCount / postsPerPage)}
                 value={page}
                 onChange={setPage}
@@ -97,9 +98,7 @@ function MoviesPageContent() {
 
 export default function MoviesPage() {
   return (
-    <Suspense fallback={<CatalogLoader />}>
-      <MoviesPageContent />
-    </Suspense>
+    <MoviesPageContent />
   );
 }
 
@@ -107,7 +106,7 @@ function CatalogLoader() {
   return (
     <Flex h={"50vh"} align={"center"} justify={"center"}>
       <div>
-        <Loader type={"oval"} />
+        <Loader color={"dark"} type={"oval"} />
       </div>
     </Flex>
   );

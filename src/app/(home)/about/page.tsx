@@ -43,19 +43,24 @@ export default function AboutPage() {
         </Grid.Col>
 
         <Grid.Col span={{ base: 12, md: 6 }}>
-          <Paper shadow={"md"} maw={640} mah={360} bdrs={0}>
-            <Image
-              maw={640}
-              mah={360}
-              src={"https://placehold.co/640x360"}
-              alt={"Image Failed to Load"}
-            />
-          </Paper>
+          <AspectRatio ratio={16 / 9}>
+            <Paper shadow={"3px 3px 10px var(--mantine-color-gray-7)"} w={"100%"} h={"100%"} maw={640} mah={360} bdrs={0}>
+              <Image
+                fit={"cover"}
+                w={"100%"}
+                h={"100%"}
+                maw={640}
+                mah={360}
+                src={"/img/admission.jpg"}
+                alt={"Image Failed to Load"}
+              />
+            </Paper>
+          </AspectRatio>
         </Grid.Col>
 
         {/*Meet the Team Section*/}
         <Grid.Col span={12} mt="xl">
-          <Title order={2} mb="lg">Meet the UnReel Team</Title>
+          <Title order={1} mb="lg">Meet the Unreel Team</Title>
           
           <Stack gap="md">
             {TEAM_MEMBERS.map((member, index) => (
@@ -66,7 +71,7 @@ export default function AboutPage() {
                   align="flex-start"
                 >
                   {/* Image Container */}
-                  <Paper bg="gray.1" w={{ base: '100%', sm: 180 }} h={"100%"} style={{ overflow: 'hidden' }} bdrs={0}>
+                  <Paper bg="gray.1" w={{ base: '100%', xs: 180 }} maw={255} h={"100%"} style={{ overflow: 'hidden' }} bdrs={0}>
                     <AspectRatio ratio={1}>
                       <Image
                         src={member.image}

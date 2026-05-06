@@ -23,6 +23,8 @@ export default function HomePage() {
 
   const handleSearch = (value: string) => {
 
+    if(!value) return;
+
     const urlParams = new URLSearchParams();
 
     urlParams.set("search", value);
@@ -46,6 +48,7 @@ export default function HomePage() {
         <Flex justify={"center"}>
           <Flex w={{ base: "100%", sm: "75%" }} align={"center"} justify={"center"}>
             <HomeSearchBar
+              placeholderText={"Search everything"}
               onSearchAction={(value) => handleSearch(value)}
             />
           </Flex>
@@ -57,12 +60,15 @@ export default function HomePage() {
         <Grid.Col span={{ base: 12, md: 6 }}>
           <AspectRatio ratio={16 / 9}>
             <Flex justify={"center"} align={{ base: "center", md: "start"}}>
-              <Paper shadow={"md"} maw={640} mah={360} bdrs={0}>
+              <Paper shadow={"3px 3px 10px var(--mantine-color-gray-7)"} w={"100%"} h={"100%"} maw={640} mah={360} bdrs={0}>
                 <Image
+                  w={"100%"}
+                  h={"100%"}
                   maw={640}
                   mah={360}
-                  src={"https://placehold.co/640x360"}
-                  alt={"Image Failed to Load"}
+                  fit={"cover"}
+                  src={"/img/movie-reel.jpg"}
+                  alt={"Popcorn"}
                 />
               </Paper>
             </Flex>
@@ -102,11 +108,14 @@ export default function HomePage() {
         <Grid.Col span={{ base: 12, md: 6 }}>
           <AspectRatio ratio={16 / 9}>
             <Flex justify={"center"} align={{ base: "center", md: "start"}}>
-              <Paper shadow={"md"} maw={640} mah={360} bdrs={0}>
+              <Paper shadow={"3px 3px 10px var(--mantine-color-gray-7)"} w={"100%"} h={"100%"} maw={640} mah={360} bdrs={0}>
                 <Image
+                  fit={"cover"}
+                  w={"100%"}
+                  h={"100%"}
                   maw={640}
                   mah={360}
-                  src={"https://placehold.co/640x360"}
+                  src={"/img/popcorn.jpg"}
                   alt={"Image Failed to Load"}
                 />
               </Paper>
