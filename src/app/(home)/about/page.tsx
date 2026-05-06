@@ -80,7 +80,7 @@ export default function AboutPage() {
                   <Stack gap={4} flex={1}>
                     <Group justify="space-between" align="center">
                       <Text fw={700} size="xl">{member.name}</Text>
-                      <Badge variant="light" color="blue" size="xl">
+                      <Badge variant="light" color="blue" size="md">
                         {member.role}
                       </Badge>
                     </Group>
