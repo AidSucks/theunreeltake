@@ -4,7 +4,7 @@ import { Flex, Group, Loader, Pagination } from "@mantine/core";
 import { HomeSearchBar } from "@/app/ui/home/HomeSearchBar";
 import PostGrid from "@/app/ui/home/PostGrid";
 import CatalogActionButtons from "@/app/ui/home/CatalogActionButtons";
-import { useCallback, useEffect, useState, useTransition } from "react";
+import {Suspense, useCallback, useEffect, useState, useTransition} from "react";
 import { useSearchParams } from "next/navigation";
 import { CatalogItem } from "@/app/api/catalog/route";
 import RefreshDataButton from "@/app/ui/home/RefreshDataButton";
@@ -98,7 +98,9 @@ function MoviesPageContent() {
 
 export default function MoviesPage() {
   return (
-    <MoviesPageContent />
+    <Suspense>
+      <MoviesPageContent />
+    </Suspense>
   );
 }
 
