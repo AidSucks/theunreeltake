@@ -36,8 +36,11 @@ export default function AboutPage() {
         {/*About Section*/}
         <Grid.Col span={{ base: 12, md: 6 }}>
           <Title order={1}>About The Unreel Take</Title>
+          <Text size={"md"} mb={"xs"}>
+            We believe everyone deserves reviews from people who genuinely enjoy all genres and don&#39;t have an agenda. No critics. No scores. No one tanking a movie because it didn&#39;t align with their politics or a book because they didn&#39;t like one character.
+          </Text>
           <Text size={"md"}>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Consectetur soluta eos dolores, incidunt sunt laudantium delectus repellat maxime aliquam, similique enim illum velit quae facilis.
+            Here&#39;s the thing: quality and experience aren&#39;t the same. Have you ever watched a movie everyone calls a disaster, but had the best time watching? Or re-read a book ten times just for the vibe, while critics called it poorly written? That&#39;s exactly what we&#39;re here for. We&#39;re not here to tell you if something is good. We&#39;re here to tell you what kind of experience you&#39;re in for.
           </Text>
         </Grid.Col>
 

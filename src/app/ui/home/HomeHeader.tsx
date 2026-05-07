@@ -1,5 +1,7 @@
 "use client";
 
+import NextImage from "next/image";
+
 import { Image, Flex } from '@mantine/core';
 import { HomeBurgerMenu } from "@/app/ui/home/HomeBurgerMenu";
 import { WebNavLinks } from "@/app/ui/home/WebNavLinks";
@@ -19,6 +21,10 @@ export function HomeHeader() {
 
       <Flex justify={{ base: "center", lg: "end" }} w={"25%"} visibleFrom={"sm"}>
         <Image
+          component={NextImage}
+          width={128}
+          height={48}
+          loading={"eager"}
           src={"/img/white_logo_transparent_background.png"}
           w={128}
           h={48}

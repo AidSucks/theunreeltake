@@ -1,5 +1,7 @@
 'use client';
 
+import NextImage from "next/image";
+
 import {
   AspectRatio,
   Button,
@@ -62,6 +64,10 @@ export default function HomePage() {
             <Flex justify={"center"} align={{ base: "center", md: "start"}}>
               <Paper shadow={"3px 3px 10px var(--mantine-color-gray-7)"} w={"100%"} h={"100%"} maw={640} mah={360} bdrs={0}>
                 <Image
+                  component={NextImage}
+                  width={640}
+                  height={360}
+                  loading={"eager"}
                   w={"100%"}
                   h={"100%"}
                   maw={640}
@@ -94,7 +100,7 @@ export default function HomePage() {
 
         <Grid.Col span={12}>
 
-          <Title order={2} mb={"xs"}>Who We Are And What We Do</Title>
+          <Title order={2} mb={"xs"}>What We Do</Title>
           <Text>
             We watch TONS of movies, and our mission is to provide you with all of the the information you need when
             you go to select your next movie to watch, whether it be date night, family movie night, or a &#34;netflix and
@@ -110,6 +116,10 @@ export default function HomePage() {
             <Flex justify={"center"} align={{ base: "center", md: "start"}}>
               <Paper shadow={"3px 3px 10px var(--mantine-color-gray-7)"} w={"100%"} h={"100%"} maw={640} mah={360} bdrs={0}>
                 <Image
+                  component={NextImage}
+                  width={640}
+                  height={360}
+                  loading={"eager"}
                   fit={"cover"}
                   w={"100%"}
                   h={"100%"}
@@ -128,7 +138,7 @@ export default function HomePage() {
 
             <Title order={2} mb={"xs"}>The Unreel Method</Title>
 
-            <Text>
+            <Text mb={"xs"}>
               We&#39;ve been let down too many times whether it be from spoilers,
               boring critic reviews with fanciful language,
               or casual viewers who rate a movie badly because it didn&#39;t have enough nudity.
@@ -165,7 +175,16 @@ export default function HomePage() {
               <Center>
                 <Text fw={"bolder"} ta={"center"}>Checkout Angry Fitz Media!</Text>
               </Center>
-              <Image src={"/img/AFM.webp"} w={225} h={225} alt={"Angry Fitz Media"}/>
+              <Image
+                component={NextImage}
+                width={225}
+                height={225}
+                loading={"lazy"}
+                src={"/img/AFM.webp"}
+                w={225}
+                h={225}
+                alt={"Angry Fitz Media"}
+              />
               <Flex w={"100%"} justify={"center"}>
                 <Button component={"a"} color={"dark"} maw={128} w={"100%"} href={"https://www.angryfitzmedia.com/"}>Go there!</Button>
               </Flex>
