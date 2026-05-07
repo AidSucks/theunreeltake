@@ -6,14 +6,11 @@ import {cookies, headers} from "next/headers";
 import { auth } from "@/lib/auth";
 import * as crypto from "node:crypto";
 import dayjs from "dayjs";
-import {Verification} from "@/generated/prisma/client";
+import {Tag, Verification} from "@/generated/prisma/client";
 import { sendInvitationEmail } from "@/lib/emailer";
 import { sendPasswordWasResetEmail } from "@/lib/emailer";
 import {revalidatePath} from "next/cache";
-
-export async function testRequestForm(data: RequestForm) {
-  console.log(data);
-}
+import {AllowedTagType, PostItem} from "./constants";
 
 function generateInvitationToken(): string {
 
@@ -117,7 +114,16 @@ export async function notifyPasswordChanged() {
   }
 }
 
-export async function createNewPost(formData: { title: string, slug: string, mediaType: string, pageContent: string, published: boolean }) {
+export async function createNewPost(
+  formData: {
+    title: string,
+    slug: string,
+    mediaTagId: number,
+    pageContent: string,
+    published: boolean,
+    posterUrl: string | null
+  }
+){
   try {
 
     const session = await auth.api.getSession({
@@ -127,25 +133,23 @@ export async function createNewPost(formData: { title: string, slug: string, med
     if(!session || !session.user) {
       return { error: "You must be logged in to create a post.", success: false };
     }
-    await prisma.post.create({
+    const result = await prisma.post.create({
       data: {
         title: formData.title,
         slug: formData.slug,
         htmlContent: formData.pageContent,
+        posterUrl: formData.posterUrl,
         published: formData.published,
         authorId: session.user.id,
-        tags: {
-          create: {
-            tag: {
-              create: {
-                type: "MediaType",
-                displayName: formData.mediaType,
-              }
-            }
-          }
-        }
       }
     });
+
+    await prisma.tagsOnPost.create({
+      data: {
+        tagId: formData.mediaTagId,
+        postId: result.id
+      }
+    })
 
     return { error: null, success: true };
   } catch (error) {
@@ -208,10 +212,25 @@ export async function deletePost(id:string)
   }
 }
 
-export async function savePost(id:string, title:string, slug:string, content:string, published: boolean)
+export async function savePost(
+  id: string,
+  title: string,
+  slug: string,
+  content: string,
+  published: boolean,
+  posterUrl: string | null,
+  mediaTagId: number
+)
 {
   try
   {
+
+    await prisma.tagsOnPost.deleteMany({
+      where: {
+        postId: id
+      }
+    });
+
     await prisma.post.update({
       where: {
         id: id,
@@ -219,10 +238,17 @@ export async function savePost(id:string, title:string, slug:string, content:str
       data: {
         title: title,
         slug: slug,
+        posterUrl: posterUrl,
         htmlContent: content,
-        published: published
+        published: published,
+        tags: {
+          create: {
+            tag: { connect: { id: mediaTagId }}
+          }
+        }
       }
     });
+
     return { error: null, success: true};
   } catch (error) {
     return { error: "Failed to save post", success: false };
@@ -288,6 +314,65 @@ export async function getDraftPosts() {
   } catch (error) {
     console.error("Failed to fetch drafts:", error);
     return { success: false, data: [] };
+  }
+}
+
+export async function getPostAction({
+  authorId,
+  page = 1,
+  limit = 10,
+  search = ""
+}: {
+  authorId: string,
+  page?: number,
+  limit?: number,
+  search?: string,
+}) {
+
+  try {
+    const posts = await prisma.post.findMany({
+      where: {
+        title: {
+          contains: search,
+          mode: "insensitive",
+        },
+        published: true,
+        authorId: authorId
+      },
+      orderBy: {
+        createdAt: "desc",
+      },
+      skip: (page - 1) * limit,
+      take: limit,
+    });
+
+    const total = await prisma.post.count({
+      where: {
+        title: {
+          contains: search,
+          mode: "insensitive",
+        },
+      },
+    });
+
+    const formatted: PostItem[] = posts.map((post) => ({
+      id: post.id,
+      title: post.title,
+      imageSrc: post.posterUrl ?? "https://placehold.co/600x400?text=No+Poster",
+    }));
+
+    return {
+      success: true,
+      data: formatted,
+      total,
+    };
+  } catch (err) {
+    console.error(err);
+    return {
+      success: false,
+      data: [],
+      total: 0,
+    };
   }
 }
 
@@ -386,3 +471,25 @@ export async function updateUser(id:string, name:string, role:string)
   }
 }
 
+export async function getAllTags(tagType: AllowedTagType | undefined) {
+
+  try {
+
+    let result: Tag[];
+
+    if(!tagType) {
+      result = await prisma.tag.findMany();
+    } else {
+      result = await prisma.tag.findMany({
+        where: {
+          type: tagType
+        }
+      });
+    }
+
+    return { error: null, data: result };
+
+  } catch (error) {
+    return { error: "Failed to fetch tags", data: null }
+  }
+}

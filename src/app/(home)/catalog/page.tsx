@@ -4,7 +4,7 @@ import { Flex, Group, Loader, Pagination } from "@mantine/core";
 import { HomeSearchBar } from "@/app/ui/home/HomeSearchBar";
 import PostGrid from "@/app/ui/home/PostGrid";
 import CatalogActionButtons from "@/app/ui/home/CatalogActionButtons";
-import { useCallback, useEffect, useState, useTransition, Suspense } from "react";
+import {Suspense, useCallback, useEffect, useState, useTransition} from "react";
 import { useSearchParams } from "next/navigation";
 import { CatalogItem } from "@/app/api/catalog/route";
 import RefreshDataButton from "@/app/ui/home/RefreshDataButton";
@@ -14,14 +14,14 @@ import { allowedPostsPerPage } from "@/lib/constants";
 // The main page content needs to be wrapped so useSearchParams doesn't block hydration/static gen
 function MoviesPageContent() {
   const searchParams = useSearchParams();
-  
+
   const [posts, setPosts] = useState<CatalogItem[]>([]);
   const [postsPerPage, setPostsPage] = useState(allowedPostsPerPage[0]);
   const [totalCount, setTotalCount] = useState(0);
   const [page, setPage] = useState(1);
   
   // Initialize states with values from URL if they exist
-  const [search, setSearch] = useState(searchParams.get("search") || "");
+  const [search, setSearch] = useState(searchParams.get("search") ?? "");
   const [tags, setTags] = useState<string[]>(searchParams.getAll("tags"));
   const [sortBy, setSortBy] = useState("");
 
@@ -54,48 +54,51 @@ function MoviesPageContent() {
   }, [search, sortBy, page, postsPerPage, tags]);
 
   useEffect(() => {
+
     refresh();
   }, [refresh]);
 
   return (
-    <Flex direction={"column"} p={{ base: "none", md: "lg" }}>
-      <Group gap={"xs"}>
-        <Flex w={{ base: "100%", sm: "80%", md: "40%" }}>
-          <HomeSearchBar 
-            onSearchAction={(value) => { 
-              handleSearch(value); 
-              setPage(1); 
-            }} 
-          />
-        </Flex>
-        <Group gap={"xs"} ml={{ base: "lg", md: 0 }}>
-          <CatalogActionButtons onSortByAction={handleSortBy} onPostsCountAction={handlePostsCount} />
-          <RefreshDataButton updateData={refresh} />
-        </Group>
-      </Group>
-
-      {isLoading ? (
-        <CatalogLoader />
-      ) : (
-        <>
-          <PostGrid posts={posts} />
-          {totalCount > 0 && (
-            <Pagination 
-              total={Math.ceil(totalCount / postsPerPage)} 
-              value={page} 
-              onChange={setPage} 
-              mb={"md"} 
+      <Flex direction={"column"} p={{ base: "sm", sm: "lg" }}>
+        <Group gap={"xs"}>
+          <Flex w={{ base: "100%", sm: "80%", md: "40%" }}>
+            <HomeSearchBar
+              initialValue={search}
+              onSearchAction={(value) => {
+                handleSearch(value);
+                setPage(1);
+              }}
             />
-          )}
-        </>
-      )}
-    </Flex>
+          </Flex>
+          <Group gap={"xs"} ml={{ base: "lg", md: 0 }}>
+            <CatalogActionButtons onSortByAction={handleSortBy} onPostsCountAction={handlePostsCount} />
+            <RefreshDataButton updateData={refresh} />
+          </Group>
+        </Group>
+
+        {isLoading ? (
+          <CatalogLoader />
+        ) : (
+          <>
+            <PostGrid posts={posts} />
+            {totalCount > 0 && (
+              <Pagination
+                color={"dark"}
+                total={Math.ceil(totalCount / postsPerPage)}
+                value={page}
+                onChange={setPage}
+                mb={"md"}
+              />
+            )}
+          </>
+        )}
+      </Flex>
   );
 }
 
 export default function MoviesPage() {
   return (
-    <Suspense fallback={<CatalogLoader />}>
+    <Suspense>
       <MoviesPageContent />
     </Suspense>
   );
@@ -105,7 +108,7 @@ function CatalogLoader() {
   return (
     <Flex h={"50vh"} align={"center"} justify={"center"}>
       <div>
-        <Loader type={"oval"} />
+        <Loader color={"dark"} type={"oval"} />
       </div>
     </Flex>
   );

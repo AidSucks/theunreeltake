@@ -1,37 +1,43 @@
 "use client";
 
-import { useForm } from "@mantine/form";
-import { useDisclosure } from "@mantine/hooks"; 
-import { useRouter } from "next/navigation"; 
-import { DeletePostModal } from "@/app/ui/admin/DeletePostModal";
-import { zod4Resolver } from "mantine-form-zod-resolver";
-import {
-  TextInput,
-  Select,
-  Button,
-  Stack,
-  Paper,
-  Group,
-  Title,
-  Input
-} from "@mantine/core";
-import { createNewPost, savePost } from "@/lib/actions";
-import { deletePost } from "@/lib/actions";
-import { CreatePostSchema } from "@/lib/schemas";
+import {useForm} from "@mantine/form";
+import {useDisclosure} from "@mantine/hooks";
+import {useRouter} from "next/navigation";
+import {DeletePostModal} from "@/app/ui/admin/DeletePostModal";
+import {zod4Resolver} from "mantine-form-zod-resolver";
+import {Button, Group, Input, Paper, Select, Stack, TextInput, Title} from "@mantine/core";
+import {createNewPost, deletePost, getAllTags, savePost} from "@/lib/actions";
+import {CreatePostSchema} from "@/lib/schemas";
 import {SiteTextEditor} from "@/app/ui/admin/SiteTextEditor"
+import {AllowedTagType} from "@/lib/constants";
+import {useEffect, useState} from "react";
+import {Tag} from "@/generated/prisma/client";
 
 interface PostProp {
   id: string;
   title: string;
   slug: string;
   htmlContent: string;
+  posterUrl: string | null;
   published: boolean;
-  mediaType: string; 
+  mediaTagId: number;
 }
 
 export function PostForm({ post }: { post?: PostProp | null }) {
+
+  const [mediaTags, setMediaTags] = useState(new Array<Tag>());
   const [opened, { open, close }] = useDisclosure(false);
   const router = useRouter();
+
+  useEffect(() => {
+
+    getAllTags(AllowedTagType.Media)
+      .then(result => {
+        if(result.data) {
+          setMediaTags(result.data);
+        }});
+
+  }, []);
 
   const isEditMode = !!post;
 
@@ -40,11 +46,11 @@ export function PostForm({ post }: { post?: PostProp | null }) {
     initialValues: {
       title: post?.title || "",
       slug: post?.slug || "",
-      mediaType: post?.mediaType || "",
+      mediaTagId: post?.mediaTagId ?? 0,
+      posterUrl: post?.posterUrl ?? null,
       pageContent: post?.htmlContent || ""
     },
     validate: zod4Resolver(CreatePostSchema),
-    validateInputOnChange: true,
   });
 
   const handleSubmit= async (action: "publish" | "draft" | "save") => {
@@ -55,8 +61,21 @@ export function PostForm({ post }: { post?: PostProp | null }) {
 
     if (isEditMode && post) {
       const isPublishing = action === "publish" ? true : post.published;
-      
-      await savePost(post.id, values.title, values.slug, values.pageContent, isPublishing);
+
+      const { error, success } = await savePost(
+        post.id,
+        values.title,
+        values.slug,
+        values.pageContent,
+        isPublishing,
+        values.posterUrl ? values.posterUrl : null,
+        (values.mediaTagId < 0) ? mediaTags[0].id : values.mediaTagId);
+
+      if(!success) {
+        console.log(error);
+        return;
+      }
+
       router.push('/dashboard/posts');
 
     } else {
@@ -85,7 +104,7 @@ export function PostForm({ post }: { post?: PostProp | null }) {
       />
 
     <Paper withBorder shadow="sm" p="xl" radius="md" w="100%" mih="85vh" display="flex" style={{ flexDirection: 'column' }}>
-      <Title order={3} mb="lg">Create New Post</Title>
+      <Title order={1} mb="lg">{isEditMode ? "Edit Post" : "Create New Post"}</Title>
 
       <form>
         <Stack gap="md">
@@ -94,7 +113,15 @@ export function PostForm({ post }: { post?: PostProp | null }) {
 
           <Group grow align="flex-start">
             <TextInput label="Slug" placeholder="e.g., my-new-post" key="slug" {...form.getInputProps('slug')} />
-            <Select label="Media Type" placeholder="Select media type" data={['Movie', 'Book', 'TV Show', 'Game', 'Music']} key="mediaType" {...form.getInputProps('mediaType')} />
+            <Select
+              label="Media Type"
+              allowDeselect={false}
+              placeholder="Select media type"
+              data={mediaTags.map((tag) => {return { value: tag.id, label: tag.displayName }; })}
+              key="mediaTagId"
+              {...form.getInputProps('mediaTagId')}
+            />
+            <TextInput label="Poster Url" placeholder="https://www.example.com" key={"posterUrl"} {...form.getInputProps("posterUrl")} />
           </Group>
 
           <Input.Wrapper label="Page Content" error={form.errors.pageContent}>

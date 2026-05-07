@@ -1,15 +1,41 @@
 'use client';
 
-import {Button, Fieldset, Card, Flex, Divider, Anchor, Group, NativeSelect, Text, Textarea, TextInput, Title} from "@mantine/core";
+import {
+  Button,
+  Card,
+  Divider,
+  Fieldset,
+  Flex,
+  Group,
+  NativeSelect,
+  Text,
+  Textarea,
+  TextInput,
+  Title
+} from "@mantine/core";
 import {useForm} from "@mantine/form";
 import {zod4Resolver} from "mantine-form-zod-resolver";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {RequestFormSchema} from "@/lib/schemas";
-import {AllowedMediaType, maxTextAreaLength, maxTextInputLength} from "@/lib/constants";
-import { submitRequestForm } from "@/lib/actions";
+import {AllowedTagType, maxTextAreaLength, maxTextInputLength} from "@/lib/constants";
+import {getAllTags, submitRequestForm} from "@/lib/actions";
+import Link from "next/link";
+import {Tag} from "@/generated/prisma/client";
 
 
 export function RequestForm() {
+
+  const [mediaTags, setMediaTags] = useState(new Array<Tag>());
+
+  useEffect(() => {
+
+    getAllTags(AllowedTagType.Media)
+      .then(result => {
+        if(result.data) {
+          setMediaTags(result.data);
+        }});
+
+  }, []);
 
   const form = useForm({
     mode: "uncontrolled",
@@ -17,7 +43,7 @@ export function RequestForm() {
       name: "",
       email: "",
       title: "",
-      mediaType: AllowedMediaType.Movie,
+      mediaType: "Movie",
       message: ""
     },
     validate: zod4Resolver(RequestFormSchema),
@@ -40,9 +66,12 @@ export function RequestForm() {
     return (
       <Flex justify="center" align="center" direction="column" py="xl">
         <Card shadow="sm" padding="xl" w={{ base: "100%", sm: 500 }}>
-          <Title order={2}  mb="md" style={{textAlign: "center"}}>
+          <Title order={2} mb="md" ta={"center"}>
             Thank you for your request!
           </Title>
+          <Text component={Link} href={"/"} ta={"center"}>
+            Back to home
+          </Text>
         </Card>
       </Flex>
     );
@@ -51,14 +80,23 @@ export function RequestForm() {
   return(
 
     <Flex justify="center" py="xl">
-      <Card shadow="sm" padding="xl" w={{ base: "100%", sm: 900 }}>
-        <Title order={2} style={{textAlign: "center"}} mb="lg">
-          Send us your request
+      <Card shadow="sm" w={"100%"} maw={900} px={{base: "md", lg: "xl"}}>
+        <Title order={1} ta={"center"} mb="lg">
+          Send Us Your Request
         </Title>
 
-        <Text c="dimmed" size="sm" mb="xl">
-          Didn’t find the UnReel Take you were looking for? Request a movie for our review! 
-          Leaving your name is optional, but please insert your email so we can notify you.
+        <Text size="md" mb={"sm"}>
+          Didn’t find the Unreel Take you were looking for? Request a movie for our review!
+          Since we all have day jobs, we are entering in movies as we watch them. If there
+          is a movie you are looking for that we haven’t reviewed, just request it and we
+          will watch it as soon as we can.
+        </Text>
+
+        <Text size="md" mb="xl">
+          Once it is ready, we will personally let you know.
+          Leaving your name is optional, but please insert your email address so we know how
+          to notify you. None of the information you submit below is stored any longer than
+          necessary. Once we post your requested review, all submitted information is deleted.
         </Text>
 
         <form onSubmit={form.onSubmit(handleSubmit)}>
@@ -88,7 +126,7 @@ export function RequestForm() {
             <Fieldset legend="Request Information" w={{ base: "100%", sm: "50%" }}>
               <TextInput
                 label="Title"
-                placeholder="Title of movie/book"
+                placeholder="Title of movie, book, etc."
                 withAsterisk
                 mb="sm"
                 maxLength={maxTextInputLength}
@@ -97,14 +135,14 @@ export function RequestForm() {
               />
               <NativeSelect
                 label="Type"
-                data={Object.values(AllowedMediaType)}
+                data={mediaTags.map(tag => tag.displayName)}
                 mb="sm"
                 key={form.key("mediaType")}
                 {...form.getInputProps("mediaType")}
               />
               <Textarea
                 label="Message (optional)"
-                placeholder="Any extra info..."
+                placeholder="Anything else you want us to know"
                 autosize
                 minRows={3}
                 maxLength={maxTextAreaLength}
@@ -115,12 +153,9 @@ export function RequestForm() {
           </Flex>
 
           <Divider my="xl" size="sm" color="rgba(0,0,0,0.1)" />
-          <Text color="dimmed" size="sm" mb="md">
+          <Text c="dimmed" size="sm" mb="md" ta={"center"}>
             By clicking the submit button, you agree to allow us to store and process
-            the information above for contact purposes. Please read our {' '}
-            <Anchor href="whereever our privacy policy is going to be" c="blue">
-            privacy policy
-            </Anchor>{' '}
+            the information above for contact purposes.
           </Text>
           <Group justify="center" mt="md">
             <Button
@@ -128,6 +163,7 @@ export function RequestForm() {
               w={{ base: "100%", sm: "50%" }}
               loading={form.submitting}
               radius="xl"
+              color={"dark"}
             >
               Submit Request
             </Button>

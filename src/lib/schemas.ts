@@ -54,7 +54,7 @@ export const RequestFormSchema = z.object({
   name: z.string().max(maxTextInputLength).optional(),
   email: z.email({ error: "Invalid Email" }).nonempty({ error: "Required" }),
   title: z.string().max(maxTextInputLength).nonempty({ error: "Required" }),
-  mediaType: z.enum(AllowedMediaType),
+  mediaType: z.string().nonempty("Required"),
   message: z.string().max(maxTextAreaLength).optional()
 });
 
@@ -119,9 +119,13 @@ export const CreatePostSchema = z.object({
     .string()
     .min(1, "Slug is required")
     .regex(/^[a-z0-9-]+$/, "Only lowercase letters, numbers, and dashes allowed"),
-  mediaType: z
-    .string()
-    .min(1, "Media Type is required"),
+  posterUrl: z
+    .httpUrl("Invalid Url")
+    .nullable()
+    .or(z.literal("")),
+  mediaTagId: z
+    .number()
+    .min(1, "Required"),
   pageContent: z
     .string()
     .min(10, "Content must be at least 10 characters long"),

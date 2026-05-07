@@ -1,47 +1,55 @@
-import {Box, Flex, Title} from '@mantine/core';
-import {HomeBurgerMenu} from "@/app/ui/home/HomeBurgerMenu";
-import {WebNavLinks} from "@/app/ui/home/WebNavLinks";
-import {HomeHeaderButtons} from "@/app/ui/home/HomeHeaderButtons";
-import {Bootstrap} from "react-bootstrap-icons";
+"use client";
+
+import NextImage from "next/image";
+
+import { Image, Flex } from '@mantine/core';
+import { HomeBurgerMenu } from "@/app/ui/home/HomeBurgerMenu";
+import { WebNavLinks } from "@/app/ui/home/WebNavLinks";
+import { HomeHeaderButtons } from "@/app/ui/home/HomeHeaderButtons";
 
 export function HomeHeader() {
 
   return (
-    <Flex h={"100%"} w={"100%"} p={"xs"} align={"flex-end"} direction={"column"}>
+    <Flex
+      align={"center"}
+      px='md'
+      py='md'
+      w={"100%"}
+      gap="xl"
+      bg={"dark"}
+    >
 
-      <Flex h={"50%"} w={"inherit"} visibleFrom={"sm"}>
-
-        <Box w={"25%"} h={"100%"}>
-          <Flex h={"100%"} w={"100%"} align={"center"} justify={"flex-start"} pl={{ base: "none", md: "md"}} columnGap={8}>
-            <Bootstrap size={30}/>
-            <Title order={4} textWrap={"nowrap"}>The UnReel Take</Title>
-          </Flex>
-        </Box>
-
-        <Box w={"50%"} h={"100%"}>
-          <Flex h={"100%"} w={"100%"} align={"center"} justify={"center"} px={"xs"}>
-            {/**Center Media**/}
-          </Flex>
-        </Box>
-
-        
-
+      <Flex justify={{ base: "center", lg: "end" }} w={"25%"} visibleFrom={"sm"}>
+        <Image
+          component={NextImage}
+          width={128}
+          height={48}
+          loading={"eager"}
+          src={"/img/white_logo_transparent_background.png"}
+          w={128}
+          h={48}
+          alt={"Unreel Take Logo"}
+        />
       </Flex>
 
-      <Flex h={{ base: "100%", sm: "50%"}} w={"inherit"}>
+      <Flex justify={"center"} align={"center"} w={"100%"} hiddenFrom={"sm"}>
+        <HomeBurgerMenu/>
+        <Flex w={"100%"} justify={"center"} pr={34}>
+          <Image
+            src={"/img/white_logo_transparent_background.png"}
+            w={128}
+            h={48}
+            alt={"Unreel Take Logo"}
+          />
+        </Flex>
+      </Flex>
 
-        <Box w={{ base: "40%", sm: "25%" }} h={"100%"}>
-          <HomeBurgerMenu/>
-        </Box>
+      <Flex visibleFrom={"sm"} w={"50%"}>
+        <WebNavLinks/>
+      </Flex>
 
-        <Box w={"50%"} h={"100%"} visibleFrom={"sm"}>
-          <WebNavLinks/>
-        </Box>
-
-        <Box w={{ base: "60%", sm: "25%" }} h={"100%"}>
-          <HomeHeaderButtons/>
-        </Box>
-
+      <Flex justify={{ base: "center", lg: "start" }} w={"25%"} visibleFrom={"sm"}>
+        <HomeHeaderButtons/>
       </Flex>
 
     </Flex>

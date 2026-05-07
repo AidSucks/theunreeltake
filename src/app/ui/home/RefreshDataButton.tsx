@@ -15,6 +15,7 @@ export default function RefreshDataButton(
       <ActionIcon
         size={"lg"}
         variant={"outline"}
+        color={"dark"}
         onClick={() => updateData()}
       >
 

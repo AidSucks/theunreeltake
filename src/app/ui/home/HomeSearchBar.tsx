@@ -6,10 +6,18 @@ import React, {useState} from "react";
 import {useDebouncedCallback} from "@mantine/hooks";
 
 export function HomeSearchBar(
-  { onSearchAction }: { onSearchAction: (value: string) => void }
+  {
+    initialValue,
+    placeholderText,
+    onSearchAction
+  }: {
+    initialValue?: string,
+    placeholderText?: string,
+    onSearchAction: (value: string) => void
+  }
 ) {
 
-  const [search, setSearch] = useState("");
+  const [search, setSearch] = useState(initialValue ?? "");
 
   const handleKeyUp =
     (event: React.KeyboardEvent<HTMLInputElement>) => {
@@ -27,13 +35,13 @@ export function HomeSearchBar(
   return (
     <TextInput
       mx={"lg"}
-      w={{base: "100%"}}
+      w={"100%"}
       value={search}
       onChange={handleChange}
       onKeyUp={handleKeyUp}
       radius={"xl"}
       size={"md"}
-      placeholder={"Search"}
+      placeholder={placeholderText ?? "Search"}
       rightSectionWidth={42}
       leftSection={<Search size={18}/>}
       rightSection={ search ?
@@ -43,13 +51,19 @@ export function HomeSearchBar(
             handleSearch();
           }}
           size={28}
-          radius="xl"
-          variant="filled"
+          radius={"xl"}
+          variant={"filled"}
+          color={"dark"}
           >
           <X size={18}/>
         </ActionIcon>
         : null
       }
+      styles={{
+        input: {
+          border: "calc(.0625rem * var(--mantine-scale)) solid var(--mantine-color-dark-1)"
+        }
+      }}
     />
   );
 }
