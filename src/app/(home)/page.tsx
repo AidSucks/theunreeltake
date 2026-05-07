@@ -33,7 +33,7 @@ export default function HomePage() {
   };
 
   return (
-    <Container size={"lg"}>
+    <Container size={"lg"} px={{base: "md", sm: "xl"}}>
 
       <Stack mt={48}>
 

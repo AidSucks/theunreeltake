@@ -1,16 +1,41 @@
 'use client';
 
-import {Button, Fieldset, Card, Flex, Divider, Group, NativeSelect, Text, Textarea, TextInput, Title} from "@mantine/core";
+import {
+  Button,
+  Card,
+  Divider,
+  Fieldset,
+  Flex,
+  Group,
+  NativeSelect,
+  Text,
+  Textarea,
+  TextInput,
+  Title
+} from "@mantine/core";
 import {useForm} from "@mantine/form";
 import {zod4Resolver} from "mantine-form-zod-resolver";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {RequestFormSchema} from "@/lib/schemas";
-import {AllowedMediaType, maxTextAreaLength, maxTextInputLength} from "@/lib/constants";
-import { submitRequestForm } from "@/lib/actions";
+import {AllowedTagType, maxTextAreaLength, maxTextInputLength} from "@/lib/constants";
+import {getAllTags, submitRequestForm} from "@/lib/actions";
 import Link from "next/link";
+import {Tag} from "@/generated/prisma/client";
 
 
 export function RequestForm() {
+
+  const [mediaTags, setMediaTags] = useState(new Array<Tag>());
+
+  useEffect(() => {
+
+    getAllTags(AllowedTagType.Media)
+      .then(result => {
+        if(result.data) {
+          setMediaTags(result.data);
+        }});
+
+  }, []);
 
   const form = useForm({
     mode: "uncontrolled",
@@ -18,7 +43,7 @@ export function RequestForm() {
       name: "",
       email: "",
       title: "",
-      mediaType: AllowedMediaType.Movie,
+      mediaType: "Movie",
       message: ""
     },
     validate: zod4Resolver(RequestFormSchema),
@@ -101,7 +126,7 @@ export function RequestForm() {
             <Fieldset legend="Request Information" w={{ base: "100%", sm: "50%" }}>
               <TextInput
                 label="Title"
-                placeholder="Title of movie/book"
+                placeholder="Title of movie, book, etc."
                 withAsterisk
                 mb="sm"
                 maxLength={maxTextInputLength}
@@ -110,14 +135,14 @@ export function RequestForm() {
               />
               <NativeSelect
                 label="Type"
-                data={Object.values(AllowedMediaType)}
+                data={mediaTags.map(tag => tag.displayName)}
                 mb="sm"
                 key={form.key("mediaType")}
                 {...form.getInputProps("mediaType")}
               />
               <Textarea
                 label="Message (optional)"
-                placeholder="Any extra info..."
+                placeholder="Anything else you want us to know"
                 autosize
                 minRows={3}
                 maxLength={maxTextAreaLength}

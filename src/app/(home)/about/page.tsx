@@ -31,12 +31,11 @@ const TEAM_MEMBERS = [
 
 export default function AboutPage() {
   return (
-    <Container size="lg" py="xl">
+    <Container size="lg" py="xl" px={{ base: "md", sm: "xl" }}>
       <Grid columns={12} gap={"xl"}>
         {/*About Section*/}
         <Grid.Col span={{ base: 12, md: 6 }}>
           <Title order={1}>About The Unreel Take</Title>
-          <Text c="dimmed" mb="md" fw={500}>The subheading goes here</Text>
           <Text size={"md"}>
             Lorem ipsum dolor sit amet consectetur adipisicing elit. Consectetur soluta eos dolores, incidunt sunt laudantium delectus repellat maxime aliquam, similique enim illum velit quae facilis.
           </Text>
@@ -84,8 +83,8 @@ export default function AboutPage() {
                   <Stack gap={4} flex={1}>
                     <Group justify={"space-between"} align="center">
                       <Text fz={"h3"} fw={700} size="xl">{member.name}</Text>
-                      <Badge variant="light" bdrs={"sm"} color="blue" size="lg">
-                        <Text size={"sm"} fw={"bold"}>{member.role}</Text>
+                      <Badge mih={28} variant="light" bdrs={"sm"} color="blue" size="lg">
+                        <Text size={"sm"} fw={"bold"} m={0} mih={10}>{member.role}</Text>
                       </Badge>
                     </Group>
 

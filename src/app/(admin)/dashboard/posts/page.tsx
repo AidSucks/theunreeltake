@@ -4,9 +4,10 @@ import { Flex, ActionIcon, Pagination, Group} from "@mantine/core";
 import { Funnel, Filter, ArrowClockwise, PencilSquare, Chat, Trash, BarChart } from "react-bootstrap-icons"
 import { PostGrid } from "@/app/ui/admin/AdminPostGrid";
 import { NewPostButton } from "@/app/ui/admin/NewPostButton";
-import React, {useState, useEffect, useTransition, useCallback} from "react";
+import React, {useState, useEffect, useTransition, useCallback, useContext} from "react";
 import { HomeSearchBar } from "@/app/ui/home/HomeSearchBar";
 import { getPostAction} from "@/lib/actions";
+import {AuthContext} from "@/app/ui/admin/AuthContext";
 
 const postsPerPage = 10;
 
@@ -25,6 +26,8 @@ type CatalogItem = {
 
 export default function DashboardPostsPage() {
 
+  const authContext = useContext(AuthContext);
+
   const [isLoading, startTransition] = useTransition();
 
   const [page, setPage] = useState(1);
@@ -40,6 +43,7 @@ export default function DashboardPostsPage() {
   const refresh = useCallback(() => startTransition(async () => {
 
     const res = await getPostAction({
+      authorId: authContext.user.id,
       page: page,
       limit: postsPerPage,
       search: search
@@ -50,7 +54,7 @@ export default function DashboardPostsPage() {
       setTotal(Math.ceil(res.total / postsPerPage));
     }
 
-  }), [page, search]);
+  }), [page, search, authContext.user.id]);
 
   useEffect(() => refresh(), [refresh]);
 

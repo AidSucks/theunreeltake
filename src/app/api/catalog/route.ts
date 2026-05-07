@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/lib/prisma"; 
 import { allowedPostsPerPage } from "@/lib/constants";
+import {PostOrderByWithRelationInput} from "@/generated/prisma/models/Post";
 
 interface CatalogParams {
   search: string;
@@ -38,6 +39,12 @@ export async function GET(request: NextRequest) {
     const catalogParams = parseSearchParams(request.nextUrl.searchParams);
     const offset = catalogParams.postsPerPage * (catalogParams.page - 1);
 
+    const orderByList: PostOrderByWithRelationInput[] = [];
+
+    if(catalogParams.sort === "date")
+      orderByList.push({ createdAt: "asc" });
+
+    orderByList.push({ title: "asc" });
 
     const posts: CatalogItem[] = await prisma.post.findMany({
       where: {
@@ -52,9 +59,7 @@ export async function GET(request: NextRequest) {
           }}
         } : undefined
       },
-      orderBy: {
-        title: "asc"
-      },
+      orderBy: orderByList,
       skip: offset,
       take: catalogParams.postsPerPage,
       omit: {

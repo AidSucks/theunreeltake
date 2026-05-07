@@ -37,8 +37,8 @@ export default function CatalogActionButtons(
 
         <Menu.Label>Sort By</Menu.Label>
 
-        <Menu.Item onClick={() => onSortByAction("rating")}>
-          <Text>Rating</Text>
+        <Menu.Item onClick={() => onSortByAction("date")}>
+          <Text>Date</Text>
         </Menu.Item>
 
         <Menu.Item onClick={() => onSortByAction("")}>

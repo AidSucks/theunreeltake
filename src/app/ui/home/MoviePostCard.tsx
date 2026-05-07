@@ -49,18 +49,18 @@ export function MoviePostCard(
           h={"100%"}
           shadow={`3px 3px 10px ${theme.colors.gray[9]}`}
           p={0}
-          bdrs={0}
+          bdrs={"sm"}
           onClick={() => setIsFlipped(true)}
         >
           <Image
             alt={postData.title}
             w={"100%"}
             h={"100%"}
-            src={postData.posterUrl}
+            src={postData.posterUrl ?? `https://placehold.co/200x300?text=${postData.title.split(" ").join("+")}`}
           />
         </Card>
 
-        <Card w={"100%"} h={"100%"} shadow={`3px 3px 10px ${theme.colors.gray[9]}`} bdrs={0} p={"xs"}>
+        <Card w={"100%"} h={"100%"} shadow={`3px 3px 10px ${theme.colors.gray[9]}`} bdrs={"sm"} p={"xs"}>
 
           <Group align={"start"} h={"100%"} wrap={"nowrap"} gap={0}>
 
@@ -91,7 +91,7 @@ export function MoviePostCard(
               size={"sm"}
               onClick={() => setIsFlipped(false)}
             >
-              <X size={"sm"}></X>
+              <X size={24}></X>
             </ActionIcon>
           </Group>
 

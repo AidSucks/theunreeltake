@@ -10,7 +10,15 @@ export default async function EditPostPage({
 
   const { id } = await params;
 
-  const data = await prisma.post.findUnique({ where: { id: id }, include: { tags: { include: { tag: true }, omit: { postId: true, tagId: true }} }});
+  const data = await prisma.post.findUnique({
+    where: { id: id },
+    include: {
+      tags: {
+        include: { tag: true },
+        omit: { postId: true, tagId: true }
+      }
+    }
+  });
 
   if (!data) redirect("/dashboard/posts") 
 
@@ -19,8 +27,9 @@ export default async function EditPostPage({
     title: data.title,
     slug: data.slug,
     htmlContent: data.htmlContent,
+    posterUrl: data.posterUrl,
     published: data.published,
-    mediaType: data.tags[0].tag.displayName
+    mediaTagId: data.tags[0].tag.id
   }
 
   return (
