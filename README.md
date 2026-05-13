@@ -1,5 +1,5 @@
 <h1>The Unreel Take</h1>
-<img width="1000" height="1000" alt="AFM" src="https://github.com/user-attachments/assets/43ee9a9b-6289-4542-b07b-193beac02408" />
+<a href="https://www.angryfitzmedia.com/" rel="nofollow"><img width="1000" height="1000" alt="AFM" src="https://github.com/user-attachments/assets/43ee9a9b-6289-4542-b07b-193beac02408" /img></a>
 <h2>About the Project</h2>
 <h3>Background</h3>
 <p>The Unreel Take is a curated library of reviews for a large variety of media such as movies, books, and TV shows. Authors aim to provide readers with their own personal experience of a particular title, rather than just assigning it an arbitrary, often opinionated, rating.
@@ -40,6 +40,17 @@ To be completed in CSC 191
 To be completed in CSC 191
 <h2>Creators and Image Source</h2>
 <h3>Product Owner and Developers</h3>
+<ul>
+  <li>Brandon Eiland (Product Owner)</li>
+  <li>Aiden Anderson (Developer)</li>
+  <li>Logan Jenkins (Developer)</li>
+  <li>Brian Segura Chagolla (Developer)</li>
+  <li>Jalen Sun (Developer)</li>
+  <li>Izak Puente Zavala (Developer)</li>
+  <li>Preston Stevenson (Developer)</li>
+  <li>Melvin Ly (Developer)</li>
+  <li>Elias Rangel (Developer)</li>
+</ul>
 <h3>Icon Sources</h3></h3>
 <ul>
   <li><a target="_blank" href="https://images.seeklogo.com/logo-png/39/1/next-js-logo-png_seeklogo-394608.png">Next.js logo</a></li>
