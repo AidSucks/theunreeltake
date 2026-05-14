@@ -31,7 +31,29 @@
 </ul>
 <h2>Roadmap</h2>
 <h3>Completed so Far</h3>
+<p>For each sprint, the team focus on implementing core functionalities and ensured that the features added had a level of polish that is part of the acceptance criteria.</p>
+<h4>Sprint 1 - Feb. 23rd to Mar. 8th</h4>
+<p>Produced the project charter that layout the agreements and proposed project between the team and the Product Owner. In addition, the team created a website mockup using <a href="https://www.figma.com/proto/I6f0EVQgokZAzYJZtGW4hj/Website-Mock-Up?node-id=0-1&t=iJnMOZvn49vurHWT-1" rel="nofollow">Figma</a>, setup project tracking and started the v0.1.0 base website that had been previously been developed.</p>
+<h4>Sprint 2 - Mar. 9th to Mar. 22nd</h4>
+<p>Produced v0.2.0 which impplemented: user invitation, account setup, public about page, ability to change passwords, and user login/authentication flow.</p>
+<h4>Sprint 3 - Mar. 30th to Apr. 12th</h4>
+<p>Produced v0.3.0 which implemented: rich text editor, post creation, modification and deletion, trivia landing page, and user management.</p>
+<h4>Sprint 4 - Apr. 13th to Apr. 26th</h4>
+<p>Produced v0.4.0 which implemented: request management, content tagging system, content draft system, and a public catalog API.</p>
 <h3>Future Plans</h3>
+<p>The planned features to be added for next semester:
+<ul>
+  <li>Better mobile accessibilty</li>
+  <li>Email templating</li>
+  <li>Automated newsletter</li>
+  <li>Post analytics</li>
+  <li>Commenting system</li>
+  <li>Dashboard themes</li>
+  <li>Direct emailing from dashboard</li>
+  <li>Related reviews</li>
+  <li>Customizable trivia</li>
+  <li>Better user management</li>
+</ul></p>
 <h2>Testing</h2>
 To be completed in CSC 191
 <h2>Deployment</h2>
