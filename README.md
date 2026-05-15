@@ -1,5 +1,5 @@
 <h1>The Unreel Take</h1>
-<a href="https://www.angryfitzmedia.com/" rel="nofollow"><img width="1000" height="1000" alt="AFM" src="https://github.com/user-attachments/assets/43ee9a9b-6289-4542-b07b-193beac02408" /img></a>
+<a href="https://www.angryfitzmedia.com/" rel="nofollow"><img width="200" height="200" alt="AFM" src="https://github.com/user-attachments/assets/43ee9a9b-6289-4542-b07b-193beac02408" /img></a>
 <h2>About the Project</h2>
 <h3>Background</h3>
 <p>The Unreel Take is a curated library of reviews for a large variety of media such as movies, books, and TV shows. Authors aim to provide readers with their own personal experience of a particular title, rather than just assigning it an arbitrary, often opinionated, rating.
